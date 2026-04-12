@@ -170,11 +170,11 @@
 
 {#if celebrationVisible}
 	<div class="cel-overlay on" id="cel">
-		<div class="cel-pingu">🐧</div>
+		<img class="cel-pingu" src="/assets/characters/pingu-happy.png" alt="Pingu feliz" />
 		<div class="cel-msg">{celMsg}</div>
 		<div class="cel-stars">
 			{#each Array(celStars) as _, i}
-				<span class="cstar" style="animation-delay:{i * 0.15}s">⭐</span>
+				<img class="cstar" src="/assets/ui/star-filled.png" alt="estrella" style="animation-delay:{i * 0.15}s" />
 			{/each}
 		</div>
 		{#if celLvMsg}

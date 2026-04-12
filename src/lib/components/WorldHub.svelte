@@ -74,7 +74,7 @@
 
 {#if showSummary}
 	<div class="scr on" style="display:flex">
-		<div class="sum-pingu">🐧</div>
+		<img class="sum-pingu" src="/assets/characters/pingu-happy.png" alt="Pingu feliz" />
 		<div class="sum-card">
 			<h2>¡Sesión increíble, {profile?.name || ''}!</h2>
 			<div class="sum-stars">Ganaste ⭐ {getSessionData().sessionStars} estrellas hoy</div>
@@ -87,8 +87,12 @@
 	</div>
 {:else}
 	<div class="scr on" style="display:flex">
-		<div class="men-top" style="background:linear-gradient(135deg,{worldColor}22 0%,transparent 100%)">
-			<span class="men-avatar" style="border:3px solid {worldColor}40">{profile?.avatar || '🦄'}</span>
+		<div class="men-top" style="background:linear-gradient(135deg,{worldColor}22 0%,{worldColor}08 100%);background-image:url('/assets/backgrounds/bg-{worldId}.png');background-size:cover;background-position:center">
+			{#if profile?.avatar?.endsWith('.png')}
+				<img class="men-avatar" src="/assets/avatars/{profile.avatar}" alt={profile.name} style="border:3px solid {worldColor}" />
+			{:else}
+				<span class="men-avatar" style="border:3px solid {worldColor}40">{profile?.avatar || '🦄'}</span>
+			{/if}
 			<div class="men-info">
 				<h2 style="font-size:var(--text-lg)">¡Hola, {profile?.name || ''}!</h2>
 				<div class="world-badge" style="background:{worldColor}">{worldEmoji} {worldLabel}</div>
@@ -103,7 +107,7 @@
 			{#each worldGames as gm, idx}
 				<button class="mcard" style="animation-delay:{idx * 0.04}s;--col:{gm.col}" onclick={() => goGame(gm.n)}>
 
-					<span class="ico">{gm.ico}</span>
+				<img class="ico" src="/assets/games/{gm.img}" alt={gm.name} />
 					<h3>{gm.name}</h3>
 					<small>{gm.sub}</small>
 					<span class="mlv">Nv.{levels[gm.n] || 1}</span>
@@ -135,8 +139,14 @@
 			<div class="stk-grid">
 				{#each STICKER_MILESTONES as m}
 					{@const unlocked = stars >= m.s}
+					{@const stkImg = /** @type {any} */(m).img}
 					<div class="stk-item {unlocked ? 'unlocked' : 'locked'}">
-						{unlocked ? m.e : '🔒'}<small>{m.s}⭐</small>
+					{#if unlocked}
+						<img src="/assets/stickers/{stkImg}" alt={m.e} />
+					{:else}
+						<img class="stk-locked" src="/assets/ui/lock.png" alt="bloqueado" />
+					{/if}
+					<small>{m.s}⭐</small>
 					</div>
 				{/each}
 			</div>

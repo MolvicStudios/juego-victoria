@@ -27,7 +27,7 @@
 	let showCreate = $state(false);
 	let newName    = $state('');
 	let newPingu   = $state('');
-	let newAvatar  = $state('🦄');
+	let newAvatar  = $state('av-unicornio.png');
 	/** @type {number|null} */
 	let selectedAge = $state(null);
 	let confirmDelete = $state(-1);
@@ -71,7 +71,7 @@
 		setActiveProfile(idx);
 		beep(880, 0.2);
 		say('¡Bienvenido ' + newName.trim() + '!');
-		newName = ''; newPingu = ''; newAvatar = '🦄'; selectedAge = null;
+		newName = ''; newPingu = ''; newAvatar = 'av-unicornio.png'; selectedAge = null;
 		showCreate = false;
 		const world = worldForAge(birthYear);
 		goto('/' + world);
@@ -95,13 +95,15 @@
 
 		<!-- Header with Padres button -->
 		<div class="home-header">
-			<span class="home-logo">🐧 PinguPlay</span>
+			<span class="home-logo"><img src="/assets/characters/pingu-main.png" alt="Pingu" style="width:2rem;height:2rem;vertical-align:middle;margin-right:4px" /> PinguPlay</span>
 			<a href="/padres" class="padres-btn">👨‍👩‍👧 Padres</a>
 		</div>
 
 		{#if !showCreate}
 			<!-- Profile selector -->
-			<button class="wel-pingu" onclick={() => { beep(700, 0.2); say('¡Hola! ¡Soy Pingu! ¡Vamos a jugar y aprender!'); }}>🐧</button>
+			<button class="wel-pingu" onclick={() => { beep(700, 0.2); say('¡Hola! ¡Soy Pingu! ¡Vamos a jugar y aprender!'); }}>
+				<img src="/assets/characters/pingu-main.png" alt="Pingu" />
+			</button>
 			<h1 class="home-title">¿Quién va a jugar?</h1>
 
 			<div class="profiles-grid">
@@ -113,7 +115,13 @@
 						onclick={() => confirmDelete === i ? null : selectProfile(i)}
 						onkeydown={(e) => { if(e.key==='Enter'||e.key===' ') { e.preventDefault(); if(confirmDelete !== i) selectProfile(i); } }}
 						style="--pc:{meta.color}">
-						<div class="profile-av">{p.avatar}</div>
+						<div class="profile-av">
+						{#if p.avatar?.endsWith('.png')}
+							<img src="/assets/avatars/{p.avatar}" alt={p.name} />
+						{:else}
+							{p.avatar}
+						{/if}
+					</div>
 						<div class="profile-name">{p.name}</div>
 						<div class="profile-world" style="background:{meta.color}22;color:{meta.color}">
 							{meta.emoji} {meta.label}
@@ -146,7 +154,9 @@
 				<span class="wel-label">Elige tu avatar:</span>
 				<div class="avatar-row">
 					{#each AVATARS as a}
-						<button class="av-btn {a === newAvatar ? 'sel' : ''}" onclick={() => { newAvatar = a; beep(600, 0.1); }}>{a}</button>
+						<button class="av-btn {a.img === newAvatar ? 'sel' : ''}" onclick={() => { newAvatar = a.img; beep(600, 0.1); }}>
+							<img src="/assets/avatars/{a.img}" alt={a.emoji} />
+						</button>
 					{/each}
 				</div>
 
