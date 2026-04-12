@@ -93,7 +93,7 @@ html:not(.night) .star{display:none}
   background:var(--card-glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   border:var(--glass-border);box-shadow:var(--shadow);
   transition:transform .15s;animation:cardIn .4s backwards;overflow:hidden}
-.mcard::before{content:'';position:absolute;top:0;left:0;right:0;height:5px}
+.mcard::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--col,#4D9FEC)}
 .mcard:active{transform:scale(.95)}
 .mcard .ico{font-size:2rem;display:block}
 .mcard h3{font-size:.9rem;margin-top:4px}
@@ -357,6 +357,59 @@ html.night #cel,html.night .cel-overlay{background:rgba(26,26,46,.93)}
 .lvl-back{padding:12px 28px;border-radius:14px;border:2px solid #EEE;background:var(--card);
   font-size:.9rem;font-weight:700;color:var(--ink);cursor:pointer;font-family:'Nunito',sans-serif}
 .lvl-back:active{transform:scale(.95)}
+
+/* ===== HOME BTN ===== */
+#home-btn{position:fixed;bottom:12px;left:12px;width:48px;height:48px;
+  border-radius:50%;background:var(--card-glass);backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);border:var(--glass-border);
+  font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--shadow);z-index:150;text-decoration:none;transition:transform .15s;}
+#home-btn:active{transform:scale(.9)}
+
+/* ===== HOME PAGE ===== */
+.home-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:0 16px 80px;
+  overflow-y:auto;z-index:10;min-height:100%}
+.home-header{width:100%;max-width:500px;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 0 8px}
+.home-logo{font-size:1.25rem;font-weight:900;color:var(--ink)}
+.padres-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:20px;
+  background:var(--c6);color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;
+  box-shadow:0 4px 0 rgba(100,60,200,.25);transition:transform .12s}
+.padres-btn:active{transform:translateY(3px);box-shadow:none}
+.home-title{font-size:1.5rem;font-weight:900;margin:12px 0 16px;text-align:center}
+.profiles-grid{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;width:100%;max-width:520px;margin-bottom:10px}
+.profile-card{position:relative;width:130px;min-height:150px;border-radius:22px;padding:18px 12px 14px;
+  cursor:pointer;background:var(--card-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:2px solid var(--pc,#EEE);box-shadow:0 6px 20px rgba(0,0,0,.09);
+  display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .15s}
+.profile-card:active{transform:scale(.94)}
+.profile-card.profile-add{opacity:.65;border-style:dashed;justify-content:center}
+.profile-av{font-size:2.6rem;line-height:1}
+.profile-name{font-weight:900;font-size:.95rem;text-align:center}
+.profile-world{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:12px;text-align:center}
+.profile-x{position:absolute;top:6px;right:6px;background:none;border:none;font-size:.72rem;
+  cursor:pointer;opacity:.35;padding:4px;line-height:1;color:var(--ink)}
+.profile-del-confirm{display:flex;gap:4px;width:100%;margin-top:4px}
+.profile-del-confirm button{flex:1;padding:5px 4px;border-radius:8px;border:none;font-size:.65rem;
+  font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif}
+.profile-del-confirm button:first-child{background:#FF6B6B;color:#fff}
+.profile-del-confirm button:last-child{background:#EEE;color:var(--ink)}
+.age-selector{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.age-btn{padding:12px 8px;border-radius:14px;border:3px solid #EEE;background:var(--card);
+  font-family:'Nunito',sans-serif;cursor:pointer;transition:all .15s;display:flex;
+  flex-direction:column;align-items:center;gap:4px}
+.age-btn.sel{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent);transform:scale(1.04)}
+.age-emoji{font-size:1.6rem;line-height:1}
+.age-label{font-size:.72rem;font-weight:700;color:var(--ink);text-align:center;line-height:1.2}
+.wel-back{padding:10px;border:none;background:none;color:var(--ink2);font-size:.82rem;
+  cursor:pointer;font-family:'Nunito',sans-serif;text-align:center}
+.home-footer{text-align:center;padding:4px 14px 8px;font-size:.65rem;color:var(--ink2);
+  display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.home-footer a{color:var(--ink2);text-decoration:none}
+
+/* ===== WORLD HUB HEADER ===== */
+.world-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:16px;
+  font-size:.78rem;font-weight:700;color:#fff;margin-bottom:2px}
 
 /* ===== MUTE BTN ===== */
 #mute{position:fixed;bottom:12px;right:12px;width:48px;height:48px;

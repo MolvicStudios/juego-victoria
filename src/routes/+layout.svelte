@@ -1,6 +1,8 @@
 <script>
 	import '../app.css';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import { night, muted } from '$lib/stores/settings.js';
 	import { toggleMute } from '$lib/audio.js';
 
@@ -50,4 +52,5 @@
 
 {@render children()}
 
+<button id="home-btn" onclick={() => goto('/')} title="Inicio" aria-label="Volver al inicio">🏠</button>
 <button id="mute" onclick={toggleMute}>{isMuted ? '🔇' : '🔊'}</button>

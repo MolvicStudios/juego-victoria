@@ -45,6 +45,15 @@ export function ageRange(birthYear) {
 	return 'maestros';
 }
 
+/**
+ * Returns the SvelteKit route world for a given birth year.
+ * @param {number} birthYear
+ * @returns {string}
+ */
+export function worldForAge(birthYear) {
+	return ageRange(birthYear);
+}
+
 /** @param {Profile} p */
 export function addProfile(p) {
 	profiles.update(arr => {
