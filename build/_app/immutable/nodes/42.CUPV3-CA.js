@@ -1,0 +1,1 @@
+import"../chunks/BIeRQmjK.js";import"../chunks/Br5cJI0m.js";import{t as e}from"../chunks/BhRb-p0L.js";function t(t){let n=[1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,19,20,22,24,29,30,32,34,35,36,37];e(t,{worldId:`exploradores`,worldEmoji:`🌏`,worldLabel:`Exploradores`,worldColor:`#4D9FEC`,get gameNums(){return n}})}export{t as component};

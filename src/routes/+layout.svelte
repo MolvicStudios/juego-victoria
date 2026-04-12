@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { night, muted } from '$lib/stores/settings.js';
+	import { night, muted, hiContrast, bigText } from '$lib/stores/settings.js';
 	import { toggleMute } from '$lib/audio.js';
 
 	let { children } = $props();
@@ -13,11 +13,16 @@
 	const hideHome = $derived(pathname === '/' || pathname === '/padres');
 	let isNight = $state(false);
 	let isMuted = $state(false);
+	let isHiContrast = $state(false);
+	let isBigText = $state(false);
+	let soundPlaying = $state(false);
 	/** @type {'pending'|'accepted'|'declined'} */
 	let cookieConsent = $state('pending');
 
 	night.subscribe(v => { isNight = v; });
 	muted.subscribe(v => { isMuted = v; });
+	hiContrast.subscribe(v => { isHiContrast = v; });
+	bigText.subscribe(v => { isBigText = v; });
 
 	onMount(() => {
 		mounted = true;
@@ -25,6 +30,16 @@
 		applyNight(isNight);
 		const saved = localStorage.getItem('pp_cookie_consent');
 		if (saved === 'accepted' || saved === 'declined') cookieConsent = /** @type {any} */ (saved);
+		const onSound = () => { soundPlaying = true; setTimeout(() => { soundPlaying = false; }, 1200); };
+		document.addEventListener('pp-sound', onSound);
+		return () => document.removeEventListener('pp-sound', onSound);
+	});
+
+	$effect(() => {
+		if (mounted) {
+			document.documentElement.classList.toggle('hc', isHiContrast);
+			document.documentElement.classList.toggle('big', isBigText);
+		}
 	});
 
 	function acceptCookies() {
@@ -77,6 +92,7 @@
 <button id="home-btn" onclick={() => goto('/')} title="Inicio" aria-label="Volver al inicio">🏠</button>
 {/if}
 <button id="mute" onclick={toggleMute}>{isMuted ? '🔇' : '🔊'}</button>
+<div class="snd-ind {soundPlaying ? 'on' : ''}">🔊</div>
 
 {#if cookieConsent === 'pending'}
 <div class="cookie-banner" role="dialog" aria-label="Aviso de cookies">

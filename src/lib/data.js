@@ -84,6 +84,21 @@ export const GAMES = [
 	{n:38,ico:'🔺',name:'Tangram',       sub:'Construye figuras',     col:'#FF9F43',isNew:true, img:'g38-tangram.png'},
 ];
 
+export const MEDALS = [
+	{ id: 'first_star', label: '¡Tu Primera Estrella!', desc: 'Primera estrella conseguida',         icon: '⭐' },
+	{ id: 'streak3',    label: '¡En Racha! ×3',         desc: '3 respuestas correctas seguidas',     icon: '🔥' },
+	{ id: 'streak5',    label: '¡Imparable! ×5',        desc: '5 respuestas correctas seguidas',     icon: '🔥🔥' },
+	{ id: 'stars50',    label: '¡50 Estrellas!',         desc: 'Acumula 50 estrellas',                icon: '🌟' },
+	{ id: 'stars100',   label: '¡100 Estrellas!',        desc: '100 estrellas conseguidas',           icon: '💫' },
+	{ id: 'stars500',   label: '¡500 Estrellas!',        desc: '500 estrellas — ¡eres increíble!',   icon: '✨' },
+	{ id: 'level5',     label: '¡Experto!',              desc: 'Nivel 5 en algún juego',              icon: '🏅' },
+	{ id: 'level10',    label: '¡Maestro!',              desc: 'Nivel 10 en algún juego',             icon: '🥈' },
+	{ id: 'level15',    label: '¡Campeón!',              desc: 'Nivel 15 — ¡el máximo!',              icon: '🥇' },
+	{ id: 'games5',     label: '¡Jugador!',              desc: 'Completa 5 partidas',                 icon: '🎮' },
+	{ id: 'games20',    label: '¡Superfan!',             desc: 'Completa 20 partidas',                icon: '🕹️' },
+	{ id: 'all_games',  label: '¡Explorador Total!',     desc: 'Juega 10 juegos distintos',           icon: '🗺️' },
+];
+
 /**
  * @template T
  * @param {T[]} a

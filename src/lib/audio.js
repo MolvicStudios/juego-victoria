@@ -9,9 +9,14 @@ function au() {
 	return aCtx;
 }
 
+function notifySoundUI() {
+	try { if (typeof document !== 'undefined') document.dispatchEvent(new CustomEvent('pp-sound')); } catch {}
+}
+
 /** @param {number} [freq] @param {number} [dur] @param {OscillatorType} [type] @param {number} [vol] */
 export function beep(freq = 440, dur = 0.3, type = 'sine', vol = 0.22) {
 	if (get(muted)) return;
+	notifySoundUI();
 	try {
 		const c = au(), o = c.createOscillator(), g = c.createGain();
 		o.connect(g); g.connect(c.destination); o.type = type; o.frequency.value = freq;
@@ -34,6 +39,7 @@ export function fanfare() {
 /** @param {string} txt */
 export function say(txt) {
 	if (get(muted) || typeof window === 'undefined' || !window.speechSynthesis) return;
+	notifySoundUI();
 	speechSynthesis.cancel();
 	const u = new SpeechSynthesisUtterance(txt);
 	u.lang = 'es-ES'; u.rate = 0.85; u.pitch = 1.15;

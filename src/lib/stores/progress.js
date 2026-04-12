@@ -1,6 +1,7 @@
 import { writable, derived, get } from 'svelte/store';
 import { browser } from '$app/environment';
 import { activeProfileIndex } from './profiles.js';
+import { MEDALS } from '../data.js';
 
 const STORAGE_KEY = 'pp_progress';
 
@@ -123,6 +124,55 @@ export function resetSession() {
 	d.sessionStars = 0;
 	d.sessionCompleted = 0;
 	setProfileProgress(d);
+}
+
+export function getStreak(/** @type {number} */ gameNum) {
+	return (getProfileProgress().correctStreak || {})[gameNum] || 0;
+}
+
+export function getUnlockedMedals() {
+	return getProfileProgress().medals || [];
+}
+
+/**
+ * Checks all medals and returns any newly unlocked ones.
+ * @param {number} gameNum
+ * @returns {Array<{id:string, label:string, desc:string, icon:string}>}
+ */
+export function checkNewMedals(gameNum) {
+	const d = getProfileProgress();
+	const prev = d.medals || [];
+	const streak = gameNum ? ((d.correctStreak || {})[gameNum] || 0) : 0;
+	/** @type {Array<{id:string, label:string, desc:string, icon:string}>} */
+	const newMedals = [];
+	for (const medal of MEDALS) {
+		if (prev.includes(medal.id)) continue;
+		if (_medalCheck(medal.id, d, streak)) {
+			prev.push(medal.id);
+			newMedals.push(/** @type {{id:string, label:string, desc:string, icon:string}} */ (medal));
+		}
+	}
+	if (newMedals.length > 0) { d.medals = prev; setProfileProgress(d); }
+	return newMedals;
+}
+
+/** @param {string} id @param {any} d @param {number} streak @returns {boolean} */
+function _medalCheck(id, d, streak) {
+	switch (id) {
+		case 'first_star':  return (d.stars || 0) >= 1;
+		case 'streak3':     return streak >= 3;
+		case 'streak5':     return streak >= 5;
+		case 'stars50':     return (d.stars || 0) >= 50;
+		case 'stars100':    return (d.stars || 0) >= 100;
+		case 'stars500':    return (d.stars || 0) >= 500;
+		case 'level5':      return Object.values(d.maxLevels || {}).some(v => v >= 5);
+		case 'level10':     return Object.values(d.maxLevels || {}).some(v => v >= 10);
+		case 'level15':     return Object.values(d.maxLevels || {}).some(v => v >= 15);
+		case 'games5':      return (d.sessionCompleted || 0) >= 5;
+		case 'games20':     return (d.sessionCompleted || 0) >= 20;
+		case 'all_games':   return Object.keys(d.levels || {}).length >= 10;
+		default:            return false;
+	}
 }
 
 export function incrementSessionCompleted() {

@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { get } from 'svelte/store';
 	import { beep, say, fanfare, boo } from '$lib/audio.js';
-	import { getLevel, setLevel, addStars, onGameComplete, onCorrect, onWrong, getMaxLevels, getLevels, incrementSessionCompleted, getStars } from '$lib/stores/progress.js';
+	import { getLevel, setLevel, addStars, onGameComplete, onCorrect, onWrong, getMaxLevels, getLevels, incrementSessionCompleted, getStars, getStreak, checkNewMedals } from '$lib/stores/progress.js';
 	import { profiles, activeProfileIndex, worldForAge } from '$lib/stores/profiles.js';
 	import { LEVEL_COLORS, STICKER_MILESTONES } from '$lib/data.js';
 
@@ -32,6 +32,28 @@
 	/** @type {{img:string, e:string, s:number}|null} */
 	let stickerUnlock = $state(null);
 	let wiggling = $state(false);
+	let streak = $state(0);
+	/** @type {Array<{id:string, label:string, desc:string, icon:string}>} */
+	let medalQueue = $state([]);
+	/** @type {{id:string, label:string, desc:string, icon:string}|null} */
+	let medalUnlock = $state(null);
+
+	function _queueMedals(/** @type {Array<{id:string, label:string, desc:string, icon:string}>} */ medals) {
+		if (medals.length === 0) return;
+		medalQueue = [...medalQueue, ...medals];
+		if (!celebrationVisible && !medalUnlock && !stickerUnlock) {
+			medalUnlock = medalQueue[0];
+			medalQueue = medalQueue.slice(1);
+		}
+	}
+	function dismissMedal() {
+		if (medalQueue.length > 0) {
+			medalUnlock = medalQueue[0];
+			medalQueue = medalQueue.slice(1);
+		} else {
+			medalUnlock = null;
+		}
+	}
 
 	const maxLevels = $derived.by(() => getMaxLevels());
 	const levels = $derived.by(() => getLevels());
@@ -61,6 +83,8 @@
 			);
 			if (hit) stickerUnlock = hit;
 			if (!cb) incrementSessionCompleted();
+			// Check star-based and game-count medals
+			_queueMedals(checkNewMedals(gameNum));
 			fanfare();
 			say(msg);
 			spawnConfetti();
@@ -70,13 +94,20 @@
 		window.ppBoo = boo;
 		window.ppWin = () => {
 			const msg = onGameComplete(gameNum);
+			streak = 0;
 			currentLevel = getLevel(gameNum);
+			_queueMedals(checkNewMedals(gameNum));
 			return msg;
 		};
 		window.ppGetLevel = () => getLevel(gameNum);
-		window.ppOnCorrect = () => onCorrect(gameNum);
+		window.ppOnCorrect = () => {
+			onCorrect(gameNum);
+			streak = getStreak(gameNum);
+			_queueMedals(checkNewMedals(gameNum));
+		};
 		window.ppOnWrong = () => {
 			const msg = onWrong(gameNum);
+			streak = 0;
 			// Dispara animación wiggle en el contenedor del juego
 			if (!wiggling) {
 				wiggling = true;
@@ -104,6 +135,7 @@
 	async function selectLevel(lv) {
 		setLevel(gameNum, lv);
 		currentLevel = lv;
+		streak = 0;
 		showLevelSelect = false;
 		await tick();
 		if (initGame && container) {
@@ -115,6 +147,11 @@
 		celebrationVisible = false;
 		confettiEls = [];
 		currentLevel = getLevel(gameNum);
+		// Show any pending medals/stickers after celebration closes
+		if (medalQueue.length > 0 && !medalUnlock) {
+			medalUnlock = medalQueue[0];
+			medalQueue = medalQueue.slice(1);
+		}
 		if (celCallback) {
 			celCallback();
 		} else {
@@ -180,6 +217,9 @@
 		<div class="hdr">
 			<button class="bk" onclick={goBack}>←</button>
 			<span class="htl">{icon} {title}</span>
+			{#if streak >= 3}
+				<span class="streak-badge">🔥×{streak}</span>
+			{/if}
 			<span class="lvbdg">Nivel {currentLevel}</span>
 		</div>
 		<div class="gbody {wiggling ? 'wiggle' : ''}" bind:this={container}></div>
@@ -221,3 +261,17 @@
 {#each confettiEls as c (c.id)}
 	<div class="confetti" style="left:{c.left}vw;top:-20px;width:{c.size}px;height:{c.size}px;background:{c.color};border-radius:{c.radius};animation-delay:{c.delay}s;animation-duration:{c.dur}s"></div>
 {/each}
+
+{#if medalUnlock}
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<div class="medal-overlay" role="button" tabindex="0"
+		onclick={dismissMedal}
+		onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') dismissMedal(); }}>
+		<div class="medal-box" onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()}>
+			<div class="medal-icon">{medalUnlock.icon}</div>
+			<div class="medal-title">{medalUnlock.label}</div>
+			<div class="medal-desc">{medalUnlock.desc}</div>
+			<button class="medal-btn" onclick={dismissMedal}>¡Genial! 🏅</button>
+		</div>
+	</div>
+{/if}

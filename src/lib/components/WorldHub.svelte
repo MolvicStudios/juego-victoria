@@ -2,9 +2,9 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { profiles, activeProfileIndex } from '$lib/stores/profiles.js';
-	import { getStars, getLevels, getSessionData } from '$lib/stores/progress.js';
-	import { night } from '$lib/stores/settings.js';
-	import { GAMES, STICKER_MILESTONES } from '$lib/data.js';
+	import { getStars, getLevels, getSessionData, getUnlockedMedals } from '$lib/stores/progress.js';
+	import { night, hiContrast, bigText } from '$lib/stores/settings.js';
+	import { GAMES, STICKER_MILESTONES, MEDALS } from '$lib/data.js';
 	import { beep, say, fanfare } from '$lib/audio.js';
 
 	/**
@@ -24,7 +24,22 @@
 	let isNight   = $state(false);
 	let showStickers = $state(false);
 	let showSummary  = $state(false);
+	let showSettings = $state(false);
+	let showTutorial = $state(false);
+	let tutStep      = $state(0);
+	let isHiContrast = $state(false);
+	let isBigText    = $state(false);
+	/** @type {string[]} */
+	let unlockedMedals = $state([]);
 
+	const TUTORIAL_STEPS = [
+		{ img: '/assets/characters/pingu-main.png', title: '¡Bienvenido a PinguPlay!', body: 'Soy Pingu, tu compañero de aprendizaje 🐧' },
+		{ img: '/assets/characters/pingu-happy.png', title: '¡Elige un juego!', body: 'Toca cualquier tarjeta para empezar a aprender 🎮' },
+		{ img: '/assets/characters/pingu-happy.png', title: '¡Gana Estrellas ⭐!', body: 'Cada respuesta correcta da estrellas. ¡Desbloquea stickers y medallas!' },
+	];
+
+	hiContrast.subscribe(v => { isHiContrast = v; });
+	bigText.subscribe(v => { isBigText = v; });
 	night.subscribe(v => { isNight = v; });
 
 	/** Games filtered and ordered for this world */
@@ -48,6 +63,7 @@
 			say('¡Qué bien lo has hecho hoy!');
 		}
 		say('¡Hola! ¡Elige un juego!');
+		if (!localStorage.getItem('pp_tut')) showTutorial = true;
 	});
 
 	function refreshData() {
@@ -68,7 +84,21 @@
 
 	function openStickers() {
 		refreshData();
+		unlockedMedals = getUnlockedMedals();
 		showStickers = true;
+	}
+
+	function advanceTutorial() {
+		if (tutStep < TUTORIAL_STEPS.length - 1) {
+			tutStep++;
+		} else {
+			localStorage.setItem('pp_tut', '1');
+			showTutorial = false;
+		}
+	}
+	function skipTutorial() {
+		localStorage.setItem('pp_tut', '1');
+		showTutorial = false;
 	}
 </script>
 
@@ -100,6 +130,7 @@
 			<div class="men-btns">
 				<button class="men-pill" onclick={toggleNightMode}><span>{isNight ? '☀️' : '🌙'}</span></button>
 				<button class="men-pill" onclick={openStickers}>🏆 <span>{stars}</span></button>
+				<button class="men-pill" onclick={() => { showSettings = true; }}>⚙️</button>
 			</div>
 		</div>
 
@@ -128,6 +159,50 @@
 	</div>
 {/if}
 
+{#if showSettings}
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<div class="modal-overlay on" role="button" tabindex="0"
+		onclick={() => { showSettings = false; }}
+		onkeydown={(e) => { if(e.key==='Escape') showSettings = false; }}>
+		<!-- svelte-ignore a11y_no_static_element_interactions a11y_no_noninteractive_element_interactions -->
+		<div class="modal-box settings-box" onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()}>
+			<h2>⚙️ Ajustes</h2>
+			<div class="setting-row">
+				<span>🌙 Modo nocturno</span>
+				<button class="toggle-btn {isNight ? 'on' : ''}" onclick={toggleNightMode}>{isNight ? 'ON' : 'OFF'}</button>
+			</div>
+			<div class="setting-row">
+				<span>🔍 Texto grande</span>
+				<button class="toggle-btn {isBigText ? 'on' : ''}" onclick={() => bigText.update(v => !v)}>{isBigText ? 'ON' : 'OFF'}</button>
+			</div>
+			<div class="setting-row">
+				<span>⬛ Alto contraste</span>
+				<button class="toggle-btn {isHiContrast ? 'on' : ''}" onclick={() => hiContrast.update(v => !v)}>{isHiContrast ? 'ON' : 'OFF'}</button>
+			</div>
+			<button class="modal-close" onclick={() => { showSettings = false; }}>Cerrar</button>
+		</div>
+	</div>
+{/if}
+
+{#if showTutorial}
+	<div class="tut-overlay">
+		<div class="tut-card">
+			<img class="tut-pingu" src={TUTORIAL_STEPS[tutStep].img} alt="Pingu" />
+			<h2 class="tut-title">{TUTORIAL_STEPS[tutStep].title}</h2>
+			<p class="tut-body">{TUTORIAL_STEPS[tutStep].body}</p>
+			<div class="tut-dots">
+				{#each TUTORIAL_STEPS as _, i}
+					<span class="tut-dot {tutStep === i ? 'active' : ''}"></span>
+				{/each}
+			</div>
+			<button class="tut-next" onclick={advanceTutorial}>
+				{tutStep < TUTORIAL_STEPS.length - 1 ? 'Siguiente →' : '¡Empezar! 🚀'}
+			</button>
+			<button class="tut-skip" onclick={skipTutorial}>Saltar tutorial</button>
+		</div>
+	</div>
+{/if}
+
 {#if showStickers}
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div class="modal-overlay on" role="button" tabindex="0"
@@ -149,8 +224,16 @@
 					<small>{m.s}⭐</small>
 					</div>
 				{/each}
-			</div>
-			<button class="modal-close" onclick={() => { showStickers = false; }}>¡Cerrar!</button>
+			</div>				<h3 style="margin-top:14px;font-size:1rem">🎖️ Medallas</h3>
+				<div class="medals-coll-grid">
+					{#each MEDALS as m}
+						{@const ul = unlockedMedals.includes(m.id)}
+						<div class="medal-coll-item {ul ? 'ul' : 'lk'}">
+							<span style="font-size:1.8rem;{ul ? '' : 'filter:grayscale(1);opacity:.25'}">{m.icon}</span>
+							<small>{ul ? m.label : '???'}</small>
+						</div>
+					{/each}
+				</div>			<button class="modal-close" onclick={() => { showStickers = false; }}>¡Cerrar!</button>
 		</div>
 	</div>
 {/if}
