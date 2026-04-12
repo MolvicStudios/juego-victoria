@@ -105,7 +105,7 @@
 
 		<div class="mgrid">
 			{#each worldGames as gm, idx}
-				<button class="mcard" style="animation-delay:{idx * 0.04}s;--col:{gm.col}" onclick={() => goGame(gm.n)}>
+				<button class="mcard" data-new={gm.isNew ? 'true' : 'false'} style="animation-delay:{idx * 0.04}s;--col:{gm.col}" onclick={() => goGame(gm.n)}>
 
 				<img class="ico" src="/assets/games/{gm.img}" alt={gm.name} />
 					<h3>{gm.name}</h3>

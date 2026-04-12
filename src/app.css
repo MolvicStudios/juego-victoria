@@ -470,6 +470,23 @@ button.profile-card{-webkit-appearance:none;appearance:none;border:none;backgrou
 @keyframes popBounce{0%{opacity:0;transform:scale(0) rotate(-15deg)}60%{transform:scale(1.18) rotate(5deg)}80%{transform:scale(.96)}100%{opacity:1;transform:scale(1) rotate(0)}}
 @keyframes invitePulse{0%,100%{transform:scale(1);box-shadow:var(--shadow)}50%{transform:scale(1.04);box-shadow:0 12px 32px rgba(0,0,0,.18)}}
 
+/* ===== FASE 5: WIGGLE, INVITE PULSE, STICKER POPUP ===== */
+.gbody.wiggle{animation:wiggle .5s ease-in-out}
+.mcard[data-new="true"]{animation:invitePulse 2s ease-in-out infinite}
+
+.stk-popup-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.55);
+  display:flex;align-items:center;justify-content:center;padding:20px}
+.stk-popup{background:var(--card);border-radius:28px;padding:32px 28px;max-width:360px;width:100%;
+  text-align:center;box-shadow:0 12px 48px rgba(0,0,0,.25);animation:popBounce .5s ease-out}
+.stk-popup-title{font-size:1.1rem;font-weight:900;color:var(--ink);margin-bottom:16px}
+.stk-popup-img{width:140px;height:140px;object-fit:contain;display:block;margin:0 auto;
+  animation:bounce 1.2s infinite}
+.stk-popup-stars{font-size:.95rem;font-weight:700;color:var(--c3);margin-top:14px}
+.stk-popup-btn{margin-top:18px;padding:16px 40px;border-radius:var(--r);border:none;
+  background:var(--c4);color:#fff;font-size:1.1rem;font-weight:900;cursor:pointer;
+  box-shadow:0 6px 0 rgba(80,180,80,.35);font-family:'Nunito',sans-serif}
+.stk-popup-btn:active{transform:translateY(5px);box-shadow:0 1px 0 rgba(80,180,80,.35)}
+
 /* ===== G21: DELETREAR ===== */
 .g21-target{font-size:3rem;text-align:center;margin:4px 0}
 .g21-slots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:52px}

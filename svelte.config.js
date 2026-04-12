@@ -18,7 +18,7 @@ const config = {
 			entries: [
 				'*',
 				...['nubecitas', 'exploradores', 'aventureros', 'maestros'].flatMap(w =>
-					Array.from({ length: 18 }, (_, i) => `/${w}/g${i + 1}`)
+					Array.from({ length: 38 }, (_, i) => `/${w}/g${i + 1}`)
 				)
 			]
 		}

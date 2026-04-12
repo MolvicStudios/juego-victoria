@@ -3,9 +3,9 @@
 	import { goto } from '$app/navigation';
 	import { get } from 'svelte/store';
 	import { beep, say, fanfare, boo } from '$lib/audio.js';
-	import { getLevel, setLevel, addStars, onGameComplete, onCorrect, onWrong, getMaxLevels, getLevels, incrementSessionCompleted } from '$lib/stores/progress.js';
+	import { getLevel, setLevel, addStars, onGameComplete, onCorrect, onWrong, getMaxLevels, getLevels, incrementSessionCompleted, getStars } from '$lib/stores/progress.js';
 	import { profiles, activeProfileIndex, worldForAge } from '$lib/stores/profiles.js';
-	import { LEVEL_COLORS } from '$lib/data.js';
+	import { LEVEL_COLORS, STICKER_MILESTONES } from '$lib/data.js';
 
 	function getBackRoute() {
 		const idx = get(activeProfileIndex);
@@ -29,6 +29,9 @@
 	let celCallback = $state(null);
 	/** @type {any[]} */
 	let confettiEls = $state([]);
+	/** @type {{img:string, e:string, s:number}|null} */
+	let stickerUnlock = $state(null);
+	let wiggling = $state(false);
 
 	const maxLevels = $derived.by(() => getMaxLevels());
 	const levels = $derived.by(() => getLevels());
@@ -44,12 +47,19 @@
 
 		// Bridge functions for vanilla JS games
 		window.ppCelebrate = (/** @type {string} */ msg, stars = 2, cb = null, lvMsg = null) => {
+			const starsBefore = getStars();
 			celMsg = msg;
 			celStars = Math.min(Math.max(stars, 1), 3);
 			celLvMsg = lvMsg || '';
 			celCallback = cb;
 			celebrationVisible = true;
 			addStars(celStars);
+			const starsAfter = getStars();
+			// Detectar si se cruzó un hito de sticker
+			const hit = /** @type {any} */ (STICKER_MILESTONES).find(
+				(/** @type {any} */ m) => m.s > starsBefore && m.s <= starsAfter
+			);
+			if (hit) stickerUnlock = hit;
 			if (!cb) incrementSessionCompleted();
 			fanfare();
 			say(msg);
@@ -65,7 +75,15 @@
 		};
 		window.ppGetLevel = () => getLevel(gameNum);
 		window.ppOnCorrect = () => onCorrect(gameNum);
-		window.ppOnWrong = () => onWrong(gameNum);
+		window.ppOnWrong = () => {
+			const msg = onWrong(gameNum);
+			// Dispara animación wiggle en el contenedor del juego
+			if (!wiggling) {
+				wiggling = true;
+				setTimeout(() => { wiggling = false; }, 500);
+			}
+			return msg;
+		};
 	});
 
 	onDestroy(() => {
@@ -164,7 +182,7 @@
 			<span class="htl">{icon} {title}</span>
 			<span class="lvbdg">Nivel {currentLevel}</span>
 		</div>
-		<div class="gbody" bind:this={container}></div>
+		<div class="gbody {wiggling ? 'wiggle' : ''}" bind:this={container}></div>
 	</div>
 {/if}
 
@@ -183,6 +201,20 @@
 		<button class="cel-btn" onclick={celNext}>
 			{celCallback ? '¡Seguir! →' : 'Menú 🏠'}
 		</button>
+	</div>
+{/if}
+
+{#if stickerUnlock}
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<div class="stk-popup-overlay" role="button" tabindex="0"
+		onclick={() => { stickerUnlock = null; }}
+		onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') stickerUnlock = null; }}>
+		<div class="stk-popup" onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()}>
+			<div class="stk-popup-title">¡Nuevo sticker desbloqueado! 🎉</div>
+			<img class="stk-popup-img" src="/assets/stickers/{stickerUnlock.img}" alt={stickerUnlock.e} />
+			<div class="stk-popup-stars">{stickerUnlock.s} ⭐ alcanzadas</div>
+			<button class="stk-popup-btn" onclick={() => { stickerUnlock = null; }}>¡Genial! 🌟</button>
+		</div>
 	</div>
 {/if}
 
