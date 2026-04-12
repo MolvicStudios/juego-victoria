@@ -87,10 +87,10 @@
 	</div>
 {:else}
 	<div class="scr on" style="display:flex">
-		<div class="men-top">
-			<span class="men-avatar">{profile?.avatar || '🦄'}</span>
+		<div class="men-top" style="background:linear-gradient(135deg,{worldColor}22 0%,transparent 100%)">
+			<span class="men-avatar" style="border:3px solid {worldColor}40">{profile?.avatar || '🦄'}</span>
 			<div class="men-info">
-				<h2>¡Hola, {profile?.name || ''}!</h2>
+				<h2 style="font-size:var(--text-lg)">¡Hola, {profile?.name || ''}!</h2>
 				<div class="world-badge" style="background:{worldColor}">{worldEmoji} {worldLabel}</div>
 			</div>
 			<div class="men-btns">
