@@ -1,6 +1,24 @@
 <!doctype html>
 <html lang="es">
 	<head>
+		<!-- Google tag (gtag.js) — carga diferida hasta consentimiento -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-8H0947XNKF"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			// Deniega analytics por defecto; se activa solo si el usuario acepta
+			gtag('consent', 'default', {
+				analytics_storage: 'denied',
+				ad_storage: 'denied',
+				wait_for_update: 500
+			});
+			gtag('js', new Date());
+			gtag('config', 'G-8H0947XNKF');
+			// Si ya dio consentimiento en una visita anterior, actívalo inmediatamente
+			if (typeof localStorage !== 'undefined' && localStorage.getItem('pp_cookie_consent') === 'accepted') {
+				gtag('consent', 'update', { analytics_storage: 'granted' });
+			}
+		</script>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 		<title>PinguPlay — Juegos educativos para niños</title>
@@ -12,10 +30,10 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
-		<link href="../_app/immutable/entry/start.VkR-Ol55.js" rel="modulepreload">
-		<link href="../_app/immutable/chunks/Cn8YD0hj.js" rel="modulepreload">
+		<link href="../_app/immutable/entry/start.C7Qbcm7t.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/Dk7zh_Q6.js" rel="modulepreload">
 		<link href="../_app/immutable/chunks/CZ-jfnvk.js" rel="modulepreload">
-		<link href="../_app/immutable/entry/app.DH3vDqnc.js" rel="modulepreload">
+		<link href="../_app/immutable/entry/app.B7gEa2Jg.js" rel="modulepreload">
 		<link href="../_app/immutable/chunks/Br5cJI0m.js" rel="modulepreload">
 		
 	</head>
@@ -23,15 +41,15 @@
 		<div style="display: contents">
 			<script>
 				{
-					__sveltekit_xjndh3 = {
+					__sveltekit_1eakpiy = {
 						base: new URL("..", location).pathname.slice(0, -1)
 					};
 
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../_app/immutable/entry/start.VkR-Ol55.js"),
-						import("../_app/immutable/entry/app.DH3vDqnc.js")
+						import("../_app/immutable/entry/start.C7Qbcm7t.js"),
+						import("../_app/immutable/entry/app.B7gEa2Jg.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element);
 					});
