@@ -6,13 +6,17 @@
 
 	function g16GenPattern(lv){
 		const pool=shuf(G16_SHAPES);
-		let seq,ans,opts;
-		if(lv<=3){const a=pool[0],b=pool[1];seq=[a,b,a,b];ans=a;opts=[ans,...shuf(pool.filter(x=>x!==ans)).slice(0,1)];}
-		else if(lv<=6){const a=pool[0],b=pool[1];seq=[a,b,a,b];ans=a;opts=[ans,...shuf(pool.filter(x=>x!==ans)).slice(0,2)];}
-		else if(lv<=9){const a=pool[0],b=pool[1],c=pool[2];seq=[a,b,c,a,b];ans=c;opts=[ans,...shuf(pool.filter(x=>x!==ans)).slice(0,2)];}
-		else if(lv<=12){const a=pool[0],b=pool[1];seq=[a,a,b,b,a,a];ans=b;opts=[ans,...shuf(pool.filter(x=>x!==ans)).slice(0,2)];}
-		else{const a=pool[0],b=pool[1];seq=[a,b,a,b];ans=a;opts=[ans,...shuf(pool.filter(x=>x!==ans)).slice(0,3)];}
-		return{seq,ans,opts};
+		const a=pool[0],b=pool[1],c=pool[2],d=pool[3];
+		const patterns=[];
+		if(lv<=3){patterns.push({seq:[a,b,a,b],ans:a},{seq:[a,a,b,a,a],ans:b},{seq:[b,a,b,a],ans:b});}
+		else if(lv<=6){patterns.push({seq:[a,b,c,a,b],ans:c},{seq:[a,a,b,a,a],ans:b},{seq:[a,b,a,b,a],ans:b},{seq:[b,a,b,a,b],ans:a});}
+		else if(lv<=9){patterns.push({seq:[a,b,c,a,b,c],ans:a},{seq:[a,a,b,b,c,c],ans:a},{seq:[a,b,b,a,b,b],ans:a},{seq:[c,b,a,c,b],ans:a});}
+		else if(lv<=12){patterns.push({seq:[a,b,c,d,a,b,c],ans:d},{seq:[a,a,b,b,c,c],ans:a},{seq:[a,b,c,a,b,c,a],ans:b},{seq:[d,c,b,a,d,c,b],ans:a});}
+		else{patterns.push({seq:[a,b,c,d,a,b,c,d],ans:a},{seq:[a,a,b,c,c,b,a,a],ans:b},{seq:[a,b,a,c,a,b,a],ans:c},{seq:[d,c,b,a,d,c,b,a,d],ans:c});}
+		const p=patterns[Math.floor(Math.random()*patterns.length)];
+		const numDist=lv<=3?1:lv<=6?2:3;
+		p.opts=[p.ans,...shuf(pool.filter(x=>x!==p.ans)).slice(0,numDist)];
+		return p;
 	}
 
 	function initG16(cont, lv) {

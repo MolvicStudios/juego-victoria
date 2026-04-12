@@ -272,13 +272,13 @@ canvas#g12cvs{border-radius:var(--r);box-shadow:var(--shadow);touch-action:none;
   background:var(--card);transition:background .15s}
 .g14-cell.player{background:rgba(77,159,236,.15)}
 .g14-cell.goal{background:rgba(107,203,119,.15)}
-.dpad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(3,64px);gap:5px;margin:8px auto 0}
+.dpad{display:flex;flex-direction:column;align-items:center;gap:5px;margin:8px auto 0}
+.dp-mid{display:flex;gap:5px}
 .dpad-btn{width:64px;height:64px;border-radius:16px;border:none;font-size:1.8rem;cursor:pointer;
   background:var(--card-glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;
   border:var(--glass-border);-webkit-tap-highlight-color:transparent;color:var(--ink)}
 .dpad-btn:active{transform:scale(.88);box-shadow:none}
-.dpad-empty{width:64px;height:64px}
 
 /* ===== G15: GRANDE/PEQUEÑO ===== */
 .g15-objects{display:flex;align-items:flex-end;justify-content:center;gap:20px;flex-wrap:wrap;
@@ -446,6 +446,130 @@ button.profile-card{-webkit-appearance:none;appearance:none;border:none;backgrou
 @keyframes twinkle{0%,100%{opacity:.3}50%{opacity:.9}}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 .err{animation:shake .35s!important}
+
+/* ===== G21: DELETREAR ===== */
+.g21-target{font-size:3rem;text-align:center;margin:4px 0}
+.g21-slots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:52px}
+.g21-slot{width:44px;height:52px;border-radius:10px;border:3px dashed #CCC;display:flex;
+  align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;background:var(--card);
+  transition:all .2s}
+.g21-slot.filled{border-style:solid;border-color:#6BCB77;background:#EFFFEF}
+.g21-letters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.g21-letter{width:48px;height:48px;border-radius:12px;border:2px solid #EEE;background:var(--card);
+  font-size:1.3rem;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .15s;box-shadow:0 3px 0 rgba(0,0,0,.1)}
+.g21-letter:active{transform:scale(.88)}
+.g21-letter.used{opacity:.25;pointer-events:none}
+
+/* ===== G22: OPUESTOS ===== */
+.g22-prompt{font-size:2.5rem;text-align:center;font-weight:900;padding:10px;
+  background:var(--card-glass);border:var(--glass-border);border-radius:var(--r);
+  box-shadow:var(--shadow);width:100%;max-width:400px}
+
+/* ===== G23: COMPLETA FRASE ===== */
+.g23-frase{font-size:1.15rem;font-weight:700;text-align:center;padding:14px 18px;
+  background:var(--card-glass);border:var(--glass-border);border-radius:var(--r);
+  box-shadow:var(--shadow);width:100%;max-width:450px;line-height:1.5}
+
+/* ===== G24: RESTAS ===== */
+.g24-visual{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;min-height:60px;padding:4px}
+.g24-fruit{font-size:2rem;transition:all .3s}
+.g24-crossed{opacity:.3;text-decoration:line-through;filter:grayscale(1)}
+.g24-eq{font-size:1.8rem;font-weight:900;text-align:center;color:var(--ink)}
+
+/* ===== G25: PAR O IMPAR ===== */
+.g25-num{font-size:4rem;font-weight:900;text-align:center;color:var(--ink);
+  padding:12px;animation:popIn .4s}
+.g25-btns{display:flex;gap:14px;justify-content:center}
+.g25-btn{padding:16px 32px;border-radius:var(--r);border:3px solid #EEE;background:var(--card);
+  font-size:1.2rem;font-weight:900;cursor:pointer;transition:all .15s;
+  box-shadow:0 4px 0 rgba(0,0,0,.1)}
+.g25-btn:active{transform:scale(.93)}
+
+/* ===== G26: MAYOR/MENOR ===== */
+.g26-comp{display:flex;align-items:center;justify-content:center;gap:14px;padding:12px}
+.g26-n{font-size:3rem;font-weight:900;color:var(--ink);padding:8px 18px;
+  background:var(--card-glass);border:var(--glass-border);border-radius:var(--r);box-shadow:var(--shadow)}
+.g26-q{font-size:3rem;font-weight:900;color:var(--c3)}
+.g26-btns{display:flex;gap:12px;justify-content:center}
+.g26-sym{width:64px;height:64px;border-radius:50%;border:3px solid #EEE;background:var(--card);
+  font-size:1.8rem;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .15s;box-shadow:0 4px 0 rgba(0,0,0,.1)}
+.g26-sym:active{transform:scale(.88)}
+
+/* ===== G27: MONEDAS ===== */
+.g27-target{font-size:1.1rem;font-weight:700;text-align:center;color:var(--ink)}
+.g27-coins{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:8px}
+.g27-coin{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:900;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3);
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.2),0 3px 6px rgba(0,0,0,.15);border:2px solid rgba(255,255,255,.3)}
+
+/* ===== G29: EL INTRUSO ===== */
+.g29-hint{font-size:.9rem;font-weight:700;text-align:center;color:var(--ink2);padding:4px}
+.g29-grid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:8px}
+.g29-item{font-size:2.5rem;padding:14px;border-radius:18px;cursor:pointer;background:var(--card);
+  box-shadow:var(--shadow);border:3px solid transparent;transition:all .15s}
+.g29-item:active{transform:scale(.88)}
+
+/* ===== G30: SOMBRAS ===== */
+.g30-opts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:8px}
+.g30-opt{border-radius:14px;cursor:pointer;border:3px solid #EEE;transition:all .15s}
+.g30-opt:active{transform:scale(.9)}
+
+/* ===== G31: SECUENCIAS ===== */
+.g31-seq{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;padding:10px}
+.g31-n{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;font-weight:900;background:var(--card);box-shadow:var(--shadow);border:2px solid #EEE}
+.g31-blank{border:3px dashed var(--c3);background:rgba(255,217,61,.12);color:var(--c3);
+  animation:pulse 1.2s ease-in-out infinite}
+
+/* ===== G32: CATEGORIAS ===== */
+.g32-cats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;width:100%;max-width:450px}
+.g32-zone{flex:1;min-width:140px;border-radius:var(--r);border:2px dashed #CCC;padding:10px;
+  background:var(--card-glass);text-align:center}
+.g32-label{font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:6px}
+.g32-drop{min-height:40px;border-radius:10px;background:rgba(0,0,0,.03);cursor:pointer;padding:6px;
+  font-size:1.6rem;word-break:break-all;transition:background .2s}
+.g32-drop:hover{background:rgba(0,0,0,.06)}
+.g32-items{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:8px}
+
+/* ===== G33: SUDOKU MINI ===== */
+.g33-grid{display:grid;gap:4px;justify-content:center;margin:8px auto;width:fit-content}
+.g33-cell{width:56px;height:56px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;background:var(--card);box-shadow:var(--shadow);border:2px solid #EEE;transition:all .2s}
+.g33-fixed{background:#F0FFF0;border-color:#CCC}
+.g33-empty{cursor:pointer;border-style:dashed;border-color:#BBB}
+.g33-empty:hover{background:rgba(0,0,0,.04)}
+.g33-palette{display:flex;gap:10px;justify-content:center;margin:10px auto}
+.g33-sym{width:52px;height:52px;border-radius:14px;border:2px solid #EEE;background:var(--card);
+  font-size:1.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .15s;box-shadow:0 3px 0 rgba(0,0,0,.1)}
+.g33-sym:active{transform:scale(.88)}
+
+/* ===== G34: RITMO ===== */
+.g34-display{text-align:center;padding:8px}
+.g34-pad{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:8px}
+.g34-btn{width:72px;height:72px;border-radius:50%;cursor:pointer;transition:opacity .2s;
+  box-shadow:0 5px 0 rgba(0,0,0,.2);border:3px solid rgba(255,255,255,.3)}
+.g34-btn:active{transform:scale(.9);box-shadow:none}
+.g34-status{font-size:1rem;font-weight:700;text-align:center;color:var(--ink);padding:8px}
+
+/* ===== G36: ESPEJO ===== */
+.g36-grids{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;padding:8px}
+.g36-grid{display:grid;gap:3px;width:fit-content}
+.g36-cell{width:40px;height:40px;border-radius:6px;background:#EEE;border:2px solid #DDD;transition:all .2s}
+.g36-clickable{cursor:pointer;background:#FFF;border-color:#CCC}
+.g36-clickable:hover{background:#F0F0F0}
+
+/* ===== G37: BURBUJAS ===== */
+.g37-score{font-size:1.1rem;font-weight:900;text-align:center;color:var(--ink);padding:6px}
+.g37-bubble{transition:transform .2s,opacity .2s}
+
+/* ===== G38: TANGRAM ===== */
+.g38-name{font-size:1.1rem;font-weight:700;text-align:center;color:var(--ink);padding:4px}
+.g38-slot{background:#E8E8E8;border:2px dashed #BBB;border-radius:4px;transition:all .2s;cursor:pointer}
+.g38-slot:hover{background:#DDD}
+.g38-pieces{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:8px}
 
 /* ===== LANDSCAPE ===== */
 @media(orientation:landscape) and (max-height:520px){

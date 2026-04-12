@@ -77,7 +77,7 @@
 
 	function g2ShowNums(n, numOpts, numsEl) {
 		const cols = ['#FF6B6B','#4D9FEC','#6BCB77','#FF9F43'];
-		const vals = [n]; while(vals.length<numOpts){const r=Math.max(1,n+Math.floor(Math.random()*5)-2);if(!vals.includes(r))vals.push(r);}
+		const vals = [n]; let tries=0; while(vals.length<numOpts&&tries<50){tries++;const r=Math.max(1,n+Math.floor(Math.random()*7)-3);if(!vals.includes(r)&&r!==n)vals.push(r);} while(vals.length<numOpts){vals.push(vals[vals.length-1]+1);}
 		numsEl.innerHTML = '';
 		shuf(vals).forEach((v,i) => {
 			const b = document.createElement('button'); b.className = 'g2-num'; b.style.background = cols[i%4]; b.textContent = v;

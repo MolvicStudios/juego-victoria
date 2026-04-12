@@ -3,16 +3,16 @@
 	import { lerpParam, shuf } from '$lib/data.js';
 
 	const G15_SETS=[
-		{items:[{e:'🐘',n:'Elefante'},{e:'🐭',n:'Ratón'},{e:'🐜',n:'Hormiga'}]},
-		{items:[{e:'🌳',n:'Árbol'},{e:'🌸',n:'Flor'},{e:'🌱',n:'Semilla'}]},
-		{items:[{e:'🚌',n:'Autobús'},{e:'🚗',n:'Coche'},{e:'🛵',n:'Moto'}]},
-		{items:[{e:'🏔️',n:'Montaña'},{e:'🏠',n:'Casa'},{e:'⛺',n:'Tienda'}]},
-		{items:[{e:'🐋',n:'Ballena'},{e:'🐬',n:'Delfín'},{e:'🐟',n:'Pez'}]},
-		{items:[{e:'🚀',n:'Cohete'},{e:'✈️',n:'Avión'},{e:'🦋',n:'Mariposa'}]},
-		{items:[{e:'🌞',n:'Sol'},{e:'🌙',n:'Luna'},{e:'⭐',n:'Estrellita'}]},
-		{items:[{e:'🏰',n:'Castillo'},{e:'🏠',n:'Casita'},{e:'🎩',n:'Sombrero'}]},
-		{items:[{e:'🦕',n:'Dinosaurio'},{e:'🐊',n:'Cocodrilo'},{e:'🦎',n:'Lagarto'}]},
-		{items:[{e:'🎪',n:'Circo'},{e:'🎡',n:'Noria'},{e:'🎠',n:'Tiovivo'}]},
+		{items:[{e:'🐘',n:'Elefante'},{e:'�',n:'Perro'},{e:'🐭',n:'Ratón'},{e:'🐜',n:'Hormiga'}]},
+		{items:[{e:'🌳',n:'Árbol'},{e:'🌻',n:'Girasol'},{e:'🌸',n:'Flor'},{e:'🌱',n:'Semilla'}]},
+		{items:[{e:'🚌',n:'Autobús'},{e:'🚗',n:'Coche'},{e:'🛵',n:'Moto'},{e:'🛴',n:'Patinete'}]},
+		{items:[{e:'🏔️',n:'Montaña'},{e:'🏠',n:'Casa'},{e:'⛺',n:'Tienda'},{e:'📦',n:'Caja'}]},
+		{items:[{e:'🐋',n:'Ballena'},{e:'🐬',n:'Delfín'},{e:'🐟',n:'Pez'},{e:'🦐',n:'Gamba'}]},
+		{items:[{e:'🚀',n:'Cohete'},{e:'✈️',n:'Avión'},{e:'🦋',n:'Mariposa'},{e:'🐝',n:'Abeja'}]},
+		{items:[{e:'🌞',n:'Sol'},{e:'🌙',n:'Luna'},{e:'⭐',n:'Estrellita'},{e:'✨',n:'Chispa'}]},
+		{items:[{e:'🏰',n:'Castillo'},{e:'🏠',n:'Casita'},{e:'🎩',n:'Sombrero'},{e:'🧢',n:'Gorra'}]},
+		{items:[{e:'🦕',n:'Dinosaurio'},{e:'🐊',n:'Cocodrilo'},{e:'🦎',n:'Lagarto'},{e:'🐛',n:'Gusano'}]},
+		{items:[{e:'🎪',n:'Circo'},{e:'🎡',n:'Noria'},{e:'🎠',n:'Tiovivo'},{e:'🪁',n:'Cometa'}]},
 	];
 	const G15_SIZES=['5.4rem','3rem','1.7rem','1rem'];
 

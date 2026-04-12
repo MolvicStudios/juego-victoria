@@ -68,9 +68,9 @@
 
 		cont.innerHTML = `<div class="ins">¡Ayuda a Pingu a llegar al 🐟!</div>
 			<div class="g14-maze" id="g14maze"></div>
-			<div class="dpad"><button class="dp u" id="dp-u">▲</button>
-			<div class="dp-mid"><button class="dp l" id="dp-l">◀</button><button class="dp r" id="dp-r">▶</button></div>
-			<button class="dp d" id="dp-d">▼</button></div>`;
+			<div class="dpad"><button class="dpad-btn" id="dp-u">▲</button>
+			<div class="dp-mid"><button class="dpad-btn" id="dp-l">◀</button><button class="dpad-btn" id="dp-r">▶</button></div>
+			<button class="dpad-btn" id="dp-d">▼</button></div>`;
 
 		cont.querySelector('#dp-u').onclick=()=>moveDir('up');
 		cont.querySelector('#dp-d').onclick=()=>moveDir('down');

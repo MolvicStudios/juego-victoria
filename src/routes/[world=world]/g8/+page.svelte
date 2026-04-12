@@ -43,7 +43,7 @@
 				};
 				optsEl.appendChild(b);
 			});
-			if(audioOnly){window.ppSay(d.w);}else{window.ppSay('¿Cómo se llama esto?');}
+			if(audioOnly){window.ppSay('Escucha con atención');setTimeout(()=>{const u=new SpeechSynthesisUtterance(d.w);u.lang='es-ES';u.rate=0.75;u.pitch=1.15;speechSynthesis.speak(u);},600);}else{window.ppSay('¿Cómo se llama esto?');}
 		}
 		window.ppSay('¡Mira el dibujo y elige cómo se llama!');
 		next();

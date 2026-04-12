@@ -80,8 +80,10 @@
 			}
 		}
 
-		el.addEventListener('click', pop);
-		el.addEventListener('touchstart', pop, { passive: false });
+		let popped = false;
+		function safePop(e) { e.preventDefault(); if (popped) return; popped = true; pop(e); }
+		el.addEventListener('touchstart', safePop, { passive: false });
+		el.addEventListener('click', safePop);
 		arena.appendChild(el);
 	}
 

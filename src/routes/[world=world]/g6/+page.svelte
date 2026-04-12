@@ -77,7 +77,7 @@
 				container.querySelectorAll('.g6-key').forEach(k=>k.classList.remove('glow'));
 				window.ppOnCorrect();const _lv=window.ppWin();setTimeout(()=>window.ppCelebrate('¡Tocaste la canción! 🎵🎶',3,()=>initG6(container,window.ppGetLevel()),_lv),300);
 			} else { setTimeout(g6HighlightNext, window.ppGetLevel()>=10?100:250); }
-		} else { window.ppBoo(); window.ppSay('¡Toca la tecla correcta!'); }
+		} else { window.ppOnWrong(); window.ppBoo(); window.ppSay('¡Toca la tecla correcta!'); }
 	}
 </script>
 

@@ -68,7 +68,7 @@
 			if(ptIdx>=curPts.length)return;
 			const tp=curPts[ptIdx];
 			const dist=Math.sqrt((x-tp[0])**2+(y-tp[1])**2);
-			if(dist<cvs.width*.12){
+			if(dist<cvs.width*.07){
 				ptIdx++;window.ppBeep(400+ptIdx*50,.1);
 				const W=cvs.width,H=cvs.height;
 				ctx.fillStyle='#F5F5F5';ctx.fillRect(0,0,W,H);

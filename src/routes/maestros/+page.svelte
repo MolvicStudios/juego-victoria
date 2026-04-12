@@ -1,7 +1,7 @@
 <script>
 	import WorldHub from '$lib/components/WorldHub.svelte';
-	// Maestros: 9-12 años — 15 juegos más desafiantes (sin juegos de bebé ni dibujo libre)
-	const GAME_NUMS = [11, 16, 14, 12, 3, 8, 7, 13, 2, 15, 9, 5, 6, 1, 10];
+	// Maestros: 9-12 años — juegos más desafiantes (sin juegos de bebé ni dibujo libre)
+	const GAME_NUMS = [11, 16, 14, 12, 3, 8, 7, 13, 2, 15, 9, 5, 6, 1, 10, 19, 21, 23, 24, 25, 26, 27, 28, 31, 33, 38];
 </script>
 
 <WorldHub
