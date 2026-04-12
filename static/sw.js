@@ -1,5 +1,5 @@
-/* PinguPlay v7 — Service Worker */
-const CACHE = 'pinguplay-v7';
+/* PinguPlay v8 — Service Worker */
+const CACHE = 'pinguplay-v8';
 
 /* Shell precached on install */
 const SHELL = [
@@ -35,7 +35,7 @@ self.addEventListener('fetch', e => {
     e.respondWith(
       caches.match(e.request).then(cached => {
         const net = fetch(e.request).then(res => {
-          if (res.ok) caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+          if (res.ok) { const clone = res.clone(); caches.open(CACHE).then(c => c.put(e.request, clone)); }
           return res;
         }).catch(() => cached);
         return cached || net;
@@ -48,7 +48,7 @@ self.addEventListener('fetch', e => {
   if (url.pathname.startsWith('/_app/immutable/')) {
     e.respondWith(
       caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
-        if (res.ok) caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+        if (res.ok) { const clone = res.clone(); caches.open(CACHE).then(c => c.put(e.request, clone)); }
         return res;
       }))
     );
@@ -60,7 +60,7 @@ self.addEventListener('fetch', e => {
     e.respondWith(
       fetch(e.request)
         .then(res => {
-          if (res.ok) caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+          if (res.ok) { const clone = res.clone(); caches.open(CACHE).then(c => c.put(e.request, clone)); }
           return res;
         })
         .catch(() =>
@@ -75,7 +75,7 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(cached => {
       const net = fetch(e.request).then(res => {
-        if (res.ok) caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+        if (res.ok) { const clone = res.clone(); caches.open(CACHE).then(c => c.put(e.request, clone)); }
         return res;
       }).catch(() => cached);
       return cached || net;
