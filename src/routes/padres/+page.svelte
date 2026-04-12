@@ -13,7 +13,9 @@
 	let activeTab = $state('stats');
 	let showSetPin = $state(false);
 	let newPin = $state('');
+	/** @type {any[]} */
 	let profileList = $state([]);
+	/** @type {Record<string, any>} */
 	let progressData = $state({});
 	let storedPin = $state('');
 
@@ -39,6 +41,7 @@
 
 	function removePin() { parentPin.set(''); }
 
+	/** @param {number} idx */
 	function getProfileStats(idx) {
 		const key = 'p' + idx;
 		const prog = progressData[key] || {};
@@ -62,6 +65,7 @@
 		else goto('/');
 	}
 
+	/** @type {Record<string, {emoji: string, label: string, age: string}>} */
 	const WORLD_INFO = {
 		nubecitas:    { emoji: '☁️', label: 'Nubecitas', age: '0-2' },
 		exploradores: { emoji: '🌏', label: 'Exploradores', age: '3-5' },
@@ -225,14 +229,14 @@
 
 			<div class="toggle-row">
 				<span>🌙</span>
-				<label>Modo noche</label>
-				<input type="checkbox" class="toggle-sw" bind:checked={$night} />
+				<label for="night-toggle">Modo noche</label>
+				<input id="night-toggle" type="checkbox" class="toggle-sw" bind:checked={$night} />
 			</div>
 
 			<div class="toggle-row">
 				<span>🔇</span>
-				<label>Silenciar sonidos y voz</label>
-				<input type="checkbox" class="toggle-sw" bind:checked={$muted} />
+				<label for="muted-toggle">Silenciar sonidos y voz</label>
+				<input id="muted-toggle" type="checkbox" class="toggle-sw" bind:checked={$muted} />
 			</div>
 
 			<hr style="margin:16px 0;opacity:.15" />

@@ -10,7 +10,7 @@ declare global {
 	}
 	interface Window {
 		ppCelebrate?: (msg: string, stars?: number, cb?: Function | null, lvMsg?: string | null) => void;
-		ppBeep?: (freq?: number, dur?: number, type?: string, vol?: number) => void;
+		ppBeep?: (freq?: number, dur?: number, type?: OscillatorType, vol?: number) => void;
 		ppSay?: (txt: string) => void;
 		ppBoo?: () => void;
 		ppWin?: () => string;

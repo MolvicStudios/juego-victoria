@@ -14,6 +14,7 @@
 	];
 
 	// World metadata used on profile cards
+	/** @type {Record<string, {emoji: string, color: string, label: string}>} */
 	const WORLD_META = {
 		nubecitas:   { emoji: '☁️', color: '#A78BFA', label: 'Nubecitas'   },
 		exploradores:{ emoji: '🌏', color: '#4D9FEC', label: 'Exploradores' },
@@ -38,6 +39,7 @@
 		say('¡Hola! ¿Quién va a jugar hoy?');
 	});
 
+	/** @param {number} groupIdx */
 	function birthYearFromGroup(groupIdx) {
 		// Use middle year of selected group
 		const group = AGE_GROUPS[groupIdx];
@@ -45,6 +47,7 @@
 		return new Date().getFullYear() - midAge;
 	}
 
+	/** @param {number} idx */
 	function selectProfile(idx) {
 		setActiveProfile(idx);
 		const p = profileList[idx];
@@ -74,9 +77,11 @@
 		goto('/' + world);
 	}
 
+	/** @param {number} idx */
 	function deleteProfile(idx) {
 		confirmDelete = confirmDelete === idx ? -1 : idx;
 	}
+	/** @param {number} idx */
 	function confirmDeleteProfile(idx) {
 		removeProfile(idx);
 		confirmDelete = -1;
@@ -124,11 +129,10 @@
 				{/each}
 
 				{#if profileList.length < 4}
-				<!-- svelte-ignore a11y_no_static_element_interactions a11y_click_events_have_key_events -->
-				<div class="profile-card profile-add" onclick={() => { showCreate = true; selectedAge = null; }}>
+				<button type="button" class="profile-card profile-add" onclick={() => { showCreate = true; selectedAge = null; }}>
 						<div style="font-size:2.8rem">➕</div>
 					<div style="font-weight:700;font-size:.85rem;margin-top:6px">Nuevo perfil</div>
-				</div>
+				</button>
 				{/if}
 			</div>
 

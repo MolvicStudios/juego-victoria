@@ -23,6 +23,7 @@
 		applyNight(isNight);
 	});
 
+	/** @param {boolean} n */
 	function applyNight(n) {
 		if (typeof document === 'undefined') return;
 		document.documentElement.classList.toggle('night', n);

@@ -390,6 +390,7 @@ html.night #cel,html.night .cel-overlay{background:rgba(26,26,46,.93)}
 .padres-btn:active{transform:translateY(3px);box-shadow:none}
 .home-title{font-size:1.5rem;font-weight:900;margin:12px 0 16px;text-align:center}
 .profiles-grid{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;width:100%;max-width:520px;margin-bottom:10px}
+button.profile-card{-webkit-appearance:none;appearance:none;border:none;background:none;padding:0;margin:0;}
 .profile-card{position:relative;width:130px;min-height:150px;border-radius:22px;padding:18px 12px 14px;
   cursor:pointer;background:var(--card-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border:2px solid var(--pc,#EEE);box-shadow:0 6px 20px rgba(0,0,0,.09);

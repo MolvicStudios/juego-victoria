@@ -1,1 +1,0 @@
-import"../chunks/Bc_HN91A.js";import"../chunks/CVyvgpuS.js";import{t as e}from"../chunks/CcUIY5bo.js";function t(t){let n=[1,4,6,10,5,8,9,17,18,2,3,7,13,15,16];e(t,{worldId:`nubecitas`,worldEmoji:`☁️`,worldLabel:`Nubecitas`,worldColor:`#A78BFA`,get gameNums(){return n}})}export{t as component};

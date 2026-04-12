@@ -14,6 +14,7 @@
 		return '/';
 	}
 
+	/** @type {{gameNum: number, title: string, icon: string, initGame: (container: HTMLDivElement, level: number) => void, children: any}} */
 	let { gameNum, title, icon, initGame, children } = $props();
 
 	/** @type {HTMLDivElement|null} */
@@ -42,7 +43,7 @@
 		currentLevel = getLevel(gameNum);
 
 		// Bridge functions for vanilla JS games
-		window.ppCelebrate = (msg, stars = 2, cb = null, lvMsg = null) => {
+		window.ppCelebrate = (/** @type {string} */ msg, stars = 2, cb = null, lvMsg = null) => {
 			celMsg = msg;
 			celStars = Math.min(Math.max(stars, 1), 3);
 			celLvMsg = lvMsg || '';
@@ -54,7 +55,7 @@
 			say(msg);
 			spawnConfetti();
 		};
-		window.ppBeep = beep;
+		window.ppBeep = /** @type {any} */ (beep);
 		window.ppSay = say;
 		window.ppBoo = boo;
 		window.ppWin = () => {
@@ -80,6 +81,7 @@
 		}
 	});
 
+	/** @param {number} lv */
 	async function selectLevel(lv) {
 		setLevel(gameNum, lv);
 		currentLevel = lv;

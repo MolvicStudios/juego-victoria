@@ -1,6 +1,7 @@
 import { get } from 'svelte/store';
 import { muted } from './stores/settings.js';
 
+/** @type {AudioContext|undefined} */
 let aCtx;
 
 function au() {
@@ -8,6 +9,7 @@ function au() {
 	return aCtx;
 }
 
+/** @param {number} [freq] @param {number} [dur] @param {OscillatorType} [type] @param {number} [vol] */
 export function beep(freq = 440, dur = 0.3, type = 'sine', vol = 0.22) {
 	if (get(muted)) return;
 	try {
@@ -29,6 +31,7 @@ export function fanfare() {
 	[523, 523, 659, 784, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.18, 'sine', 0.25), i * 90));
 }
 
+/** @param {string} txt */
 export function say(txt) {
 	if (get(muted) || typeof window === 'undefined' || !window.speechSynthesis) return;
 	speechSynthesis.cancel();

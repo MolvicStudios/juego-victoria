@@ -27,6 +27,7 @@ function getProfileProgress() {
 	return all[k] || { stars: 0, levels: {}, maxLevels: {}, correctStreak: {}, wrongStreak: {}, sessionGames: 0, sessionStars: 0, sessionCompleted: 0 };
 }
 
+/** @param {Record<string, any>} data */
 function setProfileProgress(data) {
 	allProgress.update(all => {
 		all[profileKey()] = data;
@@ -40,10 +41,15 @@ export function getStars() { return getProfileProgress().stars || 0; }
 export function getLevels() { return getProfileProgress().levels || {}; }
 export function getMaxLevels() { return getProfileProgress().maxLevels || {}; }
 
+/** @param {number} gameNum */
 export function getLevel(gameNum) {
 	return (getProfileProgress().levels || {})[gameNum] || 1;
 }
 
+/**
+ * @param {number} gameNum
+ * @param {number} lv
+ */
 export function setLevel(gameNum, lv) {
 	const d = getProfileProgress();
 	if (!d.levels) d.levels = {};
@@ -51,6 +57,7 @@ export function setLevel(gameNum, lv) {
 	setProfileProgress(d);
 }
 
+/** @param {number} n */
 export function addStars(n) {
 	const d = getProfileProgress();
 	d.stars = (d.stars || 0) + n;
@@ -79,6 +86,7 @@ export function onGameComplete(gameNum) {
 	return lv < 15 ? '¡Nivel ' + nextLv + ' desbloqueado! 🚀' : '¡Eres un experto nivel 15! 🏆';
 }
 
+/** @param {number} gameNum */
 export function onCorrect(gameNum) {
 	const d = getProfileProgress();
 	d.correctStreak = d.correctStreak || {};
