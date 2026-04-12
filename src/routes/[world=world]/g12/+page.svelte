@@ -35,8 +35,14 @@
 		'9':[[65,50],[45,40],[25,20],[45,5],[70,20],[70,50],[55,85],[35,95]],
 	};
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG12(cont, lv) {
-		let round=0, curPts=[], ptIdx=0, ctx=null;
+		let round=0;
+		/** @type {number[][]} */
+		let curPts=[];
+		let ptIdx=0;
+		/** @type {CanvasRenderingContext2D|null} */
+		let ctx=null;
 		let pool;
 		if(lv<=3)pool=['A','E','I','O','U'];
 		else if(lv<=6)pool=['M','P','S','L','T'];
@@ -46,23 +52,29 @@
 		const data=shuf(pool).slice(0,lerpParam(lv,4,6));
 
 		cont.innerHTML = `<div class="ins">¡Toca los puntos en orden!</div>
-			<div class="pbar" id="g12pb"><div class="pfill"></div></div>
+			<div class="pbar" id="g12pb"><div class="pfill" style="background:var(--c4)"></div></div>
 			<div class="g12-letter-display" id="g12letter"></div>
 			<div class="g12-wrap"><canvas id="g12cvs"></canvas></div>`;
 
-		function setPbar(r,t){const f=cont.querySelector('#g12pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
+		/** @param {number} r @param {number} t */
+		function setPbar(r,t){const f=/** @type {HTMLElement} */ (cont.querySelector('#g12pb .pfill'));f.style.width=(r/t*100)+'%';}
 
 		function drawDots(){
+			const c = ctx;
+			if(!c) return;
 			curPts.forEach((p,i)=>{
 				const done=i<ptIdx, current=i===ptIdx;
-				if(done&&i>0){ctx.beginPath();ctx.moveTo(curPts[i-1][0],curPts[i-1][1]);ctx.lineTo(p[0],p[1]);ctx.strokeStyle='#6BCB77';ctx.lineWidth=6;ctx.lineCap='round';ctx.stroke();}
-				ctx.beginPath();ctx.arc(p[0],p[1],current?16:12,0,Math.PI*2);
-				ctx.fillStyle=done?'#6BCB77':current?'#FF6B6B':'#CCC';ctx.fill();
-				if(lv<=6||done){ctx.fillStyle='#fff';ctx.font='bold 11px Nunito,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(i+1,p[0],p[1]);}
+				if(done&&i>0){c.beginPath();c.moveTo(curPts[i-1][0],curPts[i-1][1]);c.lineTo(p[0],p[1]);c.strokeStyle='#6BCB77';c.lineWidth=6;c.lineCap='round';c.stroke();}
+				c.beginPath();c.arc(p[0],p[1],current?16:12,0,Math.PI*2);
+				c.fillStyle=done?'#6BCB77':current?'#FF6B6B':'#CCC';c.fill();
+				if(lv<=6||done){c.fillStyle='#fff';c.font='bold 11px Nunito,sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(String(i+1),p[0],p[1]);}
 			});
 		}
 
+		/** @param {{clientX:number,clientY:number}} touch @param {HTMLCanvasElement} cvs */
 		function handleTouch(touch,cvs){
+			const c = ctx;
+			if(!c) return;
 			const r2=cvs.getBoundingClientRect();
 			const x=touch.clientX-r2.left, y=touch.clientY-r2.top;
 			if(ptIdx>=curPts.length)return;
@@ -71,10 +83,10 @@
 			if(dist<cvs.width*.07){
 				ptIdx++;window.ppBeep(400+ptIdx*50,.1);
 				const W=cvs.width,H=cvs.height;
-				ctx.fillStyle='#F5F5F5';ctx.fillRect(0,0,W,H);
+				c.fillStyle='#F5F5F5';c.fillRect(0,0,W,H);
 				const letter=data[round];
-				ctx.font=`bold ${H*.75}px Nunito,sans-serif`;ctx.fillStyle='#DEDEDE';ctx.textAlign='center';ctx.textBaseline='middle';
-				ctx.fillText(letter,W/2,H/2);
+				c.font=`bold ${H*.75}px Nunito,sans-serif`;c.fillStyle='#DEDEDE';c.textAlign='center';c.textBaseline='middle';
+				c.fillText(letter,W/2,H/2);
 				drawDots();
 				if(ptIdx>=curPts.length){
 					window.ppOnCorrect();round++;
@@ -90,18 +102,20 @@
 			if(round>=data.length){const _lv=window.ppWin();window.ppCelebrate('¡Escribes genial! ✏️',3,()=>initG12(cont,window.ppGetLevel()),_lv);return;}
 			setPbar(round,data.length);
 			const letter=data[round];
-			cont.querySelector('#g12letter').textContent='Traza: '+letter;
-			const cvs=cont.querySelector('#g12cvs'), wrap=cvs.parentElement;
+			const el=/** @type {HTMLElement} */ (cont.querySelector('#g12letter'));el.textContent='Traza: '+letter;
+			const cvs=/** @type {HTMLCanvasElement} */ (cont.querySelector('#g12cvs')), wrap=/** @type {HTMLElement} */ (cvs.parentElement);
 			const W=Math.min(wrap.clientWidth-16,350), H=Math.min(window.innerHeight-300,300);
 			cvs.width=W;cvs.height=H;ctx=cvs.getContext('2d');
-			const def=G12_PATHS[letter];
+			const def=/** @type {Record<string,number[][]>} */ (G12_PATHS)[letter];
 			if(!def){round++;nextLetter();return;}
-			curPts=def.map(p=>[p[0]*W/100,p[1]*H/100]);
+			curPts=def.map((/** @type {number[]} */ p)=>[p[0]*W/100,p[1]*H/100]);
 			ptIdx=0;
 			const drawBg=()=>{
-				ctx.fillStyle='#F5F5F5';ctx.fillRect(0,0,W,H);
-				ctx.font=`bold ${H*.75}px Nunito,sans-serif`;ctx.fillStyle='#DEDEDE';ctx.textAlign='center';ctx.textBaseline='middle';
-				ctx.fillText(letter,W/2,H/2);drawDots();
+				const c = ctx;
+				if(!c) return;
+				c.fillStyle='#F5F5F5';c.fillRect(0,0,W,H);
+				c.font=`bold ${H*.75}px Nunito,sans-serif`;c.fillStyle='#DEDEDE';c.textAlign='center';c.textBaseline='middle';
+				c.fillText(letter,W/2,H/2);drawDots();
 			};
 			if(document.fonts&&document.fonts.ready)document.fonts.ready.then(drawBg);else setTimeout(drawBg,100);
 			cvs.ontouchstart=e=>{e.preventDefault();handleTouch(e.touches[0],cvs);};

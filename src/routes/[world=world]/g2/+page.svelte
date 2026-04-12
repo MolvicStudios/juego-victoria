@@ -4,16 +4,20 @@
 	import { shuf, lerpParam } from '$lib/data.js';
 
 	const G2_FRUITS = ['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🫐','🍌','🥝'];
+	/** @type {HTMLDivElement} */
 	let container, g2Round = 0, g2Total = 5;
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG2(cont, lv) {
 		container = cont; g2Round = 0; g2Total = lerpParam(lv, 5, 8);
 		window.ppSay('¡Hola! ¡Toca cada fruta para contarla y elige el número correcto!');
 		g2Next(lv);
 	}
 
-	function setPbar(id, val, max) { const el = container?.querySelector('#'+id); if(el) el.style.width = (val/max*100)+'%'; }
+	/** @param {string} id @param {number} val @param {number} max */
+	function setPbar(id, val, max) { const el = /** @type {HTMLElement|null} */ (container?.querySelector('#'+id)); if(el) el.style.width = (val/max*100)+'%'; }
 
+	/** @param {number} [lv] */
 	function g2Next(lv) {
 		if (!lv) lv = window.ppGetLevel();
 		if (g2Round >= g2Total) { const _lv = window.ppWin(); window.ppCelebrate('¡Eres un genio contando! 🍎', 3, () => initG2(container, window.ppGetLevel()), _lv); return; }
@@ -31,9 +35,9 @@
 			<div class="g2-nums" id="g2nums" style="display:none"></div>`;
 		setPbar('g2pb', g2Round, g2Total);
 
-		const fruitsEl = container.querySelector('#g2fruits');
-		const numsEl = container.querySelector('#g2nums');
-		const insEl = container.querySelector('#g2ins');
+		const fruitsEl = /** @type {HTMLElement} */ (container.querySelector('#g2fruits'));
+		const numsEl = /** @type {HTMLElement} */ (container.querySelector('#g2nums'));
+		const insEl = /** @type {HTMLElement} */ (container.querySelector('#g2ins'));
 
 		let isSum = lv>=10&&n>=2&&Math.random()>.3;
 		let isResta = lv>=13&&n>=3&&Math.random()>.4;
@@ -64,9 +68,9 @@
 		} else {
 			for(let i=0;i<n;i++){
 				const d = document.createElement('div'); d.className = 'g2-fr'; d.textContent = fr;
-				d.onclick = function() {
-					if(this.classList.contains('tap')) return;
-					this.classList.add('tap'); tapped++; window.ppBeep(300+tapped*60,.1); window.ppSay(tapped+'');
+				d.onclick = () => {
+					if(d.classList.contains('tap')) return;
+					d.classList.add('tap'); tapped++; window.ppBeep(300+tapped*60,.1); window.ppSay(tapped+'');
 					if(tapped===n){ insEl.textContent = '¿Cuántas eran? ¡Elige!'; setTimeout(() => { numsEl.style.display = 'flex'; g2ShowNums(n, numOpts, numsEl); }, 400); }
 				};
 				fruitsEl.appendChild(d);
@@ -75,12 +79,13 @@
 		}
 	}
 
+	/** @param {number} n @param {number} numOpts @param {HTMLElement} numsEl */
 	function g2ShowNums(n, numOpts, numsEl) {
 		const cols = ['#FF6B6B','#4D9FEC','#6BCB77','#FF9F43'];
 		const vals = [n]; let tries=0; while(vals.length<numOpts&&tries<50){tries++;const r=Math.max(1,n+Math.floor(Math.random()*7)-3);if(!vals.includes(r)&&r!==n)vals.push(r);} while(vals.length<numOpts){vals.push(vals[vals.length-1]+1);}
 		numsEl.innerHTML = '';
 		shuf(vals).forEach((v,i) => {
-			const b = document.createElement('button'); b.className = 'g2-num'; b.style.background = cols[i%4]; b.textContent = v;
+			const b = document.createElement('button'); b.className = 'g2-num'; b.style.background = cols[i%4]; b.textContent = String(v);
 			b.onclick = () => {
 				if(v===n){b.style.background='#6BCB77';window.ppBeep(880,.2);window.ppSay('¡Correcto! ¡'+n+'!');window.ppOnCorrect();g2Round++;setTimeout(()=>g2Next(),900);}
 				else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();window.ppSay('¡Inténtalo!');}

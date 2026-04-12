@@ -4,8 +4,16 @@
 	import { shuf, lerpParam } from '$lib/data.js';
 
 	const G5_ANIM=['🐶','🐱','🐻','🐼','🦊','🐸','🦁','🐨','🐯','🐰','🐮','🐷'];
-	let container, g5Flipped=[], g5Matched=0, g5CanFlip=true, g5Timer=null, g5Sec=0;
+	/** @type {HTMLDivElement} */
+	let container;
+	/** @type {HTMLDivElement[]} */
+	let g5Flipped=[];
+	let g5Matched=0, g5CanFlip=true;
+	/** @type {ReturnType<typeof setInterval>|null} */
+	let g5Timer=null;
+	let g5Sec=0;
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG5(cont, lv) {
 		container = cont; g5Flipped=[]; g5Matched=0; g5CanFlip=true; g5Sec=0;
 		if(g5Timer) clearInterval(g5Timer);
@@ -18,7 +26,7 @@
 			<div style="display:flex;gap:12px;align-items:center"><div style="--color:var(--c5)" class="badge">⭐ <span id="g5sc">0</span></div><div class="g5-timer" id="g5timer"></div></div>
 			<div class="g5-grid" id="g5grid"></div>`;
 
-		const gr = cont.querySelector('#g5grid');
+		const gr = /** @type {HTMLElement} */ (cont.querySelector('#g5grid'));
 		const cardW = Math.min(Math.floor((Math.min(window.innerWidth,440)-20-7*(cols-1))/cols),85);
 		gr.style.gridTemplateColumns = `repeat(${cols},1fr)`;
 		gr.style.maxWidth = (cardW*cols+7*(cols-1))+'px';
@@ -30,10 +38,11 @@
 			gr.appendChild(c);
 		});
 
-		if(lv>=10) g5Timer = setInterval(() => { g5Sec++; cont.querySelector('#g5timer').textContent = '⏱️ '+g5Sec+'s'; }, 1000);
+		if(lv>=10) g5Timer = setInterval(() => { g5Sec++; const el = cont.querySelector('#g5timer'); if(el) el.textContent = '⏱️ '+g5Sec+'s'; }, 1000);
 		window.ppSay('¡Toca las cartas y encuentra las parejas iguales!');
 	}
 
+	/** @param {HTMLDivElement} card */
 	function g5Flip(card) {
 		if(!g5CanFlip||card.classList.contains('flip')||card.classList.contains('mat')) return;
 		if(g5Flipped.length===1&&card===g5Flipped[0]) return;
@@ -42,7 +51,7 @@
 			g5CanFlip=false; const[a,b]=g5Flipped;
 			if(a.dataset.v===b.dataset.v){
 				a.classList.add('mat');b.classList.add('mat');
-				g5Matched++; container.querySelector('#g5sc').textContent=g5Matched;
+				g5Matched++; const sc = container.querySelector('#g5sc'); if(sc) sc.textContent=String(g5Matched);
 				window.ppBeep(880,.2); window.ppSay('¡Pareja!'); g5Flipped=[]; g5CanFlip=true;
 				window.ppOnCorrect();
 				if(g5Matched===container.querySelectorAll('.g5-card').length/2){

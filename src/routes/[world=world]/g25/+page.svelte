@@ -2,6 +2,7 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG25(cont, lv) {
 		let round = 0;
 		const total = lerpParam(lv, 6, 10);
@@ -23,12 +24,12 @@
 
 		function next() {
 			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Sabes pares e impares! 🔢', 3, () => initG25(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g25pb').style.width = (round/total*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g25pb')).style.width = (round/total*100)+'%';
 			const num = pickNum();
 			const isPar = num % 2 === 0;
-			cont.querySelector('#g25n').textContent = num;
+			/** @type {HTMLElement} */ (cont.querySelector('#g25n')).textContent = String(num);
 
-			const btns = cont.querySelector('#g25btns');
+			const btns = /** @type {HTMLElement} */ (cont.querySelector('#g25btns'));
 			btns.innerHTML = '';
 			['Par','Impar'].forEach(label => {
 				const b = document.createElement('div');

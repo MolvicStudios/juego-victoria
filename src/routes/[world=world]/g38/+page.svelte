@@ -2,6 +2,7 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG38(cont, lv) {
 		let round = 0;
 		const total = lerpParam(lv, 3, 6);
@@ -27,17 +28,17 @@
 
 		function next() {
 			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Constructor maestro! 🏗️', 3, () => initG38(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g38pb').style.width = (round/total*100)+'%';
+			/** @type {HTMLElement} */(cont.querySelector('#g38pb')).style.width = (round/total*100)+'%';
 
 			const puzzle = puzzlePool[round];
-			cont.querySelector('#g38name').textContent = puzzle.name;
+			/** @type {HTMLElement} */(cont.querySelector('#g38name')).textContent = puzzle.name;
 
 			// Compute grid bounds
 			let maxX=0, maxY=0;
 			puzzle.pieces.forEach(p=>{maxX=Math.max(maxX,p.x+p.w);maxY=Math.max(maxY,p.y+p.h);});
 
 			const cellSize = Math.min(60, Math.floor(250/Math.max(maxX,maxY)));
-			const board = cont.querySelector('#g38board');
+			const board = /** @type {HTMLElement} */(cont.querySelector('#g38board'));
 			board.innerHTML = '';
 			board.style.cssText = `display:grid;grid-template-columns:repeat(${maxX},${cellSize}px);grid-template-rows:repeat(${maxY},${cellSize}px);gap:2px;margin:8px auto;width:fit-content;`;
 
@@ -50,7 +51,7 @@
 					const hasPiece = puzzle.pieces.some(p=>x>=p.x&&x<p.x+p.w&&y>=p.y&&y<p.y+p.h);
 					if (hasPiece) {
 						cell.className = 'g38-slot';
-						cell.dataset.x = x; cell.dataset.y = y;
+						cell.dataset.x = String(x); cell.dataset.y = String(y);
 						slots.push(cell);
 					} else {
 						cell.style.background = 'transparent';
@@ -61,15 +62,16 @@
 
 			// Create draggable pieces
 			let placed = 0;
+			/** @type {HTMLElement|null} */
 			let selected = null;
-			const piecesEl = cont.querySelector('#g38pieces'); piecesEl.innerHTML='';
+			const piecesEl = /** @type {HTMLElement} */(cont.querySelector('#g38pieces')); piecesEl.innerHTML='';
 			const shuffledPieces = shuf([...puzzle.pieces]);
 			shuffledPieces.forEach((p, i) => {
 				const piece = document.createElement('div');
 				piece.className = 'g38-piece';
 				piece.style.cssText = `width:${cellSize}px;height:${cellSize}px;background:${COLORS[i%COLORS.length]};border-radius:6px;display:inline-block;margin:4px;cursor:pointer;border:2px solid rgba(0,0,0,0.2);`;
-				piece.dataset.idx = i;
-				piece.textContent = (i+1);
+				piece.dataset.idx = String(i);
+				piece.textContent = String(i+1);
 				piece.style.fontSize = (cellSize*0.5)+'px';
 				piece.style.color = '#fff';
 				piece.style.fontWeight = '900';
@@ -77,7 +79,8 @@
 				piece.style.lineHeight = cellSize+'px';
 				piece.onclick = () => {
 					if (piece.dataset.done) return;
-					if (selected) selected.style.outline='';
+					const prev = selected;
+					if (prev) prev.style.outline='';
 					selected = piece;
 					piece.style.outline = '3px solid #333';
 				};
@@ -86,13 +89,14 @@
 
 			slots.forEach(slot => {
 				slot.onclick = () => {
-					if (!selected || selected.dataset.done) return;
+					const sel = selected;
+					if (!sel || sel.dataset.done) return;
 					if (slot.dataset.filled) return;
-					slot.style.background = selected.style.background;
+					slot.style.background = sel.style.background;
 					slot.dataset.filled = '1';
-					selected.dataset.done = '1';
-					selected.style.opacity = '0.3';
-					selected.style.outline = '';
+					sel.dataset.done = '1';
+					sel.style.opacity = '0.3';
+					sel.style.outline = '';
 					window.ppBeep(600,.1);
 					window.ppOnCorrect();
 					placed++;

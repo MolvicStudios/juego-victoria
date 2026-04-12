@@ -2,6 +2,7 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG28(cont, lv) {
 		let round = 0;
 		const total = lerpParam(lv, 5, 8);
@@ -13,10 +14,12 @@
 			<canvas id="g28cvs" style="display:block;margin:0 auto;width:200px;height:200px"></canvas>
 			<div class="g8-opts" id="g28opts"></div>`;
 
+		/** @param {HTMLCanvasElement} cvs @param {number} h @param {number} m */
 		function drawClock(cvs, h, m) {
 			const dpr = window.devicePixelRatio || 1;
 			cvs.width = 200 * dpr; cvs.height = 200 * dpr;
 			const ctx = cvs.getContext('2d');
+			if (!ctx) return;
 			ctx.scale(dpr, dpr);
 			const cx = 100, cy = 100, r = 90;
 			ctx.clearRect(0,0,200,200);
@@ -29,7 +32,7 @@
 			ctx.fillStyle='#333'; ctx.font='bold 16px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
 			for (let i=1;i<=12;i++) {
 				const a = (i*30-90)*Math.PI/180;
-				ctx.fillText(i, cx+Math.cos(a)*(r-20), cy+Math.sin(a)*(r-20));
+				ctx.fillText(String(i), cx+Math.cos(a)*(r-20), cy+Math.sin(a)*(r-20));
 			}
 
 			// hour hand
@@ -49,17 +52,18 @@
 			ctx.beginPath(); ctx.arc(cx,cy,4,0,Math.PI*2); ctx.fillStyle='#333'; ctx.fill();
 		}
 
+		/** @param {number} h @param {number} m */
 		function fmtTime(h,m) {
 			return h + ':' + (m<10?'0':'') + m;
 		}
 
 		function next() {
 			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Sabes leer la hora! ⏰', 3, () => initG28(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g28pb').style.width = (round/total*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g28pb')).style.width = (round/total*100)+'%';
 
 			const h = Math.floor(Math.random()*12)+1;
 			const m = showMinutes ? Math.floor(Math.random()*(60/minuteStep))*minuteStep : 0;
-			const cvs = cont.querySelector('#g28cvs');
+			const cvs = /** @type {HTMLCanvasElement} */ (cont.querySelector('#g28cvs'));
 			drawClock(cvs, h, m);
 
 			const ans = fmtTime(h,m);
@@ -73,7 +77,7 @@
 				if(wt!==ans) wrongs.add(wt);
 			}
 
-			const optsEl = cont.querySelector('#g28opts'); optsEl.innerHTML='';
+			const optsEl = /** @type {HTMLElement} */ (cont.querySelector('#g28opts')); optsEl.innerHTML='';
 			shuf([ans,...wrongs]).forEach(t => {
 				const b = document.createElement('div');
 				b.className = 'g8-opt'; b.textContent = t;

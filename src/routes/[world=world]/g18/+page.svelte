@@ -1,5 +1,6 @@
 <script>
 	import GameShell from '$lib/components/GameShell.svelte';
+	import { onDestroy } from 'svelte';
 	import { shuf, lerpParam } from '$lib/data.js';
 
 	/* 20 animals in increasing complexity: easy (top) → hard (bottom) */
@@ -13,8 +14,16 @@
 		{ e:'🦅', n:'Águila' },  { e:'🦄', n:'Unicornio' },
 	];
 
-	let container, g18Round = 0, g18Data = [], g18HideTimer = 0;
+	/** @type {HTMLDivElement} */
+	let container;
+	let g18Round = 0;
+	/** @type {{e:string,n:string}[]} */
+	let g18Data = [];
+	/** @type {ReturnType<typeof setTimeout>} */
+	let g18HideTimer = /** @type {any} */ (0);
+	onDestroy(() => clearTimeout(g18HideTimer));
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG18(cont, lv) {
 		container = cont;
 		g18Round = 0;
@@ -41,11 +50,11 @@
 			window.ppCelebrate('¡Conoces todos los animales! 🐾', 3, () => initG18(container, window.ppGetLevel()), _lv);
 			return;
 		}
-		const pb = container.querySelector('#g18pb');
+		const pb = /** @type {HTMLElement|null} */ (container.querySelector('#g18pb'));
 		if (pb) pb.style.width = (g18Round / g18Data.length * 100) + '%';
 
 		const animal = g18Data[g18Round];
-		const emEl = container.querySelector('#g18em');
+		const emEl = /** @type {HTMLElement|null} */ (container.querySelector('#g18em'));
 		if (emEl) { emEl.style.opacity = '1'; emEl.textContent = animal.e; }
 
 		/* More distractor options at higher levels */
@@ -83,7 +92,7 @@
 		if (lv >= 12) {
 			clearTimeout(g18HideTimer);
 			g18HideTimer = setTimeout(() => {
-				const el = container?.querySelector('#g18em');
+				const el = /** @type {HTMLElement|null} */ (container?.querySelector('#g18em'));
 				if (el) el.style.opacity = '0';
 			}, 1800);
 		}
@@ -91,6 +100,7 @@
 		window.ppSay('¿Qué animal es?');
 	}
 
+	/** @param {HTMLDivElement} c @param {number} lv */
 	function initContainer(c, lv) { initG18(c, lv); }
 </script>
 

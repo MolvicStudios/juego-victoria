@@ -13,6 +13,7 @@
 		{cats:['Día ☀️','Noche 🌙'],items:[{t:'☀️',c:0},{t:'🌈',c:0},{t:'🦋',c:0},{t:'🌙',c:1},{t:'⭐',c:1},{t:'🦉',c:1}]},
 	];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG32(cont, lv) {
 		let round = 0;
 		const data = shuf(G32_DATA).slice(0, lerpParam(lv, 3, 6));
@@ -24,7 +25,7 @@
 
 		function next() {
 			if (round >= data.length) { const _lv = window.ppWin(); window.ppCelebrate('¡Clasificas genial! 📂', 3, () => initG32(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g32pb').style.width = (round/data.length*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g32pb')).style.width = (round/data.length*100)+'%';
 			const d = data[round];
 			const numPerCat = lerpParam(lv, 2, 3);
 			const items0 = shuf(d.items.filter(i=>i.c===0)).slice(0, numPerCat);
@@ -33,7 +34,7 @@
 			let sorted = 0;
 			const totalItems = allItems.length;
 
-			const catsEl = cont.querySelector('#g32cats');
+			const catsEl = /** @type {HTMLElement} */ (cont.querySelector('#g32cats'));
 			catsEl.innerHTML = '';
 			const zones = d.cats.map((name, idx) => {
 				const z = document.createElement('div');
@@ -43,8 +44,9 @@
 				return z;
 			});
 
-			const itemsEl = cont.querySelector('#g32items');
+			const itemsEl = /** @type {HTMLElement} */ (cont.querySelector('#g32items'));
 			itemsEl.innerHTML = '';
+			/** @type {HTMLElement|null} */
 			let selected = null;
 			allItems.forEach(item => {
 				const el = document.createElement('div');
@@ -60,15 +62,16 @@
 			});
 
 			zones.forEach((z, idx) => {
-				const drop = z.querySelector('.g32-drop');
+				const drop = /** @type {HTMLElement} */ (z.querySelector('.g32-drop'));
 				drop.onclick = () => {
-					if (!selected || selected.dataset.done) return;
-					const item = allItems.find(i => i.t === selected.textContent);
+					const sel = selected;
+					if (!sel || sel.dataset.done) return;
+					const item = allItems.find(i => i.t === sel.textContent);
 					if (item && item.c === idx) {
-						selected.style.outline = '';
-						selected.style.background = '#EFFFEF';
-						selected.style.border = '2px solid #6BCB77';
-						selected.dataset.done = '1';
+						sel.style.outline = '';
+						sel.style.background = '#EFFFEF';
+						sel.style.border = '2px solid #6BCB77';
+						sel.dataset.done = '1';
 						drop.textContent += item.t;
 						window.ppBeep(880,.1);
 						window.ppOnCorrect();
@@ -76,10 +79,10 @@
 						selected = null;
 						if (sorted >= totalItems) { round++; setTimeout(next, 800); }
 					} else {
-						selected.classList.add('err');
-						setTimeout(()=>selected.classList.remove('err'),400);
+						sel.classList.add('err');
+						setTimeout(()=>sel.classList.remove('err'),400);
 						window.ppOnWrong(); window.ppBoo();
-						selected.style.outline = '';
+						sel.style.outline = '';
 						selected = null;
 					}
 				};

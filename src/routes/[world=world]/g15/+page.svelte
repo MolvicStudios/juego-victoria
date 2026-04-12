@@ -16,15 +16,17 @@
 	];
 	const G15_SIZES=['5.4rem','3rem','1.7rem','1rem'];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG15(cont, lv) {
 		let round=0;
 		const total=lerpParam(lv,5,7);
 
 		cont.innerHTML = `<div class="ins" id="g15ins"></div>
-			<div class="pbar" id="g15pb"><div class="pfill"></div></div>
+			<div class="pbar" id="g15pb"><div class="pfill" style="background:var(--c6)"></div></div>
 			<div class="g15-objects" id="g15objects"></div>`;
 
-		function setPbar(r,t){const f=cont.querySelector('#g15pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
+		/** @param {number} r @param {number} t */
+		function setPbar(r,t){const f=/** @type {HTMLElement} */ (cont.querySelector('#g15pb .pfill'));f.style.width=(r/t*100)+'%';}
 
 		function next(){
 			if(round>=total){const _lv=window.ppWin();window.ppCelebrate('¡Sabes los tamaños! 📏',3,()=>initG15(cont,window.ppGetLevel()),_lv);return;}
@@ -32,7 +34,12 @@
 			const numItems=lv<=6?2:lv<=12?3:4;
 			const set=G15_SETS[Math.floor(Math.random()*G15_SETS.length)];
 			const items=set.items.slice(0,Math.min(numItems,set.items.length));
-			let askType,correctName,qTxt;
+			/** @type {string} */
+			let askType;
+			/** @type {string} */
+			let correctName;
+			/** @type {string} */
+			let qTxt;
 
 			if(lv<=3){askType='big';correctName=items[0].n;qTxt='¿Cuál es más GRANDE? 👆';}
 			else if(lv<=6){askType=Math.random()>.5?'big':'small';correctName=askType==='big'?items[0].n:items[items.length-1].n;qTxt=askType==='big'?'¿Cuál es más GRANDE? 👆':'¿Cuál es más PEQUEÑO? 👇';}
@@ -40,11 +47,11 @@
 			else if(lv<=12){askType='medium';correctName=items[1].n;qTxt='¿Cuál es el MEDIANO? 🤔';}
 			else{askType='order';qTxt='¡Toca del más grande al más pequeño!';}
 
-			const qEl=cont.querySelector('#g15ins');qEl.textContent=qTxt;
+			const qEl=/** @type {HTMLElement} */ (cont.querySelector('#g15ins'));qEl.textContent=qTxt;
 			qEl.style.color=askType==='big'?'var(--c1)':askType==='small'?'var(--c5)':'var(--c6)';
 			window.ppSay(qTxt.replace(/[👆👇🤔]/g,''));
 
-			const vEl=cont.querySelector('#g15objects');vEl.innerHTML='';
+			const vEl=/** @type {HTMLElement} */ (cont.querySelector('#g15objects'));vEl.innerHTML='';
 
 			if(askType==='order'){
 				let orderIdx=0;

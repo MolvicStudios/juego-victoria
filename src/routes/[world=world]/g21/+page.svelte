@@ -10,6 +10,7 @@
 		{w:'ESTRELLA',e:'⭐'},{w:'MARIPOSA',e:'🦋'},{w:'ELEFANTE',e:'🐘'},
 	];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG21(cont, lv) {
 		let round = 0;
 		const maxLen = lv<=3?3:lv<=6?4:lv<=9?5:lv<=12?6:8;
@@ -24,17 +25,18 @@
 
 		function next() {
 			if (round >= data.length) { const _lv = window.ppWin(); window.ppCelebrate('¡Deletreas genial! 🔤', 3, () => initG21(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g21pb').style.width = (round/data.length*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g21pb')).style.width = (round/data.length*100)+'%';
 			const d = data[round];
-			cont.querySelector('#g21emo').textContent = d.e;
+			/** @type {HTMLElement} */ (cont.querySelector('#g21emo')).textContent = d.e;
 			let placed = 0;
-			const targetEl = cont.querySelector('#g21target'); targetEl.innerHTML = '';
-			const lettersEl = cont.querySelector('#g21letters'); lettersEl.innerHTML = '';
+			const targetEl = /** @type {HTMLElement} */ (cont.querySelector('#g21target')); targetEl.innerHTML = '';
+			const lettersEl = /** @type {HTMLElement} */ (cont.querySelector('#g21letters')); lettersEl.innerHTML = '';
 
 			const letters = d.w.split('');
+			/** @type {HTMLDivElement[]} */
 			const slots = [];
 			letters.forEach((_, i) => {
-				const s = document.createElement('div'); s.className = 'g21-slot'; s.dataset.idx = i;
+				const s = document.createElement('div'); s.className = 'g21-slot'; s.dataset.idx = String(i);
 				targetEl.appendChild(s); slots.push(s);
 			});
 
@@ -46,7 +48,7 @@
 					if (b.classList.contains('used')) return;
 					const nextSlot = slots.find(s => !s.classList.contains('filled'));
 					if (!nextSlot) return;
-					const idx = parseInt(nextSlot.dataset.idx);
+					const idx = parseInt(nextSlot.dataset.idx || '0');
 					if (ch === letters[idx]) {
 						nextSlot.textContent = ch; nextSlot.classList.add('filled'); b.classList.add('used');
 						window.ppBeep(400+placed*80,.12); window.ppSay(ch); placed++;

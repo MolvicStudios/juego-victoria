@@ -1,9 +1,12 @@
 <script>
 	import GameShell from '$lib/components/GameShell.svelte';
+	import { onDestroy } from 'svelte';
 	import { lerpParam } from '$lib/data.js';
 
 	let g37AnimId = 0;
+	onDestroy(() => { if (g37AnimId) { cancelAnimationFrame(g37AnimId); g37AnimId = 0; } });
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG37(cont, lv) {
 		if (g37AnimId) { cancelAnimationFrame(g37AnimId); g37AnimId = 0; }
 		const COLORS = [
@@ -27,11 +30,12 @@
 		let targetColor = activeColors[Math.floor(Math.random()*activeColors.length)];
 		let popped = 0;
 		let alive = true;
-		const area = cont.querySelector('#g37area');
+		const area = /** @type {HTMLElement} */ (cont.querySelector('#g37area'));
+		/** @type {{el:HTMLElement,y:number,speed:number}[]} */
 		const bubbles = [];
 
-		cont.querySelector('#g37ins').textContent = '¡Toca las burbujas ' + targetColor.name + 's!';
-		cont.querySelector('#g37ins').style.color = targetColor.hex;
+		/** @type {HTMLElement} */ (cont.querySelector('#g37ins')).textContent = '¡Toca las burbujas ' + targetColor.name + 's!';
+		/** @type {HTMLElement} */ (cont.querySelector('#g37ins')).style.color = targetColor.hex;
 
 		function spawnBubble() {
 			if (!alive) return;
@@ -43,7 +47,7 @@
 			el.style.cssText = `width:${size}px;height:${size}px;background:${col.hex};left:${x}px;bottom:-${size}px;position:absolute;border-radius:50%;cursor:pointer;opacity:0.85;transition:opacity 0.2s;`;
 			el.dataset.color = col.name;
 
-			const handleTap = (e) => {
+			const handleTap = (/** @type {Event} */ e) => {
 				e.preventDefault();
 				if (!alive || el.dataset.popped) return;
 				if (col.name === targetColor.name) {
@@ -53,7 +57,7 @@
 					window.ppBeep(600 + popped*30, .1);
 					window.ppOnCorrect();
 					popped++;
-					cont.querySelector('#g37score').textContent = popped + ' / ' + targetCount;
+					/** @type {HTMLElement} */ (cont.querySelector('#g37score')).textContent = popped + ' / ' + targetCount;
 					setTimeout(()=>el.remove(), 200);
 					if (popped >= targetCount) {
 						alive = false;
@@ -75,6 +79,7 @@
 
 		let lastTime = 0;
 		let spawnTimer = 0;
+		/** @param {number} ts */
 		function animate(ts) {
 			if (!alive) return;
 			const dt = lastTime ? (ts-lastTime)/16 : 1;

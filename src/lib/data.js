@@ -60,6 +60,11 @@ export const GAMES = [
 	{n:38,ico:'🔺',name:'Tangram',       sub:'Construye figuras',     col:'#FF9F43',isNew:true},
 ];
 
+/**
+ * @template T
+ * @param {T[]} a
+ * @returns {T[]}
+ */
 export function shuf(a) {
 	const arr = [...a];
 	for (let i = arr.length - 1; i > 0; i--) {
@@ -69,6 +74,7 @@ export function shuf(a) {
 	return arr;
 }
 
+/** @param {number} lv @param {number} minVal @param {number} maxVal @returns {number} */
 export function lerpParam(lv, minVal, maxVal) {
 	return Math.round(minVal + (maxVal - minVal) * (lv - 1) / 14);
 }

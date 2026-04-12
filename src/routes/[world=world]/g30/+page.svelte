@@ -2,6 +2,8 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	/** @typedef {{name: string, draw: (ctx: CanvasRenderingContext2D, cx: number, cy: number, s: number) => void}} G30Shape */
+	/** @type {G30Shape[]} */
 	const SHAPES = [
 		{name:'estrella', draw:(ctx,cx,cy,s)=>{ctx.beginPath();for(let i=0;i<5;i++){const a=(i*72-90)*Math.PI/180;const b=((i*72)+36-90)*Math.PI/180;ctx.lineTo(cx+Math.cos(a)*s,cy+Math.sin(a)*s);ctx.lineTo(cx+Math.cos(b)*s*0.4,cy+Math.sin(b)*s*0.4);}ctx.closePath();}},
 		{name:'corazón', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx,cy+s*0.6);ctx.bezierCurveTo(cx-s,cy-s*0.2,cx-s*0.5,cy-s,cx,cy-s*0.4);ctx.bezierCurveTo(cx+s*0.5,cy-s,cx+s,cy-s*0.2,cx,cy+s*0.6);ctx.closePath();}},
@@ -13,6 +15,7 @@
 		{name:'rayo', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx+s*0.1,cy-s*0.8);ctx.lineTo(cx-s*0.3,cy);ctx.lineTo(cx+s*0.05,cy);ctx.lineTo(cx-s*0.1,cy+s*0.8);ctx.lineTo(cx+s*0.3,cy);ctx.lineTo(cx-s*0.05,cy);ctx.closePath();}},
 	];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG30(cont, lv) {
 		let round = 0;
 		const pool = shuf(SHAPES).slice(0, lerpParam(lv, 4, 7));
@@ -23,8 +26,10 @@
 			<canvas id="g30shadow" width="120" height="120" style="display:block;margin:8px auto;background:#f0f0f0;border-radius:12px"></canvas>
 			<div class="g30-opts" id="g30opts"></div>`;
 
+		/** @param {HTMLCanvasElement} cvs @param {G30Shape} shape @param {string} color */
 		function drawShape(cvs, shape, color) {
 			const ctx = cvs.getContext('2d');
+			if (!ctx) return;
 			ctx.clearRect(0,0,cvs.width,cvs.height);
 			ctx.fillStyle = color;
 			shape.draw(ctx, cvs.width/2, cvs.height/2, cvs.width*0.35);
@@ -33,10 +38,10 @@
 
 		function next() {
 			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Maestro de sombras! 👤', 3, () => initG30(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g30pb').style.width = (round/total*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g30pb')).style.width = (round/total*100)+'%';
 
 			const target = pool[round];
-			const shadow = cont.querySelector('#g30shadow');
+			const shadow = /** @type {HTMLCanvasElement} */ (cont.querySelector('#g30shadow'));
 			drawShape(shadow, target, '#333');
 
 			const numOpts = lv<=3?2:lv<=7?3:4;
@@ -44,7 +49,7 @@
 			const wrongs = shuf(others).slice(0, numOpts-1);
 			const opts = shuf([target, ...wrongs]);
 
-			const optsEl = cont.querySelector('#g30opts'); optsEl.innerHTML='';
+			const optsEl = /** @type {HTMLElement} */ (cont.querySelector('#g30opts')); optsEl.innerHTML='';
 			opts.forEach(s => {
 				const c = document.createElement('canvas');
 				c.width=80; c.height=80; c.className='g30-opt';

@@ -2,6 +2,7 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam } from '$lib/data.js';
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG26(cont, lv) {
 		let round = 0;
 		const total = lerpParam(lv, 6, 10);
@@ -14,19 +15,19 @@
 
 		function next() {
 			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Compara números genial! ⚖️', 3, () => initG26(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g26pb').style.width = (round/total*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g26pb')).style.width = (round/total*100)+'%';
 			let a = Math.floor(Math.random() * maxNum) + 1;
 			let b;
 			const r = Math.random();
 			if (r < 0.15) b = a; // equal ~15%
 			else b = Math.floor(Math.random() * maxNum) + 1;
 
-			const compEl = cont.querySelector('#g26comp');
+			const compEl = /** @type {HTMLElement} */ (cont.querySelector('#g26comp'));
 			compEl.innerHTML = `<span class="g26-n">${a}</span><span class="g26-q">?</span><span class="g26-n">${b}</span>`;
 
 			const ans = a > b ? '>' : a < b ? '<' : '=';
 			const labels = ['>','<','='];
-			const btns = cont.querySelector('#g26btns'); btns.innerHTML = '';
+			const btns = /** @type {HTMLElement} */ (cont.querySelector('#g26btns')); btns.innerHTML = '';
 			labels.forEach(sym => {
 				const btn = document.createElement('div');
 				btn.className = 'g26-sym';
@@ -34,7 +35,7 @@
 				btn.onclick = () => {
 					if (sym === ans) {
 						btn.style.background='#EFFFEF'; btn.style.borderColor='#6BCB77';
-						compEl.querySelector('.g26-q').textContent = ans;
+						/** @type {HTMLElement} */ (compEl.querySelector('.g26-q')).textContent = ans;
 						window.ppBeep(880,.2);
 						const word = ans==='>'?'mayor que':ans==='<'?'menor que':'igual a';
 						window.ppSay(a + ' es ' + word + ' ' + b);

@@ -2,21 +2,27 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam } from '$lib/data.js';
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG35(cont, lv) {
 		const numDots = lerpParam(lv, 5, 15);
 
 		cont.innerHTML = `<div class="ins">¡Conecta los puntos en orden!</div>
 			<canvas id="g35cvs" width="320" height="320" style="display:block;margin:0 auto;background:#FFFDE7;border-radius:12px;touch-action:none"></canvas>`;
 
-		const cvs = cont.querySelector('#g35cvs');
-		const ctx = cvs.getContext('2d');
+		const cvs = /** @type {HTMLCanvasElement} */ (cont.querySelector('#g35cvs'));
+		const ctx = /** @type {CanvasRenderingContext2D} */ (cvs.getContext('2d'));
 		const DOT_R = 16;
 
 		// Generate random dot positions (non-overlapping)
+		/** @type {{x:number,y:number,n:number}[]} */
 		const dots = [];
 		const margin = 30;
 		for (let i = 0; i < numDots; i++) {
-			let x, y, ok, tries = 0;
+			/** @type {number} */
+			let x = 0;
+			/** @type {number} */
+			let y = 0;
+			let ok, tries = 0;
 			do {
 				x = margin + Math.random() * (cvs.width - 2*margin);
 				y = margin + Math.random() * (cvs.height - 2*margin);
@@ -27,6 +33,7 @@
 		}
 
 		let currentDot = 0;
+		/** @type {{x:number,y:number,n:number}[]} */
 		const connected = [];
 
 		function draw() {
@@ -52,10 +59,11 @@
 				ctx.fillStyle = isConnected ? '#FFF' : '#333';
 				ctx.font = 'bold 12px sans-serif';
 				ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-				ctx.fillText(d.n, d.x, d.y);
+				ctx.fillText(String(d.n), d.x, d.y);
 			});
 		}
 
+		/** @param {number} ex @param {number} ey */
 		function handleTap(ex, ey) {
 			if (currentDot >= dots.length) return;
 			const rect = cvs.getBoundingClientRect();
@@ -77,8 +85,8 @@
 			}
 		}
 
-		cvs.addEventListener('click', e => handleTap(e.clientX, e.clientY));
-		cvs.addEventListener('touchstart', e => {
+		cvs.addEventListener('click', (/** @type {MouseEvent} */ e) => handleTap(e.clientX, e.clientY));
+		cvs.addEventListener('touchstart', (/** @type {TouchEvent} */ e) => {
 			e.preventDefault();
 			const t = e.touches[0];
 			handleTap(t.clientX, t.clientY);

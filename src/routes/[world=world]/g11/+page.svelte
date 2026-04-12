@@ -4,15 +4,17 @@
 
 	const G11_FRUITS=['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🫐'];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG11(cont, lv) {
 		let round=0;
 		const total=lerpParam(lv,5,7);
 
 		cont.innerHTML = `<div class="ins" id="g11ins"></div>
-			<div class="pbar" id="g11pb"><div class="pfill"></div></div>
+			<div class="pbar" id="g11pb"><div class="pfill" style="background:var(--c3)"></div></div>
 			<div class="g11-visual" id="g11vis"></div><div class="g11-nums" id="g11nums"></div>`;
 
-		function setPbar(r,t){const f=cont.querySelector('#g11pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
+		/** @param {number} r @param {number} t */
+		function setPbar(r,t){const f=/** @type {HTMLElement} */ (cont.querySelector('#g11pb .pfill'));f.style.width=(r/t*100)+'%';}
 
 		function next(){
 			if(round>=total){const _lv=window.ppWin();window.ppCelebrate('¡Eres un crack sumando! 🧮',3,()=>initG11(cont,window.ppGetLevel()),_lv);return;}
@@ -21,7 +23,7 @@
 			const maxSum=lv<=3?3:lv<=6?5:lv<=9?8:12;
 			const numOpts=lv<=9?3:4;
 			const fr=G11_FRUITS[Math.floor(Math.random()*G11_FRUITS.length)];
-			const vis=cont.querySelector('#g11vis'), numsEl=cont.querySelector('#g11nums'), insEl=cont.querySelector('#g11ins');
+			const vis=/** @type {HTMLElement} */ (cont.querySelector('#g11vis')), numsEl=/** @type {HTMLElement} */ (cont.querySelector('#g11nums')), insEl=/** @type {HTMLElement} */ (cont.querySelector('#g11ins'));
 
 			if(isResta){
 				const a=Math.floor(Math.random()*7)+3;
@@ -35,7 +37,7 @@
 				const cols=['#FF6B6B','#4D9FEC','#6BCB77','#FF9F43'];
 				const vals=[ans];while(vals.length<numOpts){const r2=Math.max(0,ans+Math.floor(Math.random()*5)-2);if(!vals.includes(r2))vals.push(r2);}
 				shuf(vals).forEach((v,i)=>{
-					const b2=document.createElement('button');b2.className='g11-num';b2.style.background=cols[i%4];b2.textContent=v;
+					const b2=document.createElement('button');b2.className='g11-num';b2.style.background=cols[i%4];b2.textContent=String(v);
 					b2.onclick=()=>{
 						if(v===ans){b2.style.background='#6BCB77';window.ppBeep(880,.2);window.ppSay('¡Correcto! '+a+' menos '+b+' son '+ans);
 							window.ppOnCorrect();round++;setTimeout(next,1000);
@@ -58,7 +60,7 @@
 				const cols=['#FF6B6B','#4D9FEC','#6BCB77','#FF9F43'];
 				const vals=[ans];while(vals.length<numOpts){const r2=Math.max(1,ans+Math.floor(Math.random()*5)-2);if(!vals.includes(r2))vals.push(r2);}
 				shuf(vals).forEach((v,i)=>{
-					const b2=document.createElement('button');b2.className='g11-num';b2.style.background=cols[i%4];b2.textContent=v;
+					const b2=document.createElement('button');b2.className='g11-num';b2.style.background=cols[i%4];b2.textContent=String(v);
 					b2.onclick=()=>{
 						if(v===ans){b2.style.background='#6BCB77';window.ppBeep(880,.2);window.ppSay('¡Correcto! '+a+' más '+b+' son '+ans);
 							window.ppOnCorrect();round++;setTimeout(next,1000);

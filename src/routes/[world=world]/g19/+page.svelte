@@ -10,6 +10,7 @@
 		{w:'Helicóptero',s:5},{w:'Abecedario',s:5},{w:'Rinoceronte',s:5},
 	];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG19(cont, lv) {
 		let round = 0;
 		const maxSyl = lv<=3?2:lv<=6?3:lv<=9?4:5;
@@ -23,16 +24,16 @@
 
 		function next() {
 			if (round >= data.length) { const _lv = window.ppWin(); window.ppCelebrate('¡Silabeas genial! 👏', 3, () => initG19(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g19pb').style.width = (round/data.length*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g19pb')).style.width = (round/data.length*100)+'%';
 			const d = data[round];
-			cont.querySelector('#g19word').textContent = d.w;
+			/** @type {HTMLElement} */ (cont.querySelector('#g19word')).textContent = d.w;
 			const numOpts = lv<=5?2:lv<=10?3:4;
 			const cols = ['#FF6B6B','#4D9FEC','#6BCB77','#FF9F43'];
 			const vals = [d.s]; let tries=0;
 			while(vals.length<numOpts&&tries<50){tries++;const r=Math.max(1,d.s+Math.floor(Math.random()*5)-2);if(!vals.includes(r)&&r>=1&&r<=6)vals.push(r);}
-			const optsEl = cont.querySelector('#g19opts'); optsEl.innerHTML = '';
+			const optsEl = /** @type {HTMLElement} */ (cont.querySelector('#g19opts')); optsEl.innerHTML = '';
 			shuf(vals).forEach((v,i) => {
-				const b = document.createElement('button'); b.className = 'g2-num'; b.style.background = cols[i%4]; b.textContent = v;
+				const b = document.createElement('button'); b.className = 'g2-num'; b.style.background = cols[i%4]; b.textContent = String(v);
 				b.onclick = () => {
 					if(v===d.s){b.style.background='#6BCB77';window.ppBeep(880,.2);window.ppSay('¡Correcto! '+d.w+' tiene '+d.s+(d.s===1?' sílaba':' sílabas'));window.ppOnCorrect();round++;setTimeout(next,1100);}
 					else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();window.ppSay('¡Inténtalo!');}

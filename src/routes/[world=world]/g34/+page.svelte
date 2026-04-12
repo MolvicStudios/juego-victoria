@@ -2,11 +2,10 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam } from '$lib/data.js';
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG34(cont, lv) {
 		let round = 0;
 		const total = lerpParam(lv, 4, 7);
-		let g34Ctx = null;
-		try { g34Ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
 
 		cont.innerHTML = `<div class="ins">¡Repite el ritmo!</div>
 			<div class="pbar"><div class="pfill" id="g34pb" style="width:0%;background:var(--c5)"></div></div>
@@ -20,16 +19,18 @@
 
 		function next() {
 			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Gran sentido del ritmo! 🥁', 3, () => initG34(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g34pb').style.width = (round/total*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g34pb')).style.width = (round/total*100)+'%';
 
 			// generate sequence
+			/** @type {number[]} */
 			const seq = [];
 			for (let i=0; i<seqLen; i++) seq.push(Math.floor(Math.random()*numPads));
 
 			let inputIdx = 0;
 			let listening = false;
 
-			const padEl = cont.querySelector('#g34pad'); padEl.innerHTML='';
+			const padEl = /** @type {HTMLElement} */ (cont.querySelector('#g34pad')); padEl.innerHTML='';
+			/** @type {HTMLElement[]} */
 			const pads = [];
 			for (let i=0;i<numPads;i++){
 				const p = document.createElement('div');
@@ -43,7 +44,7 @@
 						inputIdx++;
 						if (inputIdx>=seq.length) {
 							listening = false;
-							cont.querySelector('#g34st').textContent = '¡Perfecto! 🎉';
+							/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = '¡Perfecto! 🎉';
 							window.ppBeep(880,.2);
 							window.ppOnCorrect();
 							round++;
@@ -51,7 +52,7 @@
 						}
 					} else {
 						listening = false;
-						cont.querySelector('#g34st').textContent = '¡Inténtalo de nuevo!';
+						/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = '¡Inténtalo de nuevo!';
 						window.ppOnWrong(); window.ppBoo();
 						setTimeout(() => playSequence(), 1000);
 					}
@@ -60,29 +61,21 @@
 				padEl.appendChild(p);
 			}
 
+			/** @param {number} idx */
 			function flashPad(idx) {
 				pads[idx].style.opacity='0.4';
 				setTimeout(()=>pads[idx].style.opacity='1', 200);
 			}
 
+			/** @param {number} idx */
 			function playTone(idx) {
-				const freq = 300 + idx * 150;
-				try {
-					if (!g34Ctx) return;
-					if (g34Ctx.state === 'suspended') g34Ctx.resume();
-					const osc = g34Ctx.createOscillator();
-					const gain = g34Ctx.createGain();
-					osc.connect(gain); gain.connect(g34Ctx.destination);
-					osc.frequency.value = freq;
-					gain.gain.value = 0.3;
-					osc.start(); osc.stop(g34Ctx.currentTime+0.15);
-				} catch(e) {}
+				window.ppBeep(300 + idx * 150, 0.15, 'sine', 0.3);
 			}
 
 			function playSequence() {
 				listening = false;
 				inputIdx = 0;
-				cont.querySelector('#g34st').textContent = '👀 Observa...';
+				/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = '👀 Observa...';
 				seq.forEach((s, i) => {
 					setTimeout(()=>{
 						flashPad(s);
@@ -91,7 +84,7 @@
 				});
 				setTimeout(()=>{
 					listening = true;
-					cont.querySelector('#g34st').textContent = '🎵 ¡Tu turno!';
+					/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = '🎵 ¡Tu turno!';
 				}, seq.length*500+300);
 			}
 

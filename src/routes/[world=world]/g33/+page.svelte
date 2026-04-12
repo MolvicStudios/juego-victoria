@@ -2,6 +2,7 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG33(cont, lv) {
 		const size = lv <= 5 ? 3 : 4;
 		const symbols = lv <= 5 ? ['🍎','🍊','🍇'] : ['🍎','🍊','🍇','🍋'];
@@ -11,8 +12,10 @@
 			<div class="g33-palette" id="g33pal"></div>`;
 
 		// generate a valid solved grid
+		/** @param {number} n */
 		function genGrid(n) {
 			const grid = Array.from({length:n}, ()=>Array(n).fill(0));
+			/** @param {number} r @param {number} c */
 			function fill(r,c) {
 				if (r===n) return true;
 				const nr = c===n-1?r+1:r;
@@ -43,11 +46,13 @@
 			blanks.push({r,c,v:solution[r][c]});
 		});
 
+		/** @type {HTMLElement|null} */
 		let selected = null;
 		let filled = 0;
 
-		const gridEl = cont.querySelector('#g33grid');
+		const gridEl = /** @type {HTMLElement} */ (cont.querySelector('#g33grid'));
 		gridEl.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+		/** @type {HTMLDivElement[][]} */
 		const cells = [];
 		for (let r=0;r<size;r++) {
 			cells[r]=[];
@@ -64,7 +69,7 @@
 						if (selected) selected.style.outline = '';
 						selected = cell;
 						cell.style.outline = '3px solid var(--c4)';
-						cell.dataset.r = r; cell.dataset.c = c;
+						cell.dataset.r = String(r); cell.dataset.c = String(c);
 					};
 				}
 				cells[r][c] = cell;
@@ -72,21 +77,22 @@
 			}
 		}
 
-		const palEl = cont.querySelector('#g33pal');
+		const palEl = /** @type {HTMLElement} */ (cont.querySelector('#g33pal'));
 		symbols.forEach((sym, i) => {
 			const b = document.createElement('div');
 			b.className = 'g33-sym';
 			b.textContent = sym;
 			b.onclick = () => {
-				if (!selected || selected.classList.contains('g33-fixed')) return;
-				const r = +selected.dataset.r, c = +selected.dataset.c;
+				const sel = selected;
+				if (!sel || sel.classList.contains('g33-fixed')) return;
+				const r = +(sel.dataset.r||'0'), c = +(sel.dataset.c||'0');
 				const val = i + 1;
 				if (solution[r][c] === val) {
-					selected.textContent = sym;
-					selected.classList.remove('g33-empty');
-					selected.classList.add('g33-fixed');
-					selected.style.outline = '';
-					selected.style.background = '#EFFFEF';
+					sel.textContent = sym;
+					sel.classList.remove('g33-empty');
+					sel.classList.add('g33-fixed');
+					sel.style.outline = '';
+					sel.style.background = '#EFFFEF';
 					window.ppBeep(880,.1);
 					window.ppOnCorrect();
 					selected = null;
@@ -96,8 +102,8 @@
 						window.ppCelebrate('¡Sudoku completado! 🧩', 3, () => initG33(cont, window.ppGetLevel()), _lv);
 					}
 				} else {
-					selected.classList.add('err');
-					setTimeout(()=>selected.classList.remove('err'),400);
+					sel.classList.add('err');
+					setTimeout(()=>sel.classList.remove('err'),400);
 					window.ppOnWrong(); window.ppBoo();
 				}
 			};

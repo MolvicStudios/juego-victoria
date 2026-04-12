@@ -4,6 +4,7 @@
 
 	const COINS=[{v:1,lbl:'1c',col:'#cd7f32'},{v:2,lbl:'2c',col:'#cd7f32'},{v:5,lbl:'5c',col:'#cd7f32'},{v:10,lbl:'10c',col:'#C0C0C0'},{v:20,lbl:'20c',col:'#C0C0C0'},{v:50,lbl:'50c',col:'#FFD700'}];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG27(cont, lv) {
 		let round = 0;
 		const total = lerpParam(lv, 5, 8);
@@ -18,7 +19,7 @@
 
 		function next() {
 			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Cuentas monedas genial! 🪙', 3, () => initG27(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g27pb').style.width = (round/total*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g27pb')).style.width = (round/total*100)+'%';
 
 			// Generate coins that add up to a target
 			const available = COINS.filter(c => c.v <= maxTarget);
@@ -31,9 +32,9 @@
 			}
 			if (sum === 0) { picked.push(available[0]); sum = available[0].v; }
 
-			cont.querySelector('#g27tgt').textContent = '¿Cuánto suman?';
+			/** @type {HTMLElement} */ (cont.querySelector('#g27tgt')).textContent = '¿Cuánto suman?';
 
-			const coinsEl = cont.querySelector('#g27coins'); coinsEl.innerHTML = '';
+			const coinsEl = /** @type {HTMLElement} */ (cont.querySelector('#g27coins')); coinsEl.innerHTML = '';
 			shuf(picked).forEach(c => {
 				const d = document.createElement('div');
 				d.className = 'g27-coin';
@@ -50,10 +51,12 @@
 				if (w !== sum) wrongs.add(w);
 			}
 
-			const optsEl = cont.querySelector('#g27opts'); optsEl.innerHTML = '';
-			shuf([sum, ...wrongs]).forEach(v => {
+			const optsEl = /** @type {HTMLElement} */ (cont.querySelector('#g27opts')); optsEl.innerHTML = '';
+			const cols = ['#FF6B6B','#4D9FEC','#6BCB77','#FF9F43'];
+			shuf([sum, ...wrongs]).forEach((v, i) => {
 				const b = document.createElement('div');
 				b.className = 'g2-num';
+				b.style.background = cols[i % 4];
 				b.textContent = v + 'c';
 				b.onclick = () => {
 					if (v === sum) { b.style.background='#EFFFEF'; b.style.borderColor='#6BCB77'; window.ppBeep(880,.2); window.ppSay('¡Correcto! Suman ' + sum); window.ppOnCorrect(); round++; setTimeout(next, 1200); }

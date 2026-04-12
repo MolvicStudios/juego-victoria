@@ -9,14 +9,14 @@ declare global {
 		// interface Platform {}
 	}
 	interface Window {
-		ppCelebrate?: (msg: string, stars?: number, cb?: Function | null, lvMsg?: string | null) => void;
-		ppBeep?: (freq?: number, dur?: number, type?: OscillatorType, vol?: number) => void;
-		ppSay?: (txt: string) => void;
-		ppBoo?: () => void;
-		ppWin?: () => string;
-		ppGetLevel?: () => number;
-		ppOnCorrect?: () => void;
-		ppOnWrong?: () => string | null;
+		ppCelebrate: (msg: string, stars?: number, cb?: Function | null, lvMsg?: string | null) => void;
+		ppBeep: (freq?: number, dur?: number, type?: OscillatorType, vol?: number) => void;
+		ppSay: (txt: string) => void;
+		ppBoo: () => void;
+		ppWin: () => string;
+		ppGetLevel: () => number;
+		ppOnCorrect: () => void;
+		ppOnWrong: () => string | null;
 		webkitAudioContext?: typeof AudioContext;
 	}
 }

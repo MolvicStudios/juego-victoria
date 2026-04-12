@@ -24,8 +24,12 @@
 		{l:'Ñ',w:[{e:'🦤',n:'Ñandú'},{e:'🐶',n:'Perro'},{e:'🌸',n:'Flor'},{e:'☀️',n:'Sol'}],ok:'Ñandú'},
 	];
 
-	let container, g3Round = 0, g3Data = [];
+	/** @type {HTMLDivElement} */
+	let container, g3Round = 0;
+	/** @type {Array<{l:string,ok:string,w:Array<{n:string,e:string}>}>} */
+	let g3Data = [];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG3(cont, lv) {
 		container = cont; g3Round = 0;
 		const easy=['A','E','I','O','U','M','P','S','T','L'], med=['B','C','D','F','G','R','N'], hard=['J','V','Z','H','Ñ'];
@@ -41,14 +45,14 @@
 	function g3Next() {
 		const lv = window.ppGetLevel();
 		if(g3Round>=g3Data.length){const _lv=window.ppWin();window.ppCelebrate('¡Conoces todas las letras! 🅰️',3,()=>initG3(container,window.ppGetLevel()),_lv);return;}
-		container.querySelector('#g3pb').style.width = (g3Round/g3Data.length*100)+'%';
+		/** @type {HTMLElement} */ (container.querySelector('#g3pb')).style.width = (g3Round/g3Data.length*100)+'%';
 		const d = g3Data[g3Round];
-		const ltrEl = container.querySelector('#g3ltr');
+		const ltrEl = /** @type {HTMLElement} */ (container.querySelector('#g3ltr'));
 		ltrEl.textContent = lv>=11?(d.l+' / '+d.l.toLowerCase()):d.l;
-		const optsEl = container.querySelector('#g3opts'); optsEl.innerHTML = '';
+		const optsEl = /** @type {HTMLElement} */ (container.querySelector('#g3opts')); optsEl.innerHTML = '';
 		const numOpts = lv<=5?Math.min(2+Math.floor((lv-1)/2),3):lv<=10?3:4;
 		const shown = shuf(d.w).slice(0,numOpts);
-		if(!shown.find(w=>w.n===d.ok)) shown[0] = d.w.find(w=>w.n===d.ok);
+		if(!shown.find(/** @param {{n:string}} w */ w=>w.n===d.ok)) shown[0] = d.w.find(/** @param {{n:string}} w */ w=>w.n===d.ok);
 		shuf(shown).forEach(w => {
 			const b = document.createElement('div'); b.className = 'g3-opt';
 			b.innerHTML = w.e+'<p>'+w.n+'</p>';
@@ -61,6 +65,7 @@
 		window.ppSay('¿Qué empieza por '+d.l+'?');
 	}
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initContainer(cont, lv) {
 		container = cont;
 		cont.innerHTML = `

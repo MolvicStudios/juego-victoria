@@ -8,32 +8,36 @@
 	];
 	const G10_MIX=[{q:'Rojo + Azul = ?',a:'MORADO'},{q:'Rojo + Amarillo = ?',a:'NARANJA'},{q:'Azul + Amarillo = ?',a:'VERDE'}];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG10(cont, lv) {
 		let round=0;
 		const numCols=lv<=4?4:lv<=7?6:8;
+		/** @type {({n:string,h:string}|{isMix:boolean,q:string,a:string})[]} */
 		let order=shuf(G10_COLS.slice(0,numCols));
 		if(lv>=14){
-			const mix=shuf(G10_MIX).slice(0,2).map(m=>({...m,isMix:true}));
+			const mix=shuf(G10_MIX).slice(0,2).map(m=>({...m,isMix:/** @type {true} */(true)}));
 			order=[...order,...mix];order=shuf(order);
 		}
 
 		cont.innerHTML = `<div class="ins">¡Toca el círculo del color!</div>
-			<div class="pbar" id="g10pb"><div class="pfill"></div></div>
+			<div class="pbar" id="g10pb"><div class="pfill" style="background:var(--c2)"></div></div>
 			<div class="g10-name" id="g10name"></div><div class="g10-circles" id="g10circles"></div>`;
 
-		function setPbar(r,t){const f=cont.querySelector('#g10pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
+		/** @param {number} r @param {number} t */
+		function setPbar(r,t){const f=/** @type {HTMLElement} */ (cont.querySelector('#g10pb .pfill'));f.style.width=(r/t*100)+'%';}
 
 		function next(){
 			if(round>=order.length){const _lv=window.ppWin();window.ppCelebrate('¡Conoces todos los colores! 🌈',3,()=>initG10(cont,window.ppGetLevel()),_lv);return;}
 			setPbar(round,order.length);
 			const t=order[round];
-			const nm=cont.querySelector('#g10name');
+			const nm=/** @type {HTMLElement} */ (cont.querySelector('#g10name'));
 			const audioOnly=lv>=11&&lv<14;
-			const circlesEl=cont.querySelector('#g10circles');
+			const circlesEl=/** @type {HTMLElement} */ (cont.querySelector('#g10circles'));
 
-			if(t.isMix){
+			if('isMix' in t){
 				nm.textContent=t.q;nm.style.color='var(--ink)';
 				const answer=G10_COLS.find(c=>c.n===t.a);
+				if(!answer) return;
 				const others=G10_COLS.filter(c=>c.n!==t.a);
 				const shown=shuf([answer,...shuf(others).slice(0,4)]);
 				circlesEl.innerHTML='';

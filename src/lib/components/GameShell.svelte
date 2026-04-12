@@ -14,8 +14,8 @@
 		return '/';
 	}
 
-	/** @type {{gameNum: number, title: string, icon: string, initGame: (container: HTMLDivElement, level: number) => void, children: any}} */
-	let { gameNum, title, icon, initGame, children } = $props();
+	/** @type {{gameNum: number, title: string, icon: string, initGame: (container: HTMLDivElement, level: number) => void}} */
+	let { gameNum, title, icon, initGame } = $props();
 
 	/** @type {HTMLDivElement|null} */
 	let container = $state(null);
@@ -70,14 +70,15 @@
 
 	onDestroy(() => {
 		if (typeof window !== 'undefined') {
-			delete window.ppCelebrate;
-			delete window.ppBeep;
-			delete window.ppSay;
-			delete window.ppBoo;
-			delete window.ppWin;
-			delete window.ppGetLevel;
-			delete window.ppOnCorrect;
-			delete window.ppOnWrong;
+			const w = /** @type {any} */ (window);
+			delete w.ppCelebrate;
+			delete w.ppBeep;
+			delete w.ppSay;
+			delete w.ppBoo;
+			delete w.ppWin;
+			delete w.ppGetLevel;
+			delete w.ppOnCorrect;
+			delete w.ppOnWrong;
 		}
 	});
 
@@ -163,9 +164,7 @@
 			<span class="htl">{icon} {title}</span>
 			<span class="lvbdg">Nivel {currentLevel}</span>
 		</div>
-		<div class="gbody" bind:this={container}>
-			{@render children?.()}
-		</div>
+		<div class="gbody" bind:this={container}></div>
 	</div>
 {/if}
 

@@ -125,10 +125,12 @@
 {/if}
 
 {#if showStickers}
-	<!-- svelte-ignore a11y_no_static_element_interactions a11y_click_events_have_key_events -->
-	<div class="modal-overlay on" onclick={() => { showStickers = false; }}>
-		<!-- svelte-ignore a11y_no_static_element_interactions a11y_click_events_have_key_events a11y_no_noninteractive_element_interactions -->
-		<div class="modal-box" onclick={(e) => e.stopPropagation()}>
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<div class="modal-overlay on" role="button" tabindex="0"
+		onclick={() => { showStickers = false; }}
+		onkeydown={(e) => { if(e.key==='Escape'||e.key==='Enter') showStickers = false; }}>
+		<!-- svelte-ignore a11y_no_static_element_interactions a11y_no_noninteractive_element_interactions -->
+		<div class="modal-box" onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()}>
 			<h2>🏆 Mi Colección</h2>
 			<div class="stk-grid">
 				{#each STICKER_MILESTONES as m}

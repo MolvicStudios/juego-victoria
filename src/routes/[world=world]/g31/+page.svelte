@@ -2,6 +2,7 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG31(cont, lv) {
 		let round = 0;
 		const total = lerpParam(lv, 5, 8);
@@ -33,15 +34,15 @@
 
 		function next() {
 			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Secuencias resueltas! 🔢', 3, () => initG31(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g31pb').style.width = (round/total*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g31pb')).style.width = (round/total*100)+'%';
 
 			const {seq, hideIdx, ans} = genSeq();
 
-			const seqEl = cont.querySelector('#g31seq'); seqEl.innerHTML='';
+			const seqEl = /** @type {HTMLElement} */ (cont.querySelector('#g31seq')); seqEl.innerHTML='';
 			seq.forEach((n,i)=>{
 				const s = document.createElement('span');
 				s.className = 'g31-n' + (i===hideIdx?' g31-blank':'');
-				s.textContent = i===hideIdx?'?':n;
+				s.textContent = i===hideIdx?'?':String(n);
 				seqEl.appendChild(s);
 			});
 
@@ -52,15 +53,17 @@
 				if (w>0 && w!==ans) wrongs.add(w);
 			}
 
-			const optsEl = cont.querySelector('#g31opts'); optsEl.innerHTML='';
-			shuf([ans,...wrongs]).forEach(v => {
+			const optsEl = /** @type {HTMLElement} */ (cont.querySelector('#g31opts')); optsEl.innerHTML='';
+			const cols = ['#FF6B6B','#4D9FEC','#6BCB77','#FF9F43'];
+			shuf([ans,...wrongs]).forEach((v, i) => {
 				const b = document.createElement('div');
 				b.className = 'g2-num';
-				b.textContent = v;
+				b.style.background = cols[i % 4];
+				b.textContent = String(v);
 				b.onclick = () => {
 					if (v===ans) {
 						b.style.background='#EFFFEF'; b.style.borderColor='#6BCB77';
-						seqEl.children[hideIdx].textContent = ans;
+						seqEl.children[hideIdx].textContent = String(ans);
 						seqEl.children[hideIdx].classList.remove('g31-blank');
 						window.ppBeep(880,.2); window.ppSay('¡Correcto! El número es '+ans); window.ppOnCorrect(); round++; setTimeout(next,1200);
 					} else { b.classList.add('err'); setTimeout(()=>b.classList.remove('err'),400); window.ppOnWrong(); window.ppBoo(); }

@@ -17,6 +17,7 @@
 		{cat:'Árboles',items:['🌲','🌳','🌴','🎄'],intruder:'🔑'},
 	];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG29(cont, lv) {
 		let round = 0;
 		const data = shuf(G29_DATA).slice(0, lerpParam(lv, 4, 8));
@@ -28,15 +29,15 @@
 
 		function next() {
 			if (round >= data.length) { const _lv = window.ppWin(); window.ppCelebrate('¡Detective de intrusos! 🔍', 3, () => initG29(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g29pb').style.width = (round/data.length*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g29pb')).style.width = (round/data.length*100)+'%';
 			const d = data[round];
 			const numItems = lerpParam(lv, 3, 4);
 			const group = d.items.slice(0, numItems);
 			const all = shuf([...group, d.intruder]);
 
-			cont.querySelector('#g29hint').textContent = lv <= 5 ? 'Grupo: ' + d.cat : '¿Cuál no pertenece?';
+			/** @type {HTMLElement} */ (cont.querySelector('#g29hint')).textContent = lv <= 5 ? 'Grupo: ' + d.cat : '¿Cuál no pertenece?';
 
-			const grid = cont.querySelector('#g29grid'); grid.innerHTML = '';
+			const grid = /** @type {HTMLElement} */ (cont.querySelector('#g29grid')); grid.innerHTML = '';
 			all.forEach(item => {
 				const b = document.createElement('div');
 				b.className = 'g29-item';

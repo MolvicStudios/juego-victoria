@@ -108,8 +108,10 @@
 				{#each profileList as p, i}
 					{@const world = worldForAge(p.birthYear)}
 					{@const meta = WORLD_META[world]}
-					<!-- svelte-ignore a11y_no_static_element_interactions a11y_click_events_have_key_events -->
-					<div class="profile-card" onclick={() => confirmDelete === i ? null : selectProfile(i)}
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<div class="profile-card" role="button" tabindex="0"
+						onclick={() => confirmDelete === i ? null : selectProfile(i)}
+						onkeydown={(e) => { if(e.key==='Enter'||e.key===' ') { e.preventDefault(); if(confirmDelete !== i) selectProfile(i); } }}
 						style="--pc:{meta.color}">
 						<div class="profile-av">{p.avatar}</div>
 						<div class="profile-name">{p.name}</div>
@@ -117,8 +119,8 @@
 							{meta.emoji} {meta.label}
 						</div>
 						{#if confirmDelete === i}
-							<!-- svelte-ignore a11y_no_static_element_interactions a11y_click_events_have_key_events -->
-							<div class="profile-del-confirm" onclick={(e) => e.stopPropagation()}>
+							<!-- svelte-ignore a11y_no_static_element_interactions -->
+							<div class="profile-del-confirm" onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()}>
 								<button onclick={() => confirmDeleteProfile(i)}>🗑️ Borrar</button>
 								<button onclick={() => confirmDelete = -1}>✕ No</button>
 							</div>

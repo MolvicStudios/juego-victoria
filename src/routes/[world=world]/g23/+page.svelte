@@ -20,6 +20,7 @@
 		{f:'El tren circula por las ___',a:'vías',x:['nubes','olas','hojas']},
 	];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG23(cont, lv) {
 		let round = 0;
 		const data = shuf(G23_DATA).slice(0, lerpParam(lv, 5, 8));
@@ -31,12 +32,12 @@
 
 		function next() {
 			if (round >= data.length) { const _lv = window.ppWin(); window.ppCelebrate('¡Completas frases como un crack! 💬', 3, () => initG23(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g23pb').style.width = (round/data.length*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g23pb')).style.width = (round/data.length*100)+'%';
 			const d = data[round];
-			cont.querySelector('#g23frase').textContent = d.f;
+			/** @type {HTMLElement} */ (cont.querySelector('#g23frase')).textContent = d.f;
 			const numOpts = lv<=3?2:lv<=7?3:4;
 			const wrongs = d.x.slice(0, numOpts-1);
-			const optsEl = cont.querySelector('#g23opts'); optsEl.innerHTML = '';
+			const optsEl = /** @type {HTMLElement} */ (cont.querySelector('#g23opts')); optsEl.innerHTML = '';
 			shuf([d.a, ...wrongs]).forEach(c => {
 				const b = document.createElement('div'); b.className = 'g8-opt'; b.textContent = c;
 				b.onclick = () => {

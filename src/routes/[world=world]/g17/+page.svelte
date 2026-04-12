@@ -6,8 +6,13 @@
 	const COLS = ['#FF6B6B','#FF9F43','#FFD93D','#6BCB77','#4D9FEC','#A78BFA','#F472B6','#2DD4BF'];
 	const EMOJIS = ['🎈','🎈','🎈','🎈','🌟','💖','🌸','⭐','🍭','🎊'];
 
-	let container, g17Popped = 0, g17Total = 0, g17Lv = 1, g17TimerId = null;
+	/** @type {HTMLDivElement} */
+	let container;
+	let g17Popped = 0, g17Total = 0, g17Lv = 1;
+	/** @type {ReturnType<typeof setTimeout>|null} */
+	let g17TimerId = null;
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG17(cont, lv) {
 		container = cont;
 		g17Lv = lv;
@@ -56,6 +61,7 @@
 			}, autoMs);
 		}
 
+		/** @param {Event} e */
 		function pop(e) {
 			e.preventDefault();
 			if (!el.parentNode) return;
@@ -66,7 +72,7 @@
 			window.ppBeep(500 + Math.random() * 400, 0.18);
 			window.ppOnCorrect();
 			g17Popped++;
-			const pb = container?.querySelector('#g17pb');
+			const pb = /** @type {HTMLElement|null} */ (container?.querySelector('#g17pb'));
 			const ct = container?.querySelector('#g17c');
 			if (pb) pb.style.width = (g17Popped / g17Total * 100) + '%';
 			if (ct) ct.textContent = (g17Total - g17Popped) + ' globos quedan';
@@ -81,6 +87,7 @@
 		}
 
 		let popped = false;
+		/** @param {Event} e */
 		function safePop(e) { e.preventDefault(); if (popped) return; popped = true; pop(e); }
 		el.addEventListener('touchstart', safePop, { passive: false });
 		el.addEventListener('click', safePop);
@@ -89,6 +96,7 @@
 
 	onDestroy(() => { if (g17TimerId) clearTimeout(g17TimerId); });
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initContainer(cont, lv) { initG17(cont, lv); }
 </script>
 

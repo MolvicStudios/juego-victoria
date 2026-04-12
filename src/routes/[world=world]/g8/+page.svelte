@@ -13,27 +13,29 @@
 		{e:'🎸',w:'Guitarra',x:['Piano','Tambor','Flauta']},
 	];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG8(cont, lv) {
 		let round = 0;
 		const data = shuf(G8_DATA).slice(0, lerpParam(lv,5,8));
 
 		cont.innerHTML = `<div class="ins">¡Mira el dibujo y elige cómo se llama!</div>
-			<div class="pbar" id="g8pb"><div class="pfill"></div></div>
+			<div class="pbar" id="g8pb"><div class="pfill" style="background:var(--c1)"></div></div>
 			<div class="g8-emo" id="g8emo"></div><div class="g8-opts" id="g8opts"></div>`;
 
-		function setPbar(r,t){const f=cont.querySelector('#g8pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
+		/** @param {number} r @param {number} t */
+		function setPbar(r,t){const f=/** @type {HTMLElement} */ (cont.querySelector('#g8pb .pfill'));f.style.width=(r/t*100)+'%';}
 
 		function next() {
 			if(round>=data.length){const _lv=window.ppWin();window.ppCelebrate('¡Sabes muchísimas palabras! 📚',3,()=>initG8(cont,window.ppGetLevel()),_lv);return;}
 			setPbar(round,data.length);
 			const d=data[round];
 			const audioOnly=lv>=12;
-			const ee=cont.querySelector('#g8emo');ee.textContent=d.e;ee.style.animation='none';void ee.offsetWidth;ee.style.animation='popIn .35s';
+			const ee=/** @type {HTMLElement} */ (cont.querySelector('#g8emo'));ee.textContent=d.e;ee.style.animation='none';void ee.offsetWidth;ee.style.animation='popIn .35s';
 			ee.style.visibility=audioOnly?'hidden':'';
 
 			const numWrong=lv<=3?1:lv<=7?2:3;
 			const wrongs=d.x.slice(0,numWrong);
-			const optsEl=cont.querySelector('#g8opts');optsEl.innerHTML='';
+			const optsEl=/** @type {HTMLElement} */ (cont.querySelector('#g8opts'));optsEl.innerHTML='';
 			shuf([d.w,...wrongs]).forEach(c=>{
 				const b=document.createElement('div');b.className='g8-opt';b.textContent=c;
 				b.onclick=()=>{

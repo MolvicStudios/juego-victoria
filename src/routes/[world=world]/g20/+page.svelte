@@ -20,6 +20,7 @@
 		{w:'Ballena',r:'Arena',x:['Gato','Sol','Casa']},
 	];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG20(cont, lv) {
 		let round = 0;
 		const data = shuf(G20_DATA).slice(0, lerpParam(lv, 5, 8));
@@ -31,12 +32,12 @@
 
 		function next() {
 			if (round >= data.length) { const _lv = window.ppWin(); window.ppCelebrate('¡Eres un poeta! 🎤', 3, () => initG20(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g20pb').style.width = (round/data.length*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g20pb')).style.width = (round/data.length*100)+'%';
 			const d = data[round];
-			cont.querySelector('#g20word').textContent = '🎤 ' + d.w;
+			/** @type {HTMLElement} */ (cont.querySelector('#g20word')).textContent = '🎤 ' + d.w;
 			const numWrong = lv<=3?1:lv<=7?2:3;
 			const wrongs = d.x.slice(0, numWrong);
-			const optsEl = cont.querySelector('#g20opts'); optsEl.innerHTML = '';
+			const optsEl = /** @type {HTMLElement} */ (cont.querySelector('#g20opts')); optsEl.innerHTML = '';
 			shuf([d.r, ...wrongs]).forEach(c => {
 				const b = document.createElement('div'); b.className = 'g8-opt'; b.textContent = c;
 				b.onclick = () => {

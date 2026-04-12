@@ -13,6 +13,7 @@
 		{w:'Limpio',o:'Sucio',e:'🧼↔🗑️'},{w:'Fuerte',o:'Débil',e:'💪↔🪶'},
 	];
 
+	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG22(cont, lv) {
 		let round = 0;
 		const data = shuf(G22_DATA).slice(0, lerpParam(lv, 5, 8));
@@ -24,14 +25,14 @@
 
 		function next() {
 			if (round >= data.length) { const _lv = window.ppWin(); window.ppCelebrate('¡Conoces todos los opuestos! ↔️', 3, () => initG22(cont, window.ppGetLevel()), _lv); return; }
-			cont.querySelector('#g22pb').style.width = (round/data.length*100)+'%';
+			/** @type {HTMLElement} */ (cont.querySelector('#g22pb')).style.width = (round/data.length*100)+'%';
 			const d = data[round];
-			const promptEl = cont.querySelector('#g22prompt');
+			const promptEl = /** @type {HTMLElement} */ (cont.querySelector('#g22prompt'));
 			promptEl.innerHTML = '<div style="font-size:2.5rem;margin-bottom:8px">'+d.e.split('↔')[0]+'</div><div style="font-size:1.8rem;font-weight:900">'+d.w+'</div><div style="font-size:.8rem;color:var(--ink2);margin-top:4px">¿Cuál es su opuesto?</div>';
 			const numOpts = lv<=3?2:lv<=7?3:4;
 			const others = G22_DATA.filter(x => x.o !== d.o && x.w !== d.o).map(x => x.o);
 			const wrongs = shuf(others).slice(0, numOpts-1);
-			const optsEl = cont.querySelector('#g22opts'); optsEl.innerHTML = '';
+			const optsEl = /** @type {HTMLElement} */ (cont.querySelector('#g22opts')); optsEl.innerHTML = '';
 			shuf([d.o, ...wrongs]).forEach(c => {
 				const b = document.createElement('div'); b.className = 'g8-opt'; b.textContent = c;
 				b.onclick = () => {
