@@ -1,0 +1,11 @@
+import{J as e,q as t,r as n}from"../chunks/Bc_HN91A.js";import"../chunks/CVyvgpuS.js";import{a as r}from"../chunks/BMktL-yB.js";import{t as i}from"../chunks/T0HDCPVC.js";function a(a,o){e(o,!0);let s=[`#FF6B6B`,`#FF9F43`,`#FFD93D`,`#6BCB77`,`#4D9FEC`,`#A78BFA`,`#F472B6`,`#2DD4BF`],c=[`🎈`,`🎈`,`🎈`,`🎈`,`🌟`,`💖`,`🌸`,`⭐`,`🍭`,`🎊`],l,u=0,d=0,f=1,p=null;function m(e,t){l=e,f=t,u=0,d=r(t,8,25),l.innerHTML=`
+			<div class="pbar"><div class="pfill" id="g17pb" style="width:0%;background:#F472B6"></div></div>
+			<div class="ins">¡Toca los globos para reventarlos! 🎈</div>
+			<div class="g17-arena" id="g17a"></div>
+			<div class="g17-count" id="g17c">${d} globos quedan</div>`,h(),window.ppSay(`¡Toca los globos!`)}function h(){let e=l?.querySelector(`#g17a`);if(!e)return;e.innerHTML=``;let t=r(f,110,50),n=s[Math.floor(Math.random()*s.length)],i=c[Math.floor(Math.random()*(f>=8?c.length:4))],a=5+Math.random()*(80-t/5),o=5+Math.random()*55,g=document.createElement(`div`);g.style.cssText=`
+			position:absolute;width:${t}px;height:${t}px;border-radius:50%;background:${n};
+			left:${a}%;top:${o}%;font-size:${Math.round(t*.55)}px;
+			display:flex;align-items:center;justify-content:center;cursor:pointer;
+			box-shadow:0 6px 20px rgba(0,0,0,.18);animation:popIn .25s;
+			user-select:none;-webkit-tap-highlight-color:transparent;
+			transition:transform .18s,opacity .18s`,g.textContent=i;let _=r(f,5e3,1600);f>=8&&(p=setTimeout(()=>{g.parentNode&&(g.style.opacity=`0`,setTimeout(()=>{g.parentNode&&(g.remove(),h())},200))},_));function v(e){if(e.preventDefault(),!g.parentNode)return;p&&(clearTimeout(p),p=null),g.style.transform=`scale(2)`,g.style.opacity=`0`,g.style.pointerEvents=`none`,window.ppBeep(500+Math.random()*400,.18),window.ppOnCorrect(),u++;let t=l?.querySelector(`#g17pb`),n=l?.querySelector(`#g17c`);t&&(t.style.width=u/d*100+`%`),n&&(n.textContent=d-u+` globos quedan`),u>=d?setTimeout(()=>{let e=window.ppWin();window.ppCelebrate(`¡Reventaste todos los globos! 🎈`,3,()=>m(l,window.ppGetLevel()),e)},500):setTimeout(h,350)}g.addEventListener(`click`,v),g.addEventListener(`touchstart`,v,{passive:!1}),e.appendChild(g)}n(()=>{p&&clearTimeout(p)});function g(e,t){m(e,t)}i(a,{gameNum:17,title:`Globos`,icon:`🎈`,initGame:g}),t()}export{a as component};
