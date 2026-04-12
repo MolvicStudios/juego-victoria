@@ -1,5 +1,5 @@
 <script>
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount, onDestroy, tick } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { get } from 'svelte/store';
 	import { beep, say, fanfare, boo } from '$lib/audio.js';
@@ -16,6 +16,7 @@
 
 	let { gameNum, title, icon, initGame, children } = $props();
 
+	/** @type {HTMLDivElement|null} */
 	let container = $state(null);
 	let showLevelSelect = $state(true);
 	let currentLevel = $state(1);
@@ -23,7 +24,9 @@
 	let celMsg = $state('');
 	let celStars = $state(2);
 	let celLvMsg = $state('');
+	/** @type {Function|null} */
 	let celCallback = $state(null);
+	/** @type {any[]} */
 	let confettiEls = $state([]);
 
 	const maxLevels = $derived.by(() => getMaxLevels());
@@ -77,10 +80,11 @@
 		}
 	});
 
-	function selectLevel(lv) {
+	async function selectLevel(lv) {
 		setLevel(gameNum, lv);
 		currentLevel = lv;
 		showLevelSelect = false;
+		await tick();
 		if (initGame && container) {
 			initGame(container, lv);
 		}

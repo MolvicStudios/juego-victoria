@@ -21,12 +21,14 @@
 		maestros:    { emoji: '🏆', color: '#FF9F43', label: 'Maestros'     },
 	};
 
+	/** @type {any[]} */
 	let profileList = $state([]);
 	let showCreate = $state(false);
 	let newName    = $state('');
 	let newPingu   = $state('');
 	let newAvatar  = $state('🦄');
-	let selectedAge = $state(null);  // index into AGE_GROUPS
+	/** @type {number|null} */
+	let selectedAge = $state(null);
 	let confirmDelete = $state(-1);
 
 	profiles.subscribe(v => { profileList = v; });
@@ -94,13 +96,14 @@
 
 		{#if !showCreate}
 			<!-- Profile selector -->
-			<div class="wel-pingu" onclick={() => { beep(700, 0.2); say('¡Hola! ¡Soy Pingu! ¡Vamos a jugar y aprender!'); }}>🐧</div>
+			<button class="wel-pingu" onclick={() => { beep(700, 0.2); say('¡Hola! ¡Soy Pingu! ¡Vamos a jugar y aprender!'); }}>🐧</button>
 			<h1 class="home-title">¿Quién va a jugar?</h1>
 
 			<div class="profiles-grid">
 				{#each profileList as p, i}
 					{@const world = worldForAge(p.birthYear)}
 					{@const meta = WORLD_META[world]}
+					<!-- svelte-ignore a11y_no_static_element_interactions a11y_click_events_have_key_events -->
 					<div class="profile-card" onclick={() => confirmDelete === i ? null : selectProfile(i)}
 						style="--pc:{meta.color}">
 						<div class="profile-av">{p.avatar}</div>
@@ -109,6 +112,7 @@
 							{meta.emoji} {meta.label}
 						</div>
 						{#if confirmDelete === i}
+							<!-- svelte-ignore a11y_no_static_element_interactions a11y_click_events_have_key_events -->
 							<div class="profile-del-confirm" onclick={(e) => e.stopPropagation()}>
 								<button onclick={() => confirmDeleteProfile(i)}>🗑️ Borrar</button>
 								<button onclick={() => confirmDelete = -1}>✕ No</button>
@@ -120,10 +124,11 @@
 				{/each}
 
 				{#if profileList.length < 4}
-					<div class="profile-card profile-add" onclick={() => { showCreate = true; selectedAge = null; }}>
+				<!-- svelte-ignore a11y_no_static_element_interactions a11y_click_events_have_key_events -->
+				<div class="profile-card profile-add" onclick={() => { showCreate = true; selectedAge = null; }}>
 						<div style="font-size:2.8rem">➕</div>
-						<div style="font-weight:700;font-size:.85rem;margin-top:6px">Nuevo perfil</div>
-					</div>
+					<div style="font-weight:700;font-size:.85rem;margin-top:6px">Nuevo perfil</div>
+				</div>
 				{/if}
 			</div>
 
@@ -132,20 +137,20 @@
 			<div class="wel-card" style="max-width:440px;width:94%">
 				<h1 style="font-size:1.2rem;text-align:center">¡Crea tu perfil! 🐧</h1>
 
-				<label class="wel-label">Elige tu avatar:</label>
+				<span class="wel-label">Elige tu avatar:</span>
 				<div class="avatar-row">
 					{#each AVATARS as a}
-						<div class="av-btn {a === newAvatar ? 'sel' : ''}" onclick={() => { newAvatar = a; beep(600, 0.1); }}>{a}</div>
+						<button class="av-btn {a === newAvatar ? 'sel' : ''}" onclick={() => { newAvatar = a; beep(600, 0.1); }}>{a}</button>
 					{/each}
 				</div>
 
-				<label class="wel-label">¿Cómo te llamas? *</label>
+				<span class="wel-label">¿Cómo te llamas? *</span>
 				<input class="wel-inp" type="text" placeholder="Escribe tu nombre..." maxlength="20" autocomplete="off" bind:value={newName} />
 
-				<label class="wel-label">Nombre del pingüino <span style="color:var(--ink2)">(opcional)</span></label>
+				<span class="wel-label">Nombre del pinguino <span style="color:var(--ink2)">(opcional)</span></span>
 				<input class="wel-inp" type="text" placeholder="Pingu" maxlength="15" autocomplete="off" bind:value={newPingu} />
 
-				<label class="wel-label">¿Cuántos años tienes? *</label>
+				<span class="wel-label">¿Cuántos años tienes? *</span>
 				<div class="age-selector">
 					{#each AGE_GROUPS as g, i}
 						<button class="age-btn {selectedAge === i ? 'sel' : ''}"

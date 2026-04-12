@@ -1,1 +1,0 @@
-import"../chunks/Bc_HN91A.js";import"../chunks/CVyvgpuS.js";import{t as e}from"../chunks/D7oKPVfC.js";function t(t){let n=[11,16,14,12,3,8,7,13,2,15,9,5,6,1,10];e(t,{worldId:`maestros`,worldEmoji:`🏆`,worldLabel:`Maestros`,worldColor:`#FF9F43`,get gameNums(){return n}})}export{t as component};

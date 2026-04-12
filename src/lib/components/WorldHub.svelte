@@ -92,14 +92,14 @@
 				<div class="world-badge" style="background:{worldColor}">{worldEmoji} {worldLabel}</div>
 			</div>
 			<div class="men-btns">
-				<div class="men-pill" onclick={toggleNightMode}><span>{isNight ? '☀️' : '🌙'}</span></div>
-				<div class="men-pill" onclick={openStickers}>🏆 <span>{stars}</span></div>
+				<button class="men-pill" onclick={toggleNightMode}><span>{isNight ? '☀️' : '🌙'}</span></button>
+				<button class="men-pill" onclick={openStickers}>🏆 <span>{stars}</span></button>
 			</div>
 		</div>
 
 		<div class="mgrid">
 			{#each worldGames as gm, idx}
-				<div class="mcard" style="animation-delay:{idx * 0.04}s;--col:{gm.col}" onclick={() => goGame(gm.n)}>
+				<button class="mcard" style="animation-delay:{idx * 0.04}s;--col:{gm.col}" onclick={() => goGame(gm.n)}>
 
 					<span class="ico">{gm.ico}</span>
 					<h3>{gm.name}</h3>
@@ -108,7 +108,7 @@
 					{#if gm.isNew}
 						<span class="new-badge">NUEVO</span>
 					{/if}
-				</div>
+				</button>
 			{/each}
 		</div>
 

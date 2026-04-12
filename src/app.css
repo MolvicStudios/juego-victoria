@@ -59,7 +59,8 @@ html:not(.night) .star{display:none}
   background:var(--card-glass);border:var(--glass-border);box-shadow:var(--shadow)}
 
 /* ===== WELCOME ===== */
-.wel-pingu{font-size:5rem;animation:bounce 1.5s infinite;text-align:center;cursor:pointer;margin-top:30px}
+.wel-pingu{font-size:5rem;animation:bounce 1.5s infinite;text-align:center;cursor:pointer;margin-top:30px;
+  background:none;border:none;padding:0;color:inherit}
 .wel-card{background:var(--card-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border:var(--glass-border);border-radius:22px;padding:22px;max-width:420px;width:90%;
   box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;margin:10px auto 30px;z-index:10}
@@ -74,7 +75,8 @@ html:not(.night) .star{display:none}
 .wel-go:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(200,70,70,.3)}
 .avatar-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .av-btn{width:50px;height:50px;border-radius:14px;border:3px solid #EEE;background:var(--card);
-  font-size:1.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+  font-size:1.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;
+  padding:0;font-family:'Nunito',sans-serif;color:var(--ink)}
 .av-btn.sel{border-color:var(--c5);background:#E6F2FF;transform:scale(1.12)}
 
 /* ===== MENU ===== */
@@ -86,12 +88,13 @@ html:not(.night) .star{display:none}
 .men-btns{display:flex;gap:8px}
 .men-pill{padding:8px 14px;border-radius:20px;font-size:.82rem;font-weight:700;cursor:pointer;
   background:var(--card-glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  border:var(--glass-border);box-shadow:var(--shadow)}
+  border:var(--glass-border);box-shadow:var(--shadow);font-family:'Nunito',sans-serif;color:var(--ink)}
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;
   padding:10px 14px 20px;z-index:10}
 .mcard{position:relative;border-radius:18px;padding:18px 14px 14px;cursor:pointer;
   background:var(--card-glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  border:var(--glass-border);box-shadow:var(--shadow);
+  border:var(--glass-border);box-shadow:var(--shadow);text-align:left;
+  font-family:'Nunito',sans-serif;color:var(--ink);
   transition:transform .15s;animation:cardIn .4s backwards;overflow:hidden}
 .mcard::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--col,#4D9FEC)}
 .mcard:active{transform:scale(.95)}
@@ -390,7 +393,8 @@ html.night #cel,html.night .cel-overlay{background:rgba(26,26,46,.93)}
 .profile-card{position:relative;width:130px;min-height:150px;border-radius:22px;padding:18px 12px 14px;
   cursor:pointer;background:var(--card-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border:2px solid var(--pc,#EEE);box-shadow:0 6px 20px rgba(0,0,0,.09);
-  display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .15s}
+  display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .15s;
+  font-family:'Nunito',sans-serif;color:var(--ink);text-align:center}
 .profile-card:active{transform:scale(.94)}
 .profile-card.profile-add{opacity:.65;border-style:dashed;justify-content:center}
 .profile-av{font-size:2.6rem;line-height:1}
