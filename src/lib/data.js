@@ -42,10 +42,10 @@ export const GAMES = [
 	{n:23,ico:'💬',name:'Completa Frase',sub:'¿Qué palabra falta?',   col:'#A78BFA',isNew:true},
 	// — Matemáticas —
 	{n:24,ico:'➖',name:'Restas',         sub:'¿Cuántos quedan?',      col:'#FF6B6B',isNew:true},
-	{n:25,ico:'🔵',name:'Par o Impar',   sub:'¿Es par o impar?',      col:'#4D9FEC',isNew:true},
+	{n:25,ico:'�',name:'Par o Impar',   sub:'¿Es par o impar?',      col:'#4D9FEC',isNew:true},
 	{n:26,ico:'⚖️',name:'Mayor/Menor',   sub:'Compara números',       col:'#6BCB77',isNew:true},
 	{n:27,ico:'🪙',name:'Monedas',       sub:'Cuenta las monedas',    col:'#FFD93D',isNew:true},
-	{n:28,ico:'🕐',name:'El Reloj',      sub:'¿Qué hora es?',         col:'#2DD4BF',isNew:true},
+	{n:28,ico:'⏰',name:'El Reloj',      sub:'¿Qué hora es?',         col:'#2DD4BF',isNew:true},
 	// — Lógica —
 	{n:29,ico:'🚫',name:'El Intruso',    sub:'¿Cuál no pertenece?',   col:'#FF6B6B',isNew:true},
 	{n:30,ico:'👤',name:'Sombras',       sub:'Empareja la sombra',    col:'#A78BFA',isNew:true},

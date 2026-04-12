@@ -60,6 +60,7 @@
 				} else {
 					cell.classList.add('g33-empty');
 					cell.onclick = () => {
+						if (cell.classList.contains('g33-fixed')) return;
 						if (selected) selected.style.outline = '';
 						selected = cell;
 						cell.style.outline = '3px solid var(--c4)';

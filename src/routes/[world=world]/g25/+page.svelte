@@ -37,7 +37,7 @@
 				b.onclick = () => {
 					const correct = (label === 'Par' && isPar) || (label === 'Impar' && !isPar);
 					if (correct) { b.style.background='#EFFFEF'; b.style.borderColor='#6BCB77'; window.ppBeep(880,.2); window.ppSay(num + ' es ' + (isPar?'par':'impar')); window.ppOnCorrect(); round++; setTimeout(next, 1000); }
-					else { b.classList.add('err'); setTimeout(()=>b.classList.remove('err'),400); window.ppOnWrong(); window.ppBoo(); }
+					else { b.classList.add('err'); setTimeout(()=>b.classList.remove('err'),400); window.ppOnWrong(); window.ppBoo(); window.ppSay('¡Inténtalo!'); }
 				};
 				btns.appendChild(b);
 			});

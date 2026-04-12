@@ -16,13 +16,13 @@
 		const data=shuf(G13_DATA).slice(0,lerpParam(lv,5,8));
 
 		cont.innerHTML = `<div class="ins">¡Escucha y toca la imagen correcta!</div>
-			<div class="pbar" id="g13pb"><div class="pbar-f"></div></div>
+			<div class="pbar" id="g13pb"><div class="pfill"></div></div>
 			<button class="g13-play" id="g13play">🔊 Repetir</button>
 			<div class="g13-opts" id="g13opts"></div>`;
 
 		cont.querySelector('#g13play').onclick = () => { if(current) window.ppSay(current.w); };
 
-		function setPbar(r,t){const f=cont.querySelector('#g13pb .pbar-f');if(f)f.style.width=(r/t*100)+'%';}
+		function setPbar(r,t){const f=cont.querySelector('#g13pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
 
 		function next(){
 			if(round>=data.length){const _lv=window.ppWin();window.ppCelebrate('¡Tienes un oído genial! 🗣️',3,()=>initG13(cont,window.ppGetLevel()),_lv);return;}
@@ -44,14 +44,7 @@
 				optsEl.appendChild(d);
 			});
 			if(noRepeat){cont.querySelector('#g13play').style.display='none';}else{cont.querySelector('#g13play').style.display='';}
-			setTimeout(()=>{
-				if(window.speechSynthesis){
-					speechSynthesis.cancel();
-					const u=new SpeechSynthesisUtterance(current.w);
-					u.lang='es-ES';u.rate=lv<=3?0.7:0.85;u.pitch=1.15;
-					speechSynthesis.speak(u);
-				}
-			},400);
+			setTimeout(()=>window.ppSay(current.w),400);
 		}
 		window.ppSay('¡Escucha bien la palabra y toca la imagen correcta!');
 		next();

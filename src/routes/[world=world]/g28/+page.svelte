@@ -10,13 +10,16 @@
 
 		cont.innerHTML = `<div class="ins">¿Qué hora es?</div>
 			<div class="pbar"><div class="pfill" id="g28pb" style="width:0%;background:var(--c6)"></div></div>
-			<canvas id="g28cvs" width="200" height="200" style="display:block;margin:0 auto"></canvas>
+			<canvas id="g28cvs" style="display:block;margin:0 auto;width:200px;height:200px"></canvas>
 			<div class="g8-opts" id="g28opts"></div>`;
 
 		function drawClock(cvs, h, m) {
+			const dpr = window.devicePixelRatio || 1;
+			cvs.width = 200 * dpr; cvs.height = 200 * dpr;
 			const ctx = cvs.getContext('2d');
-			const cx = cvs.width/2, cy = cvs.height/2, r = Math.min(cx,cy)-10;
-			ctx.clearRect(0,0,cvs.width,cvs.height);
+			ctx.scale(dpr, dpr);
+			const cx = 100, cy = 100, r = 90;
+			ctx.clearRect(0,0,200,200);
 
 			// face
 			ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fillStyle='#FFF'; ctx.fill();
@@ -76,7 +79,7 @@
 				b.className = 'g8-opt'; b.textContent = t;
 				b.onclick = () => {
 					if(t===ans){b.style.background='#EFFFEF';b.style.borderColor='#6BCB77';window.ppBeep(880,.2);window.ppSay('¡Correcto! Son las '+h+(m>0?' y '+m:''));window.ppOnCorrect();round++;setTimeout(next,1200);}
-					else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();}
+					else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();window.ppSay('¡Inténtalo!');}
 				};
 				optsEl.appendChild(b);
 			});

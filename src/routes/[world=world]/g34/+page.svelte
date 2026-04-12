@@ -5,6 +5,8 @@
 	function initG34(cont, lv) {
 		let round = 0;
 		const total = lerpParam(lv, 4, 7);
+		let g34Ctx = null;
+		try { g34Ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
 
 		cont.innerHTML = `<div class="ins">¡Repite el ritmo!</div>
 			<div class="pbar"><div class="pfill" id="g34pb" style="width:0%;background:var(--c5)"></div></div>
@@ -39,11 +41,11 @@
 					playTone(i);
 					if (seq[inputIdx]===i) {
 						inputIdx++;
-						window.ppOnCorrect();
 						if (inputIdx>=seq.length) {
 							listening = false;
 							cont.querySelector('#g34st').textContent = '¡Perfecto! 🎉';
 							window.ppBeep(880,.2);
+							window.ppOnCorrect();
 							round++;
 							setTimeout(next, 1000);
 						}
@@ -66,13 +68,14 @@
 			function playTone(idx) {
 				const freq = 300 + idx * 150;
 				try {
-					const ac = new (window.AudioContext || window.webkitAudioContext)();
-					const osc = ac.createOscillator();
-					const gain = ac.createGain();
-					osc.connect(gain); gain.connect(ac.destination);
+					if (!g34Ctx) return;
+					if (g34Ctx.state === 'suspended') g34Ctx.resume();
+					const osc = g34Ctx.createOscillator();
+					const gain = g34Ctx.createGain();
+					osc.connect(gain); gain.connect(g34Ctx.destination);
 					osc.frequency.value = freq;
 					gain.gain.value = 0.3;
-					osc.start(); osc.stop(ac.currentTime+0.15);
+					osc.start(); osc.stop(g34Ctx.currentTime+0.15);
 				} catch(e) {}
 			}
 

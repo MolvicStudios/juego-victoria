@@ -46,11 +46,11 @@
 		const data=shuf(pool).slice(0,lerpParam(lv,4,6));
 
 		cont.innerHTML = `<div class="ins">¡Toca los puntos en orden!</div>
-			<div class="pbar" id="g12pb"><div class="pbar-f"></div></div>
-			<div class="g12-letter" id="g12letter"></div>
+			<div class="pbar" id="g12pb"><div class="pfill"></div></div>
+			<div class="g12-letter-display" id="g12letter"></div>
 			<div class="g12-wrap"><canvas id="g12cvs"></canvas></div>`;
 
-		function setPbar(r,t){const f=cont.querySelector('#g12pb .pbar-f');if(f)f.style.width=(r/t*100)+'%';}
+		function setPbar(r,t){const f=cont.querySelector('#g12pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
 
 		function drawDots(){
 			curPts.forEach((p,i)=>{

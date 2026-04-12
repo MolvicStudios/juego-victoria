@@ -24,10 +24,10 @@
 		const total=lerpParam(lv,5,7);
 
 		cont.innerHTML = `<div class="ins">¡Elige qué figura viene después!</div>
-			<div class="pbar" id="g16pb"><div class="pbar-f"></div></div>
+			<div class="pbar" id="g16pb"><div class="pfill"></div></div>
 			<div class="g16-pattern" id="g16pattern"></div><div class="g16-opts" id="g16opts"></div>`;
 
-		function setPbar(r,t){const f=cont.querySelector('#g16pb .pbar-f');if(f)f.style.width=(r/t*100)+'%';}
+		function setPbar(r,t){const f=cont.querySelector('#g16pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
 
 		function next(){
 			if(round>=total){const _lv=window.ppWin();window.ppCelebrate('¡Eres maestro de patrones! 🔷',3,()=>initG16(cont,window.ppGetLevel()),_lv);return;}

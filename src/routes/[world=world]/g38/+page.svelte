@@ -69,7 +69,12 @@
 				piece.className = 'g38-piece';
 				piece.style.cssText = `width:${cellSize}px;height:${cellSize}px;background:${COLORS[i%COLORS.length]};border-radius:6px;display:inline-block;margin:4px;cursor:pointer;border:2px solid rgba(0,0,0,0.2);`;
 				piece.dataset.idx = i;
-				piece.dataset.px = p.x; piece.dataset.py = p.y;
+				piece.textContent = (i+1);
+				piece.style.fontSize = (cellSize*0.5)+'px';
+				piece.style.color = '#fff';
+				piece.style.fontWeight = '900';
+				piece.style.textAlign = 'center';
+				piece.style.lineHeight = cellSize+'px';
 				piece.onclick = () => {
 					if (piece.dataset.done) return;
 					if (selected) selected.style.outline='';
@@ -82,24 +87,18 @@
 			slots.forEach(slot => {
 				slot.onclick = () => {
 					if (!selected || selected.dataset.done) return;
-					const sx = +slot.dataset.x, sy = +slot.dataset.y;
-					const px = +selected.dataset.px, py = +selected.dataset.py;
-					if (sx===px && sy===py) {
-						slot.style.background = selected.style.background;
-						selected.dataset.done = '1';
-						selected.style.opacity = '0.3';
-						selected.style.outline = '';
-						window.ppBeep(600,.1);
-						window.ppOnCorrect();
-						placed++;
-						selected = null;
-						if (placed >= puzzle.pieces.length) {
-							round++; setTimeout(next, 800);
-						}
-					} else {
-						slot.classList.add('err');
-						setTimeout(()=>slot.classList.remove('err'), 400);
-						window.ppOnWrong(); window.ppBoo();
+					if (slot.dataset.filled) return;
+					slot.style.background = selected.style.background;
+					slot.dataset.filled = '1';
+					selected.dataset.done = '1';
+					selected.style.opacity = '0.3';
+					selected.style.outline = '';
+					window.ppBeep(600,.1);
+					window.ppOnCorrect();
+					placed++;
+					selected = null;
+					if (placed >= puzzle.pieces.length) {
+						round++; setTimeout(next, 800);
 					}
 				};
 			});

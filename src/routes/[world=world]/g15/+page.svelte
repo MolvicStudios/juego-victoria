@@ -21,10 +21,10 @@
 		const total=lerpParam(lv,5,7);
 
 		cont.innerHTML = `<div class="ins" id="g15ins"></div>
-			<div class="pbar" id="g15pb"><div class="pbar-f"></div></div>
+			<div class="pbar" id="g15pb"><div class="pfill"></div></div>
 			<div class="g15-objects" id="g15objects"></div>`;
 
-		function setPbar(r,t){const f=cont.querySelector('#g15pb .pbar-f');if(f)f.style.width=(r/t*100)+'%';}
+		function setPbar(r,t){const f=cont.querySelector('#g15pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
 
 		function next(){
 			if(round>=total){const _lv=window.ppWin();window.ppCelebrate('¡Sabes los tamaños! 📏',3,()=>initG15(cont,window.ppGetLevel()),_lv);return;}

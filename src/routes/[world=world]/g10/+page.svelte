@@ -18,10 +18,10 @@
 		}
 
 		cont.innerHTML = `<div class="ins">¡Toca el círculo del color!</div>
-			<div class="pbar" id="g10pb"><div class="pbar-f"></div></div>
+			<div class="pbar" id="g10pb"><div class="pfill"></div></div>
 			<div class="g10-name" id="g10name"></div><div class="g10-circles" id="g10circles"></div>`;
 
-		function setPbar(r,t){const f=cont.querySelector('#g10pb .pbar-f');if(f)f.style.width=(r/t*100)+'%';}
+		function setPbar(r,t){const f=cont.querySelector('#g10pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
 
 		function next(){
 			if(round>=order.length){const _lv=window.ppWin();window.ppCelebrate('¡Conoces todos los colores! 🌈',3,()=>initG10(cont,window.ppGetLevel()),_lv);return;}

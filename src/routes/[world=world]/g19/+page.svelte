@@ -6,7 +6,7 @@
 		{w:'Sol',s:1},{w:'Mar',s:1},{w:'Luz',s:1},{w:'Pan',s:1},
 		{w:'Casa',s:2},{w:'Mesa',s:2},{w:'Luna',s:2},{w:'Gato',s:2},{w:'Perro',s:2},{w:'Bota',s:2},
 		{w:'Pelota',s:3},{w:'Mariposa',s:4},{w:'Camisa',s:3},{w:'Zapato',s:3},{w:'Tomate',s:3},
-		{w:'Elefante',s:4},{w:'Cocodrilo',s:4},{w:'Dinosaurio',s:5},{w:'Zanahoria',s:4},
+		{w:'Elefante',s:4},{w:'Cocodrilo',s:4},{w:'Dinosaurio',s:4},{w:'Zanahoria',s:4},
 		{w:'Helicóptero',s:5},{w:'Abecedario',s:5},{w:'Rinoceronte',s:5},
 	];
 

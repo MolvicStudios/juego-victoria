@@ -15,7 +15,7 @@
 	];
 
 	let container = $state(null);
-	let g1Ghost = null, g1DragEl = null, g1Matched = 0, g1TapSel = null, g1TouchMoved = false;
+	let g1Ghost = null, g1DragEl = null, g1Matched = 0, g1TapSel = null, g1TouchMoved = false, g1MouseMoved = false;
 
 	function initG1(cont, lv) {
 		container = cont;
@@ -77,13 +77,14 @@
 		g1Ghost.textContent = shape.e; document.body.appendChild(g1Ghost); el.style.opacity = '.2'; window.ppBeep(600,.1);
 	}
 	function g1StartDragMouse(e, el, shape) {
+		g1MouseMoved = false;
 		const r = el.getBoundingClientRect(); g1DragEl = el;
 		g1Ghost = document.createElement('div'); g1Ghost.className = 'g1-ghost';
 		g1Ghost.style.cssText = `width:${r.width}px;height:${r.height}px;background:${shape.bg};left:${e.clientX-r.width/2}px;top:${e.clientY-r.height/2}px`;
 		g1Ghost.textContent = shape.e; document.body.appendChild(g1Ghost); el.style.opacity = '.2'; window.ppBeep(600,.1);
 	}
 	function g1MoveDrag(e) { if(!g1Ghost) return; e.preventDefault(); g1TouchMoved = true; const t = e.touches[0]; g1Ghost.style.left = (t.clientX-g1Ghost.offsetWidth/2)+'px'; g1Ghost.style.top = (t.clientY-g1Ghost.offsetHeight/2)+'px'; }
-	function g1MoveMouseDrag(e) { if(!g1Ghost) return; g1Ghost.style.left = (e.clientX-g1Ghost.offsetWidth/2)+'px'; g1Ghost.style.top = (e.clientY-g1Ghost.offsetHeight/2)+'px'; }
+	function g1MoveMouseDrag(e) { if(!g1Ghost) return; g1MouseMoved = true; g1Ghost.style.left = (e.clientX-g1Ghost.offsetWidth/2)+'px'; g1Ghost.style.top = (e.clientY-g1Ghost.offsetHeight/2)+'px'; }
 	function g1FinishDrag(cx, cy) {
 		if (!g1Ghost || !g1DragEl) return;
 		g1Ghost.style.visibility = 'hidden';
@@ -110,7 +111,7 @@
 		if (!g1TouchMoved) { g1Ghost.remove(); g1Ghost = null; if(g1DragEl){const el=g1DragEl;el.style.opacity='1';g1DragEl=null;const shape=G1_SHAPES.find(s=>s.id===el.dataset.id);if(shape)g1TapSelect(el,shape);} return; }
 		g1FinishDrag(t.clientX, t.clientY);
 	}
-	function g1EndMouseDrag(e) { if (!g1Ghost) return; g1FinishDrag(e.clientX, e.clientY); }
+	function g1EndMouseDrag(e) { if (!g1Ghost) return; if (!g1MouseMoved) { g1Ghost.remove(); g1Ghost = null; if(g1DragEl){g1DragEl.style.opacity='1';g1DragEl=null;} return; } g1FinishDrag(e.clientX, e.clientY); }
 
 	function g1TapSelect(el, shape) {
 		if (!el || el.classList.contains('used')) return;

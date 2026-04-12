@@ -73,7 +73,7 @@
 					window.ppCelebrate('¡Puntos conectados! ✏️', 3, () => initG35(cont, window.ppGetLevel()), _lv);
 				}
 			} else {
-				window.ppBoo();
+				window.ppOnWrong(); window.ppBoo();
 			}
 		}
 

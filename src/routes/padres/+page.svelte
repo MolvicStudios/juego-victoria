@@ -166,6 +166,13 @@
 			<button class="pad-tab {activeTab === 'about' ? 'on' : ''}" onclick={() => activeTab='about'}>ℹ️ Acerca de</button>
 		</div>
 
+		<a href="https://ko-fi.com/pinguplay" target="_blank" rel="noopener noreferrer"
+			style="display:block;text-align:center;background:#FF5E5B;color:white;padding:14px 28px;
+			border-radius:14px;font-size:1rem;font-weight:bold;text-decoration:none;
+			box-shadow:0 4px 0 rgba(200,60,60,.3);max-width:480px;width:100%">
+			☕ ¡Invítame un café en Ko-Fi!
+		</a>
+
 		<!-- ═══════ ESTADÍSTICAS ═══════ -->
 		{#if activeTab === 'stats'}
 		<div class="pad-section">
@@ -195,7 +202,7 @@
 		{:else if activeTab === 'info'}
 		<div class="pad-section">
 			<h3>📚 ¿Qué aprenden?</h3>
-			<p>PinguPlay tiene <strong>18 juegos educativos</strong> con <strong>15 niveles</strong> de dificultad cada uno. La dificultad sube automáticamente cuando tu hijo avanza:</p>
+			<p>PinguPlay tiene <strong>38 juegos educativos</strong> con <strong>15 niveles</strong> de dificultad cada uno. La dificultad sube automáticamente cuando tu hijo avanza:</p>
 
 			<h4>🧠 Áreas de aprendizaje</h4>
 			<div class="info-grid">
@@ -276,7 +283,7 @@
 			<h3>ℹ️ Acerca de PinguPlay</h3>
 			<p style="text-align:center;font-size:3rem;margin:8px 0">🐧</p>
 			<p style="text-align:center;font-weight:900;font-size:1.1rem">PinguPlay v5</p>
-			<p style="text-align:center;font-size:.78rem;color:var(--ink2)">18 juegos · 15 niveles · 4 mundos</p>
+			<p style="text-align:center;font-size:.78rem;color:var(--ink2)">38 juegos · 15 niveles · 4 mundos</p>
 
 			<h4>🔒 Privacidad y seguridad</h4>
 			<p>PinguPlay fue diseñado pensando en la seguridad de los niños:</p>
@@ -298,7 +305,7 @@
 
 			<h4>📧 Contacto</h4>
 			<p>¿Sugerencias o problemas? Escríbenos:</p>
-			<p style="font-weight:700;text-align:center">hola@molvicstudios.com</p>
+			<p style="font-weight:700;text-align:center">molvicstudios@outlook.com</p>
 
 			<div style="margin-top:16px;text-align:center;font-size:.7rem;color:var(--ink2)">
 				<p>© 2026 MolvicStudios · Hecho con ❤️ para los más pequeños</p>

@@ -237,6 +237,7 @@ canvas#g4cvs{border-radius:var(--r);box-shadow:var(--shadow);touch-action:none;m
 .g10-q{text-align:center}.g10-q p{font-size:.9rem;color:var(--ink2)}
 .g10-q span{font-size:2rem;font-weight:900}
 .g10-circles{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.g10-name{font-size:2rem;font-weight:900;text-align:center;margin:8px 0}
 .g10-c{width:72px;height:72px;border-radius:50%;cursor:pointer;transition:all .15s}
 .g10-c:active{transform:scale(.85);box-shadow:none!important}
 
@@ -557,7 +558,7 @@ button.profile-card{-webkit-appearance:none;appearance:none;border:none;backgrou
 /* ===== G36: ESPEJO ===== */
 .g36-grids{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;padding:8px}
 .g36-grid{display:grid;gap:3px;width:fit-content}
-.g36-cell{width:40px;height:40px;border-radius:6px;background:#EEE;border:2px solid #DDD;transition:all .2s}
+.g36-cell{width:48px;height:48px;border-radius:6px;background:#EEE;border:2px solid #DDD;transition:all .2s}
 .g36-clickable{cursor:pointer;background:#FFF;border-color:#CCC}
 .g36-clickable:hover{background:#F0F0F0}
 

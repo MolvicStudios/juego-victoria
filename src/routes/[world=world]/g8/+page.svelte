@@ -18,10 +18,10 @@
 		const data = shuf(G8_DATA).slice(0, lerpParam(lv,5,8));
 
 		cont.innerHTML = `<div class="ins">¡Mira el dibujo y elige cómo se llama!</div>
-			<div class="pbar" id="g8pb"><div class="pbar-f"></div></div>
+			<div class="pbar" id="g8pb"><div class="pfill"></div></div>
 			<div class="g8-emo" id="g8emo"></div><div class="g8-opts" id="g8opts"></div>`;
 
-		function setPbar(r,t){const f=cont.querySelector('#g8pb .pbar-f');if(f)f.style.width=(r/t*100)+'%';}
+		function setPbar(r,t){const f=cont.querySelector('#g8pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
 
 		function next() {
 			if(round>=data.length){const _lv=window.ppWin();window.ppCelebrate('¡Sabes muchísimas palabras! 📚',3,()=>initG8(cont,window.ppGetLevel()),_lv);return;}
@@ -43,7 +43,7 @@
 				};
 				optsEl.appendChild(b);
 			});
-			if(audioOnly){window.ppSay('Escucha con atención');setTimeout(()=>{const u=new SpeechSynthesisUtterance(d.w);u.lang='es-ES';u.rate=0.75;u.pitch=1.15;speechSynthesis.speak(u);},600);}else{window.ppSay('¿Cómo se llama esto?');}
+			if(audioOnly){window.ppSay('Escucha con atención');setTimeout(()=>window.ppSay(d.w),600);}else{window.ppSay('¿Cómo se llama esto?');}
 		}
 		window.ppSay('¡Mira el dibujo y elige cómo se llama!');
 		next();

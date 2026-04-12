@@ -42,7 +42,7 @@
 						setTimeout(next, 1200);
 					} else {
 						btn.classList.add('err'); setTimeout(()=>btn.classList.remove('err'),400);
-						window.ppOnWrong(); window.ppBoo();
+						window.ppOnWrong(); window.ppBoo(); window.ppSay('¡Inténtalo!');
 					}
 				};
 				btns.appendChild(btn);

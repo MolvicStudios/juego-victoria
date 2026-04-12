@@ -2,7 +2,10 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam } from '$lib/data.js';
 
+	let g37AnimId = 0;
+
 	function initG37(cont, lv) {
+		if (g37AnimId) { cancelAnimationFrame(g37AnimId); g37AnimId = 0; }
 		const COLORS = [
 			{name:'rojo',hex:'#E74C3C'},
 			{name:'azul',hex:'#3498DB'},
@@ -42,8 +45,9 @@
 
 			const handleTap = (e) => {
 				e.preventDefault();
-				if (!alive) return;
+				if (!alive || el.dataset.popped) return;
 				if (col.name === targetColor.name) {
+					el.dataset.popped = '1';
 					el.style.opacity = '0';
 					el.style.transform = 'scale(1.5)';
 					window.ppBeep(600 + popped*30, .1);
@@ -89,9 +93,9 @@
 			for (let i=bubbles.length-1;i>=0;i--) {
 				if (!bubbles[i].el.parentNode) bubbles.splice(i,1);
 			}
-			requestAnimationFrame(animate);
+			g37AnimId = requestAnimationFrame(animate);
 		}
-		requestAnimationFrame(animate);
+		g37AnimId = requestAnimationFrame(animate);
 		window.ppSay('¡Toca las burbujas de color ' + targetColor.name + '!');
 	}
 </script>

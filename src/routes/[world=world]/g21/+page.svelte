@@ -5,7 +5,7 @@
 	const G21_WORDS=[
 		{w:'SOL',e:'☀️'},{w:'PAN',e:'🍞'},{w:'LUZ',e:'💡'},{w:'MAR',e:'🌊'},
 		{w:'GATO',e:'🐱'},{w:'LUNA',e:'🌙'},{w:'CASA',e:'🏠'},{w:'MESA',e:'🪑'},
-		{w:'PERRO',e:'🐶'},{w:'FLOR',e:'🌸'},{w:'ARBOL',e:'🌳'},{w:'NUBE',e:'☁️'},
+		{w:'PERRO',e:'🐶'},{w:'FLOR',e:'🌸'},{w:'ÁRBOL',e:'🌳'},{w:'NUBE',e:'☁️'},
 		{w:'PELOTA',e:'⚽'},{w:'CAMISA',e:'👔'},{w:'ZAPATO',e:'👟'},{w:'TOMATE',e:'🍅'},
 		{w:'ESTRELLA',e:'⭐'},{w:'MARIPOSA',e:'🦋'},{w:'ELEFANTE',e:'🐘'},
 	];
@@ -50,8 +50,7 @@
 					if (ch === letters[idx]) {
 						nextSlot.textContent = ch; nextSlot.classList.add('filled'); b.classList.add('used');
 						window.ppBeep(400+placed*80,.12); window.ppSay(ch); placed++;
-						window.ppOnCorrect();
-						if (placed >= letters.length) { round++; setTimeout(next, 900); window.ppSay('¡'+d.w+'! ¡Muy bien!'); }
+						if (placed >= letters.length) { window.ppOnCorrect(); round++; setTimeout(next, 900); window.ppSay('¡'+d.w+'! ¡Muy bien!'); }
 					} else {
 						b.classList.add('err'); setTimeout(()=>b.classList.remove('err'),400);
 						window.ppOnWrong(); window.ppBoo(); window.ppSay('¡Esa letra no va ahí!');

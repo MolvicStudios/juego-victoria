@@ -13,7 +13,7 @@
 		{ e:'🦅', n:'Águila' },  { e:'🦄', n:'Unicornio' },
 	];
 
-	let container, g18Round = 0, g18Data = [];
+	let container, g18Round = 0, g18Data = [], g18HideTimer = 0;
 
 	function initG18(cont, lv) {
 		container = cont;
@@ -81,7 +81,8 @@
 
 		/* At level ≥ 12: hide the animal emoji after a moment (memory challenge) */
 		if (lv >= 12) {
-			setTimeout(() => {
+			clearTimeout(g18HideTimer);
+			g18HideTimer = setTimeout(() => {
 				const el = container?.querySelector('#g18em');
 				if (el) el.style.opacity = '0';
 			}, 1800);

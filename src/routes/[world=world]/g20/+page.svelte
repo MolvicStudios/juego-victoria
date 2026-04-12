@@ -16,7 +16,7 @@
 		{w:'Conejo',r:'Espejo',x:['Gato','Sol','Nube']},
 		{w:'Tortuga',r:'Lechuga',x:['Perro','Luna','Mesa']},
 		{w:'Coche',r:'Noche',x:['Gato','Casa','Sol']},
-		{w:'Piso',r:'Queso',x:['Luna','Perro','Mesa']},
+		{w:'Piso',r:'Aviso',x:['Luna','Perro','Mesa']},
 		{w:'Ballena',r:'Arena',x:['Gato','Sol','Casa']},
 	];
 

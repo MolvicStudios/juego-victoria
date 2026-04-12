@@ -50,7 +50,7 @@
 				btn.textContent = c;
 				btn.onclick = () => {
 					if (c === ans) { btn.style.background='#EFFFEF'; btn.style.borderColor='#6BCB77'; window.ppBeep(880,.2); window.ppSay('¡Correcto! ' + a + ' menos ' + b + ' es ' + ans); window.ppOnCorrect(); round++; setTimeout(next, 1200); }
-					else { btn.classList.add('err'); setTimeout(()=>btn.classList.remove('err'),400); window.ppOnWrong(); window.ppBoo(); }
+					else { btn.classList.add('err'); setTimeout(()=>btn.classList.remove('err'),400); window.ppOnWrong(); window.ppBoo(); window.ppSay('¡Inténtalo!'); }
 				};
 				optsEl.appendChild(btn);
 			});

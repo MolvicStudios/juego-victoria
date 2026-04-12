@@ -9,10 +9,10 @@
 		const total=lerpParam(lv,5,7);
 
 		cont.innerHTML = `<div class="ins" id="g11ins"></div>
-			<div class="pbar" id="g11pb"><div class="pbar-f"></div></div>
-			<div class="g11-vis" id="g11vis"></div><div class="g11-nums" id="g11nums"></div>`;
+			<div class="pbar" id="g11pb"><div class="pfill"></div></div>
+			<div class="g11-visual" id="g11vis"></div><div class="g11-nums" id="g11nums"></div>`;
 
-		function setPbar(r,t){const f=cont.querySelector('#g11pb .pbar-f');if(f)f.style.width=(r/t*100)+'%';}
+		function setPbar(r,t){const f=cont.querySelector('#g11pb .pfill');if(f)f.style.width=(r/t*100)+'%';}
 
 		function next(){
 			if(round>=total){const _lv=window.ppWin();window.ppCelebrate('¡Eres un crack sumando! 🧮',3,()=>initG11(cont,window.ppGetLevel()),_lv);return;}

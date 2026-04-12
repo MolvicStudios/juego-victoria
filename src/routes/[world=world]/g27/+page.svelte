@@ -57,7 +57,7 @@
 				b.textContent = v + 'c';
 				b.onclick = () => {
 					if (v === sum) { b.style.background='#EFFFEF'; b.style.borderColor='#6BCB77'; window.ppBeep(880,.2); window.ppSay('¡Correcto! Suman ' + sum); window.ppOnCorrect(); round++; setTimeout(next, 1200); }
-					else { b.classList.add('err'); setTimeout(()=>b.classList.remove('err'),400); window.ppOnWrong(); window.ppBoo(); }
+					else { b.classList.add('err'); setTimeout(()=>b.classList.remove('err'),400); window.ppOnWrong(); window.ppBoo(); window.ppSay('¡Inténtalo!'); }
 				};
 				optsEl.appendChild(b);
 			});
