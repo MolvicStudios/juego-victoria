@@ -32,6 +32,8 @@ export const GAMES = [
 	{n:14,ico:'🧭',name:'Laberinto',     sub:'Ayuda a Pingu',         col:'#2DD4BF'},
 	{n:15,ico:'📏',name:'Grande/Pequeño',sub:'¿Cuál es más grande?',  col:'#FF9F43',isNew:true},
 	{n:16,ico:'🔷',name:'Patrones',      sub:'¿Qué sigue después?',   col:'#A78BFA',isNew:true},
+	{n:17,ico:'🎈',name:'Globos',        sub:'¡Revienta los globos!',  col:'#F472B6'},
+	{n:18,ico:'🐾',name:'Animales',      sub:'¿Qué animal es?',        col:'#FF9F43'},
 ];
 
 export function shuf(a) { return [...a].sort(() => Math.random() - 0.5); }

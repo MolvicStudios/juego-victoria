@@ -1,9 +1,18 @@
 <script>
 	import { onMount, onDestroy } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { get } from 'svelte/store';
 	import { beep, say, fanfare, boo } from '$lib/audio.js';
 	import { getLevel, setLevel, addStars, onGameComplete, onCorrect, onWrong, getMaxLevels, getLevels, incrementSessionCompleted } from '$lib/stores/progress.js';
+	import { profiles, activeProfileIndex, worldForAge } from '$lib/stores/profiles.js';
 	import { LEVEL_COLORS } from '$lib/data.js';
+
+	function getBackRoute() {
+		const idx = get(activeProfileIndex);
+		const profs = get(profiles);
+		if (idx >= 0 && idx < profs.length) return '/' + worldForAge(profs[idx].birthYear);
+		return '/';
+	}
 
 	let { gameNum, title, icon, initGame, children } = $props();
 
@@ -84,13 +93,13 @@
 		if (celCallback) {
 			celCallback();
 		} else {
-			goto('/exploradores');
+			goto(getBackRoute());
 		}
 	}
 
 	function goBack() {
 		speechSynthesis?.cancel();
-		goto('/exploradores');
+		goto(getBackRoute());
 	}
 
 	function spawnConfetti() {

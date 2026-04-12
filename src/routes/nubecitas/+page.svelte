@@ -1,8 +1,7 @@
 <script>
 	import WorldHub from '$lib/components/WorldHub.svelte';
-	// Nubecitas: 0-2 años — juegos sensoriales muy simples
-	// Formas(1), Pintar(4), Colores(10), Piano(6), Memoria(5) — los más visuales y táctiles
-	const GAME_NUMS = [1, 4, 5, 6, 10];
+	// Nubecitas: 0-2 años — 15 juegos visuales y táctiles (sin aritmética, sin laberinto, sin traza)
+	const GAME_NUMS = [1, 4, 6, 10, 5, 8, 9, 17, 18, 2, 3, 7, 13, 15, 16];
 </script>
 
 <WorldHub

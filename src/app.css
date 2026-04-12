@@ -309,6 +309,15 @@ canvas#g12cvs{border-radius:var(--r);box-shadow:var(--shadow);touch-action:none;
   box-shadow:0 5px 0 rgba(0,0,0,.1);transition:all .15s}
 .g16-opt:active{transform:scale(.88);box-shadow:none}
 
+/* ===== G17: GLOBOS ===== */
+.g17-arena{position:relative;width:100%;max-width:480px;height:260px;border-radius:20px;
+  background:rgba(135,206,235,.12);border:var(--glass-border);overflow:hidden;touch-action:none}
+.g17-count{font-size:.82rem;font-weight:700;color:var(--ink2);text-align:center}
+
+/* ===== G18: ANIMALES ===== */
+.g18-animal{font-size:6rem;text-align:center;line-height:1.2;
+  animation:popIn .4s;transition:opacity .5s;min-height:96px}
+
 /* ===== SUMMARY ===== */
 .sum-pingu{font-size:4rem;text-align:center;animation:pBounce 1.2s infinite;margin-top:40px}
 .sum-card{background:var(--card-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
@@ -398,7 +407,7 @@ html.night #cel,html.night .cel-overlay{background:rgba(26,26,46,.93)}
 .age-btn{padding:12px 8px;border-radius:14px;border:3px solid #EEE;background:var(--card);
   font-family:'Nunito',sans-serif;cursor:pointer;transition:all .15s;display:flex;
   flex-direction:column;align-items:center;gap:4px}
-.age-btn.sel{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent);transform:scale(1.04)}
+.age-btn.sel{border-color:var(--ac);background:rgba(0,0,0,.07);box-shadow:0 0 0 2px var(--ac);transform:scale(1.04)}
 .age-emoji{font-size:1.6rem;line-height:1}
 .age-label{font-size:.72rem;font-weight:700;color:var(--ink);text-align:center;line-height:1.2}
 .wel-back{padding:10px;border:none;background:none;color:var(--ink2);font-size:.82rem;
