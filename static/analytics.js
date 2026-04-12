@@ -1,6 +1,5 @@
-// MolvicStudios Analytics Snippet v4.0
-// Auto-generado — no editar manualmente
-// SITE se reemplaza automáticamente al integrar en cada web
+// MolvicStudios Analytics Snippet v4.1 — GDPR/COPPA Compliant
+// Solo se ejecuta tras consentimiento explícito del usuario
 
 ;(function () {
   var SITE     = 'pinguplay.mom'
@@ -25,7 +24,11 @@
     /bot|crawl|spider|slurp|bingbot|googlebot/i.test(navigator.userAgent)
   ) return
 
-  // Detectar usuario nuevo vs recurrente
+  // ── GDPR/COPPA: Gate completo — sin consentimiento, no se ejecuta nada ──
+  var consent = localStorage.getItem('pp_cookie_consent')
+  if (consent !== 'accepted') return
+
+  // Solo ahora registramos el identificador anónimo de sesión
   var isNewUser = !localStorage.getItem(USER_KEY)
   if (isNewUser) localStorage.setItem(USER_KEY, '1')
 
@@ -119,58 +122,6 @@
       send('heartbeat', { beat: heartbeatCount, active_seconds: Math.round((Date.now() - sessionStart) / 1000) })
     }
   }, 30000)
-
-  // ── AD DETECTION (DOM) ──
-  function detectAds() {
-    var ads = { adsterra: false, adsense: false, mylead: false, adblocker: false }
-
-    // Adsterra: Social Bar, Native Banner, iframes
-    var adsterraSel = [
-      'div[id*="adsterra"]', 'div[id*="ad-banner"]',
-      'iframe[src*="adsterra"]', 'iframe[src*="adstera"]',
-      'script[src*="adsterra"]', 'ins.adsterra',
-      'div[class*="adsterra"]'
-    ]
-    for (var i = 0; i < adsterraSel.length; i++) {
-      if (document.querySelector(adsterraSel[i])) { ads.adsterra = true; break }
-    }
-
-    // AdSense
-    var adsenseSel = ['ins.adsbygoogle', 'script[src*="adsbygoogle"]', 'div[id*="google_ads"]']
-    for (var i = 0; i < adsenseSel.length; i++) {
-      if (document.querySelector(adsenseSel[i])) { ads.adsense = true; break }
-    }
-
-    // MyLead
-    var myleadSel = ['script[src*="mylead"]', 'div[data-mylead]', 'a[href*="mylead"]', 'iframe[src*="mylead"]']
-    for (var i = 0; i < myleadSel.length; i++) {
-      if (document.querySelector(myleadSel[i])) { ads.mylead = true; break }
-    }
-
-    // Adblocker detection: create a bait element
-    var bait = document.createElement('div')
-    bait.className = 'ad-banner ads adsbox ad-placement'
-    bait.style.cssText = 'position:absolute;top:-9999px;left:-9999px;width:1px;height:1px'
-    bait.innerHTML = '&nbsp;'
-    document.body.appendChild(bait)
-    setTimeout(function() {
-      ads.adblocker = (bait.offsetHeight === 0 || bait.clientHeight === 0 || getComputedStyle(bait).display === 'none')
-      try { document.body.removeChild(bait) } catch(x) {}
-      send('ad_status', {
-        ad_adsterra: ads.adsterra,
-        ad_adsense:  ads.adsense,
-        ad_mylead:   ads.mylead,
-        ad_blocker:  ads.adblocker
-      })
-    }, 500)
-  }
-
-  // Run ad detection after page is fully loaded
-  if (document.readyState === 'complete') {
-    setTimeout(detectAds, 2000)
-  } else {
-    window.addEventListener('load', function() { setTimeout(detectAds, 2000) })
-  }
 
   // ── OUTBOUND LINK TRACKING ──
   document.addEventListener('click', function(e) {

@@ -45,10 +45,13 @@
 
 			const numOpts = lv <= 3 ? 2 : lv <= 7 ? 3 : 4;
 			const wrongs = new Set();
-			while (wrongs.size < numOpts - 1) {
-				let w = sum + (Math.random() < 0.5 ? 1 : -1) * (Math.floor(Math.random() * 15) + 1);
-				if (w < 1) w = sum + Math.floor(Math.random() * 10) + 1;
-				if (w !== sum) wrongs.add(w);
+			let guard = 0;
+			while (wrongs.size < numOpts - 1 && guard < 100) {
+				guard++;
+				const delta = Math.floor(Math.random() * 15) + 1;
+				let w = Math.random() < 0.5 ? sum + delta : sum - delta;
+				if (w < 1) w = sum + delta;
+				if (w !== sum && !wrongs.has(w)) wrongs.add(w);
 			}
 
 			const optsEl = /** @type {HTMLElement} */ (cont.querySelector('#g27opts')); optsEl.innerHTML = '';

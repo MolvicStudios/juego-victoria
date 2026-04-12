@@ -81,7 +81,7 @@ export const GAMES = [
 	{n:35,ico:'✏️',name:'Conecta Puntos',sub:'Une los puntos',        col:'#2DD4BF',isNew:true, img:'g35-conecta.png'},
 	{n:36,ico:'🪞',name:'Espejo',        sub:'Copia el dibujo',       col:'#A78BFA',isNew:true, img:'g36-espejo.png'},
 	{n:37,ico:'🫧',name:'Burbujas',      sub:'¡Toca el color!',       col:'#4D9FEC',isNew:true, img:'g37-burbujas.png'},
-	{n:38,ico:'🔺',name:'Tangram',       sub:'Construye figuras',     col:'#FF9F43',isNew:true, img:'g38-tangram.png'},
+	{n:38,ico:'🔺',name:'Piezas',        sub:'Construye figuras',     col:'#FF9F43',isNew:true, img:'g38-tangram.png'},
 ];
 
 export const MEDALS = [

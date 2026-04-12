@@ -69,12 +69,14 @@
 			const ans = fmtTime(h,m);
 			const numOpts = lv<=3?2:lv<=7?3:4;
 			const wrongs = new Set();
-			while(wrongs.size < numOpts-1) {
+			let guard = 0;
+			while(wrongs.size < numOpts-1 && guard < 100) {
+				guard++;
 				let wh = h + (Math.random()<0.5?1:-1)*(Math.floor(Math.random()*3)+1);
 				if(wh<1) wh=12; if(wh>12) wh=wh%12||12;
 				let wm = showMinutes ? Math.floor(Math.random()*(60/minuteStep))*minuteStep : 0;
 				const wt = fmtTime(wh,wm);
-				if(wt!==ans) wrongs.add(wt);
+				if(wt!==ans && !wrongs.has(wt)) wrongs.add(wt);
 			}
 
 			const optsEl = /** @type {HTMLElement} */ (cont.querySelector('#g28opts')); optsEl.innerHTML='';

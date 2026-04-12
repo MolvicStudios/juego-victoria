@@ -1,5 +1,5 @@
-/* PinguPlay v8 — Service Worker */
-const CACHE = 'pinguplay-v8';
+/* PinguPlay v2.1 — Service Worker */
+const CACHE = 'pinguplay-v9';
 
 /* Shell precached on install */
 const SHELL = [

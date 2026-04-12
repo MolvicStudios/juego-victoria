@@ -1,8 +1,17 @@
 import { get } from 'svelte/store';
+import { browser } from '$app/environment';
 import { muted } from './stores/settings.js';
 
 /** @type {AudioContext|undefined} */
 let aCtx;
+let _userInteracted = false;
+
+if (browser) {
+	const _onInteract = () => { _userInteracted = true; };
+	document.addEventListener('click',      _onInteract, { once: true, passive: true, capture: true });
+	document.addEventListener('touchstart', _onInteract, { once: true, passive: true, capture: true });
+	document.addEventListener('keydown',    _onInteract, { once: true, passive: true, capture: true });
+}
 
 function au() {
 	if (!aCtx) aCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -38,7 +47,7 @@ export function fanfare() {
 
 /** @param {string} txt */
 export function say(txt) {
-	if (get(muted) || typeof window === 'undefined' || !window.speechSynthesis) return;
+	if (!_userInteracted || get(muted) || typeof window === 'undefined' || !window.speechSynthesis) return;
 	notifySoundUI();
 	speechSynthesis.cancel();
 	const u = new SpeechSynthesisUtterance(txt);

@@ -23,18 +23,34 @@
 	allProgress.subscribe(v => { progressData = v; });
 	parentPin.subscribe(v => { storedPin = v; });
 
+	/** @param {string} pin @returns {Promise<string>} */
+	async function hashPin(pin) {
+		const data = new TextEncoder().encode('pinguplay-2026:' + pin);
+		const buf = await crypto.subtle.digest('SHA-256', data);
+		return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+	}
+
 	onMount(() => {
 		if (!storedPin) authenticated = true;
 	});
 
-	function checkPin() {
-		if (pinInput === storedPin) { authenticated = true; pinError = ''; }
-		else { pinError = 'PIN incorrecto'; pinInput = ''; }
+	async function checkPin() {
+		const hash = await hashPin(pinInput);
+		// Soporte legacy: si el PIN guardado son 4 dígitos numéricos, es pin en texto plano — migrar
+		if (/^\d{4}$/.test(storedPin) && pinInput === storedPin) {
+			parentPin.set(hash); // migrar a hash
+			authenticated = true; pinError = '';
+		} else if (hash === storedPin) {
+			authenticated = true; pinError = '';
+		} else {
+			pinError = 'PIN incorrecto'; pinInput = '';
+		}
 	}
 
-	function savePin() {
+	async function savePin() {
 		if (newPin.length === 4 && /^\d{4}$/.test(newPin)) {
-			parentPin.set(newPin);
+			const hash = await hashPin(newPin);
+			parentPin.set(hash);
 			showSetPin = false; newPin = '';
 		}
 	}
@@ -182,7 +198,13 @@
 				{@const world = worldForAge(prof.birthYear)}
 				{@const wInfo = WORLD_INFO[world]}
 				<div class="stat-card">
-					<div class="stat-av">{prof.avatar}</div>
+				<div class="stat-av">
+					{#if prof.avatar?.endsWith('.png')}
+						<img src="/assets/avatars/{prof.avatar}" alt={prof.name} style="width:40px;height:40px;border-radius:10px;object-fit:cover" />
+					{:else}
+						{prof.avatar || '🦄'}
+					{/if}
+				</div>
 					<div class="stat-info">
 						<strong>{prof.name}</strong>
 						<small>{wInfo.emoji} {wInfo.label} ({wInfo.age} años)</small>
@@ -274,7 +296,7 @@
 			<hr style="margin:16px 0;opacity:.15" />
 
 			<h4>🗑️ Gestión de datos</h4>
-			<p>Todos los datos se guardan localmente en este dispositivo. No se envía nada a ningún servidor.</p>
+			<p>El progreso del juego se guarda localmente en este dispositivo. Si el padre/tutor aceptó las cookies, se envían métricas de uso anónimas para mejorar la app. Puedes ver más en <a href="/privacy.html" style="color:var(--c5)">nuestra política de privacidad</a>.</p>
 		</div>
 
 		<!-- ═══════ ACERCA DE ═══════ -->
@@ -282,15 +304,15 @@
 		<div class="pad-section">
 			<h3>ℹ️ Acerca de PinguPlay</h3>
 			<p style="text-align:center;font-size:3rem;margin:8px 0">🐧</p>
-			<p style="text-align:center;font-weight:900;font-size:1.1rem">PinguPlay v5</p>
+			<p style="text-align:center;font-weight:900;font-size:1.1rem">PinguPlay v2.1</p>
 			<p style="text-align:center;font-size:.78rem;color:var(--ink2)">38 juegos · 15 niveles · 4 mundos</p>
 
 			<h4>🔒 Privacidad y seguridad</h4>
 			<p>PinguPlay fue diseñado pensando en la seguridad de los niños:</p>
 			<p>✅ <strong>Sin publicidad</strong> — Ningún anuncio dentro de la app</p>
-			<p>✅ <strong>Sin rastreo</strong> — No se recopilan datos de uso ni analíticas</p>
+			<p>✅ <strong>Analítica con consentimiento</strong> — Solo si el padre/tutor acepta las cookies</p>
 			<p>✅ <strong>100% offline</strong> — Funciona sin conexión a internet</p>
-			<p>✅ <strong>Datos locales</strong> — Todo se guarda solo en el dispositivo</p>
+			<p>✅ <strong>Progreso local</strong> — Toda la actividad del juego se guarda solo en el dispositivo</p>
 			<p>✅ <strong>Sin compras</strong> — Todo el contenido es gratuito</p>
 			<p>✅ <strong>Sin enlaces externos</strong> — Los niños no pueden salir de la app</p>
 
