@@ -71,7 +71,6 @@
 </script>
 
 <style>
-	:global(#home-btn) { display: none; }
 	.pad-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:16px 16px 80px;
 		overflow-y:auto;z-index:10;min-height:100%;gap:14px}
 	.pad-header{text-align:center}

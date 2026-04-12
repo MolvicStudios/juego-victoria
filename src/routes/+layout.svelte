@@ -8,6 +8,9 @@
 
 	let { children } = $props();
 	let mounted = $state(false);
+	let pathname = $state('/');
+	page.subscribe(p => { pathname = p.url.pathname; });
+	const hideHome = $derived(pathname === '/' || pathname === '/padres');
 	let isNight = $state(false);
 	let isMuted = $state(false);
 
@@ -52,5 +55,7 @@
 
 {@render children()}
 
+{#if !hideHome}
 <button id="home-btn" onclick={() => goto('/')} title="Inicio" aria-label="Volver al inicio">🏠</button>
+{/if}
 <button id="mute" onclick={toggleMute}>{isMuted ? '🔇' : '🔊'}</button>

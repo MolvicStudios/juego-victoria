@@ -81,10 +81,7 @@
 	}
 </script>
 
-<!-- HOME BUTTON hidden on this page since we ARE home -->
-<style>
-	:global(#home-btn) { display: none; }
-</style>
+
 
 <div class="scr on" style="display:flex">
 	<div class="home-wrap">

@@ -1,1 +1,0 @@
-import"../chunks/Bc_HN91A.js";import"../chunks/CVyvgpuS.js";import{t as e}from"../chunks/DuLLxALX.js";function t(t){let n=[1,2,3,5,6,7,8,9,10,11,12,13,14,15,16];e(t,{worldId:`aventureros`,worldEmoji:`⚔️`,worldLabel:`Aventureros`,worldColor:`#6BCB77`,get gameNums(){return n}})}export{t as component};
