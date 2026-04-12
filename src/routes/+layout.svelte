@@ -13,6 +13,8 @@
 	const hideHome = $derived(pathname === '/' || pathname === '/padres');
 	let isNight = $state(false);
 	let isMuted = $state(false);
+	/** @type {'pending'|'accepted'|'declined'} */
+	let cookieConsent = $state('pending');
 
 	night.subscribe(v => { isNight = v; });
 	muted.subscribe(v => { isMuted = v; });
@@ -21,7 +23,22 @@
 		mounted = true;
 		createScenery();
 		applyNight(isNight);
+		const saved = localStorage.getItem('pp_cookie_consent');
+		if (saved === 'accepted' || saved === 'declined') cookieConsent = /** @type {any} */ (saved);
 	});
+
+	function acceptCookies() {
+		localStorage.setItem('pp_cookie_consent', 'accepted');
+		cookieConsent = 'accepted';
+		if (typeof window !== 'undefined' && typeof (/** @type {any} */(window)).gtag === 'function') {
+			(/** @type {any} */(window)).gtag('consent', 'update', { analytics_storage: 'granted' });
+		}
+	}
+
+	function declineCookies() {
+		localStorage.setItem('pp_cookie_consent', 'declined');
+		cookieConsent = 'declined';
+	}
 
 	/** @param {boolean} n */
 	function applyNight(n) {
@@ -60,3 +77,16 @@
 <button id="home-btn" onclick={() => goto('/')} title="Inicio" aria-label="Volver al inicio">🏠</button>
 {/if}
 <button id="mute" onclick={toggleMute}>{isMuted ? '🔇' : '🔊'}</button>
+
+{#if cookieConsent === 'pending'}
+<div class="cookie-banner" role="dialog" aria-label="Aviso de cookies">
+	<div class="cookie-text">
+		<span>🍪</span>
+		<p>Usamos Google Analytics para mejorar la app. ¿Aceptas las cookies de análisis? <a href="/privacy.html" target="_blank">Más info</a></p>
+	</div>
+	<div class="cookie-btns">
+		<button class="cookie-accept" onclick={acceptCookies}>Aceptar</button>
+		<button class="cookie-decline" onclick={declineCookies}>Rechazar</button>
+	</div>
+</div>
+{/if}

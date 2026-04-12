@@ -1,13 +1,23 @@
 <!doctype html>
 <html lang="es">
 	<head>
-		<!-- Google tag (gtag.js) -->
+		<!-- Google tag (gtag.js) — carga diferida hasta consentimiento -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-8H0947XNKF"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments);}
+			// Deniega analytics por defecto; se activa solo si el usuario acepta
+			gtag('consent', 'default', {
+				analytics_storage: 'denied',
+				ad_storage: 'denied',
+				wait_for_update: 500
+			});
 			gtag('js', new Date());
 			gtag('config', 'G-8H0947XNKF');
+			// Si ya dio consentimiento en una visita anterior, actívalo inmediatamente
+			if (typeof localStorage !== 'undefined' && localStorage.getItem('pp_cookie_consent') === 'accepted') {
+				gtag('consent', 'update', { analytics_storage: 'granted' });
+			}
 		</script>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
