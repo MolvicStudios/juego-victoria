@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://pinguplay.pages.dev/</loc><priority>1.0</priority></url>
-  <url><loc>https://pinguplay.pages.dev/exploradores</loc><priority>0.9</priority></url>
-  <url><loc>https://pinguplay.pages.dev/padres</loc><priority>0.5</priority></url>
-  <url><loc>https://pinguplay.pages.dev/privacy.html</loc><priority>0.3</priority></url>
-  <url><loc>https://pinguplay.pages.dev/terms.html</loc><priority>0.3</priority></url>
+  <url><loc>https://pinguplay.mom/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://pinguplay.mom/nubecitas</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://pinguplay.mom/exploradores</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://pinguplay.mom/aventureros</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://pinguplay.mom/maestros</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://pinguplay.mom/padres</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://pinguplay.mom/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://pinguplay.mom/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

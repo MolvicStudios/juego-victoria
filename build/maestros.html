@@ -20,20 +20,49 @@
 			}
 		</script>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 		<title>PinguPlay — Juegos educativos para niños</title>
-		<meta name="description" content="16 mini-juegos educativos para niños de 3-6 años. Aprende formas, colores, números, letras y más jugando con Pingu el pingüino." />
+		<meta name="description" content="38 juegos educativos para niños de 0-12 años con 15 niveles adaptativos. Aprende formas, colores, números, letras y más jugando con Pingu." />
 		<meta name="theme-color" content="#FF6B6B" />
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://pinguplay.mom/" />
+		<meta property="og:title" content="PinguPlay — Juegos educativos para niños" />
+		<meta property="og:description" content="38 juegos educativos para niños de 0-12 años con 15 niveles adaptativos. ¡Aprende jugando con Pingu!" />
+		<meta property="og:image" content="https://pinguplay.mom/icon-512.png" />
+		<meta property="og:image:width" content="512" />
+		<meta property="og:image:height" content="512" />
+		<meta property="og:locale" content="es_ES" />
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content="PinguPlay — Juegos educativos para niños" />
+		<meta name="twitter:description" content="38 juegos educativos para niños de 0-12 años con 15 niveles adaptativos. ¡Aprende jugando con Pingu!" />
+		<meta name="twitter:image" content="https://pinguplay.mom/icon-512.png" />
+		<!-- JSON-LD -->
+		<script type="application/ld+json">
+		{
+		  "@context": "https://schema.org",
+		  "@type": "WebApplication",
+		  "name": "PinguPlay",
+		  "url": "https://pinguplay.mom/",
+		  "description": "38 juegos educativos para niños de 0-12 años con 15 niveles adaptativos",
+		  "applicationCategory": "EducationalApplication",
+		  "operatingSystem": "Web, iOS, Android",
+		  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+		  "audience": { "@type": "EducationalAudience", "educationalRole": "student", "audienceType": "Children 0-12" },
+		  "inLanguage": "es"
+		}
+		</script>
 		<link rel="manifest" href="/manifest.json" />
 		<link rel="icon" href="/icon.svg" type="image/svg+xml" />
-		<link rel="apple-touch-icon" href="/icon.svg" />
+		<link rel="apple-touch-icon" href="/icon-192.png" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
-		<link href="./_app/immutable/entry/start.CzC0aoEs.js" rel="modulepreload">
-		<link href="./_app/immutable/chunks/-f3raYP_.js" rel="modulepreload">
+		<link href="./_app/immutable/entry/start.C4eilEU8.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/Duyn9K75.js" rel="modulepreload">
 		<link href="./_app/immutable/chunks/BIeRQmjK.js" rel="modulepreload">
-		<link href="./_app/immutable/entry/app.DOFSiHIR.js" rel="modulepreload">
+		<link href="./_app/immutable/entry/app.DQvd0Ckx.js" rel="modulepreload">
 		<link href="./_app/immutable/chunks/Br5cJI0m.js" rel="modulepreload">
 		
 	</head>
@@ -41,15 +70,15 @@
 		<div style="display: contents">
 			<script>
 				{
-					__sveltekit_1b6d3p = {
+					__sveltekit_10e16d4 = {
 						base: new URL(".", location).pathname.slice(0, -1)
 					};
 
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("./_app/immutable/entry/start.CzC0aoEs.js"),
-						import("./_app/immutable/entry/app.DOFSiHIR.js")
+						import("./_app/immutable/entry/start.C4eilEU8.js"),
+						import("./_app/immutable/entry/app.DQvd0Ckx.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element);
 					});
