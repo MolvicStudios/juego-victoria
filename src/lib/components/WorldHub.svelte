@@ -6,6 +6,7 @@
 	import { night, hiContrast, bigText } from '$lib/stores/settings.js';
 	import { GAMES, STICKER_MILESTONES, MEDALS } from '$lib/data.js';
 	import { beep, say, fanfare } from '$lib/audio.js';
+	import WorldBackground from '$lib/backgrounds/WorldBackground.svelte';
 
 	/**
 	 * @prop {string}   worldId    - 'nubecitas' | 'exploradores' | 'aventureros' | 'maestros'
@@ -117,7 +118,9 @@
 	</div>
 {:else}
 	<div class="scr on" style="display:flex">
-		<div class="men-top" style="background:linear-gradient(135deg,{worldColor}22 0%,{worldColor}08 100%);background-image:url('/assets/backgrounds/bg-{worldId}.png');background-size:cover;background-position:center">
+		<!-- Fondo parallax v3 -->
+		<WorldBackground world={worldId} interactive={true} />
+		<div class="men-top" style="background:linear-gradient(135deg,{worldColor}22 0%,{worldColor}08 100%)">
 			{#if profile?.avatar?.endsWith('.png')}
 				<img class="men-avatar" src="/assets/avatars/{profile.avatar}" alt={profile.name} style="border:3px solid {worldColor}" />
 			{:else}

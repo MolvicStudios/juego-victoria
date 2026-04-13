@@ -6,6 +6,7 @@
 	import { parentPin, night, muted } from '$lib/stores/settings.js';
 	import { GAMES } from '$lib/data.js';
 	import { get } from 'svelte/store';
+	import { quietMode } from '$lib/stores/accessibility.js';
 
 	let authenticated = $state(false);
 	let pinInput = $state('');
@@ -266,6 +267,17 @@
 				<span>🔇</span>
 				<label for="muted-toggle">Silenciar sonidos y voz</label>
 				<input id="muted-toggle" type="checkbox" class="toggle-sw" bind:checked={$muted} />
+			</div>
+
+			<div class="toggle-row">
+				<span>🌿</span>
+				<label for="quiet-toggle">Modo Flujo Silencioso</label>
+				<input id="quiet-toggle" type="checkbox" class="toggle-sw" bind:checked={$quietMode} />
+			</div>
+			<div class="pad-section" style="background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.25);padding:14px 16px;margin:-6px 0 6px">
+				<p style="font-size:.8rem;line-height:1.6;margin:0;color:var(--ink2)">
+					<strong style="color:var(--ink)">Modo Flujo Silencioso:</strong> reduce las animaciones y efectos visuales para niños que se concentran mejor con menos estímulos. Compatible con TDAH y sensibilidad sensorial.
+				</p>
 			</div>
 
 			<hr style="margin:16px 0;opacity:.15" />

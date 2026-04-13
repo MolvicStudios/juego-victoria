@@ -1,0 +1,1 @@
+import"../chunks/EQAqNU18.js";import"../chunks/Br5cJI0m.js";import{t as e}from"../chunks/D07L1amV.js";function t(t){let n=[1,2,3,5,6,7,8,9,10,11,12,13,14,15,16,19,20,21,23,24,25,26,27,29,31,32,34,35,36,38];e(t,{worldId:`aventureros`,worldEmoji:`⚔️`,worldLabel:`Aventureros`,worldColor:`#6BCB77`,get gameNums(){return n}})}export{t as component};

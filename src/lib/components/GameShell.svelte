@@ -2,16 +2,28 @@
 	import { onMount, onDestroy, tick } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { get } from 'svelte/store';
-	import { beep, say, fanfare, boo } from '$lib/audio.js';
+	import { page } from '$app/stores';
+	import { beep, say, fanfare, boo, playCorrect, playWrong, playLevelComplete } from '$lib/audio.js';
 	import { getLevel, setLevel, addStars, onGameComplete, onCorrect, onWrong, getMaxLevels, getLevels, incrementSessionCompleted, getStars, getStreak, checkNewMedals } from '$lib/stores/progress.js';
 	import { profiles, activeProfileIndex, worldForAge } from '$lib/stores/profiles.js';
 	import { LEVEL_COLORS, STICKER_MILESTONES } from '$lib/data.js';
+	import { quietMode } from '$lib/stores/accessibility.js';
+	import ParticleEngine from '$lib/effects/ParticleEngine.svelte';
+	import { trigger as triggerParticle } from '$lib/effects/particleEvents.js';
+	import PinguCharacter from '$lib/components/PinguCharacter.svelte';
 
 	function getBackRoute() {
 		const idx = get(activeProfileIndex);
 		const profs = get(profiles);
 		if (idx >= 0 && idx < profs.length) return '/' + worldForAge(profs[idx].birthYear);
 		return '/';
+	}
+
+	/** Obtiene el worldId de la URL actual (ej: /nubecitas/g1 → "nubecitas") */
+	function getWorldTheme() {
+		const path = get(page).url.pathname;
+		const match = /\/(nubecitas|exploradores|aventureros|maestros)/.exec(path);
+		return match ? match[1] : 'nubecitas';
 	}
 
 	/** @type {{gameNum: number, title: string, icon: string, initGame: (container: HTMLDivElement, level: number) => void}} */
@@ -37,6 +49,38 @@
 	let medalQueue = $state([]);
 	/** @type {{id:string, label:string, desc:string, icon:string}|null} */
 	let medalUnlock = $state(null);
+
+	// v3: estado de Pingu y modo silencioso
+	/** @type {'idle'|'waiting'|'correct'|'wrong'|'excited'|'idle-long'} */
+	let pinguState = $state('idle');
+	let isQuiet = $state(false);
+	quietMode.subscribe(v => { isQuiet = v; });
+	/** @type {ReturnType<typeof setTimeout>|null} */
+	let pinguStateTimer = $state(null);
+	/** @type {ReturnType<typeof setTimeout>|null} */
+	let idleLongTimer = $state(null);
+
+	/**
+	 * Cambia el estado de Pingu durante `ms` ms y luego vuelve a idle.
+	 * Si ms es 0, el estado persiste indefinidamente.
+	 * @param {'idle'|'waiting'|'correct'|'wrong'|'excited'|'idle-long'} s
+	 * @param {number} ms
+	 */
+	function setPinguState(s, ms = 0) {
+		if (pinguStateTimer) clearTimeout(pinguStateTimer);
+		pinguState = s;
+		if (ms > 0) {
+			pinguStateTimer = setTimeout(() => { pinguState = 'idle'; }, ms);
+		}
+	}
+
+	/** Reinicia el temporizador de idle-long (12s sin interacción) */
+	function resetIdleLong() {
+		if (idleLongTimer) clearTimeout(idleLongTimer);
+		idleLongTimer = setTimeout(() => {
+			if (pinguState === 'idle') setPinguState('idle-long', 2000);
+		}, 12000);
+	}
 
 	function _queueMedals(/** @type {Array<{id:string, label:string, desc:string, icon:string}>} */ medals) {
 		if (medals.length === 0) return;
@@ -66,6 +110,9 @@
 
 	onMount(() => {
 		currentLevel = getLevel(gameNum);
+		resetIdleLong();
+		// Reiniciar idle-long en cualquier interacción del usuario
+		document.addEventListener('pointerdown', resetIdleLong, { passive: true });
 
 		// Bridge functions for vanilla JS games
 		window.ppCelebrate = (/** @type {string} */ msg, stars = 2, cb = null, lvMsg = null) => {
@@ -86,8 +133,12 @@
 			// Check star-based and game-count medals
 			_queueMedals(checkNewMedals(gameNum));
 			fanfare();
+			playLevelComplete();
 			say(msg);
 			spawnConfetti();
+			// Partículas de nivel completado
+			triggerParticle('levelComplete', window.innerWidth / 2, 0, getWorldTheme());
+			setPinguState('correct', 700);
 		};
 		window.ppBeep = /** @type {any} */ (beep);
 		window.ppSay = say;
@@ -100,12 +151,31 @@
 			return msg;
 		};
 		window.ppGetLevel = () => getLevel(gameNum);
-		window.ppOnCorrect = () => {
+		window.ppOnCorrect = (/** @type {Event|undefined} */ sourceEvent) => {
 			onCorrect(gameNum);
 			streak = getStreak(gameNum);
 			_queueMedals(checkNewMedals(gameNum));
+			// Feedback visual + sonido v3
+			playCorrect();
+			resetIdleLong();
+			const world = getWorldTheme();
+			// Obtener posición del elemento origen si se pasa el evento
+			let px = window.innerWidth / 2, py = window.innerHeight / 2;
+			if (sourceEvent && sourceEvent instanceof MouseEvent) {
+				px = sourceEvent.clientX; py = sourceEvent.clientY;
+			} else if (sourceEvent && /** @type {any} */ (sourceEvent).changedTouches) {
+				const t = /** @type {TouchEvent} */ (sourceEvent).changedTouches[0];
+				px = t.clientX; py = t.clientY;
+			}
+			triggerParticle('correct', px, py, world);
+			// Estado Pingu según racha
+			if (streak >= 3) {
+				setPinguState('excited', 0); // persiste hasta siguiente evento
+			} else {
+				setPinguState('correct', 650);
+			}
 		};
-		window.ppOnWrong = () => {
+		window.ppOnWrong = (/** @type {Event|undefined} */ sourceEvent) => {
 			const msg = onWrong(gameNum);
 			streak = 0;
 			// Dispara animación wiggle en el contenedor del juego
@@ -113,12 +183,28 @@
 				wiggling = true;
 				setTimeout(() => { wiggling = false; }, 500);
 			}
+			// Feedback visual + sonido v3
+			playWrong();
+			resetIdleLong();
+			const world = getWorldTheme();
+			let px = window.innerWidth / 2, py = window.innerHeight / 2;
+			if (sourceEvent && sourceEvent instanceof MouseEvent) {
+				px = sourceEvent.clientX; py = sourceEvent.clientY;
+			} else if (sourceEvent && /** @type {any} */ (sourceEvent).changedTouches) {
+				const t = /** @type {TouchEvent} */ (sourceEvent).changedTouches[0];
+				px = t.clientX; py = t.clientY;
+			}
+			triggerParticle('wrong', px, py, world);
+			setPinguState('wrong', 550);
 			return msg;
 		};
 	});
 
 	onDestroy(() => {
+		if (pinguStateTimer) clearTimeout(pinguStateTimer);
+		if (idleLongTimer) clearTimeout(idleLongTimer);
 		if (typeof window !== 'undefined') {
+			document.removeEventListener('pointerdown', resetIdleLong);
 			const w = /** @type {any} */ (window);
 			delete w.ppCelebrate;
 			delete w.ppBeep;
@@ -216,15 +302,33 @@
 	<div class="scr on" style="display:flex">
 		<div class="hdr">
 			<button class="bk" onclick={goBack}>←</button>
+			<!-- Pingu compañero activo v3 — muestra el estado según eventos del juego -->
+			<PinguCharacter
+				state={pinguState}
+				size={44}
+				worldTheme={getWorldTheme()}
+			/>
 			<span class="htl">{icon} {title}</span>
 			{#if streak >= 3}
 				<span class="streak-badge">🔥×{streak}</span>
 			{/if}
 			<span class="lvbdg">Nivel {currentLevel}</span>
+			<!-- Toggle Modo Silencioso v3 -->
+			<button
+				class="quiet-toggle"
+				onclick={() => quietMode.update(v => !v)}
+				aria-label={isQuiet ? 'Modo silencioso activo: reactivar animaciones' : 'Modo silencioso: reduce animaciones y efectos'}
+				title={isQuiet ? 'Animaciones activadas' : 'Modo silencioso'}
+			>
+				{isQuiet ? '☀️' : '🌙'}
+			</button>
 		</div>
 		<div class="gbody {wiggling ? 'wiggle' : ''}" bind:this={container}></div>
 	</div>
 {/if}
+
+<!-- Motor de partículas v3 — siempre montado para recibir efectos -->
+<ParticleEngine />
 
 {#if celebrationVisible}
 	<div class="cel-overlay on" id="cel">
