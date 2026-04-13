@@ -1,6 +1,7 @@
 import { get } from 'svelte/store';
 import { browser } from '$app/environment';
 import { muted } from './stores/settings.js';
+import { locale } from '$lib/i18n/index.js';
 
 /** @type {AudioContext|undefined} */
 let aCtx;
@@ -45,13 +46,24 @@ export function fanfare() {
 	[523, 523, 659, 784, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.18, 'sine', 0.25), i * 90));
 }
 
+// Mapa locale PinguPlay → código BCP-47 para Web Speech API
+const SPEECH_LANG = {
+	es: 'es-ES',
+	en: 'en-US',
+	ca: 'ca-ES',
+	eu: 'eu-ES',
+	gl: 'gl-ES',
+};
+
 /** @param {string} txt */
 export function say(txt) {
 	if (!_userInteracted || get(muted) || typeof window === 'undefined' || !window.speechSynthesis) return;
 	notifySoundUI();
 	speechSynthesis.cancel();
 	const u = new SpeechSynthesisUtterance(txt);
-	u.lang = 'es-ES'; u.rate = 0.85; u.pitch = 1.15;
+	u.lang = SPEECH_LANG[get(locale)] ?? 'es-ES';
+	u.rate = 0.85;
+	u.pitch = 1.15;
 	speechSynthesis.speak(u);
 }
 
