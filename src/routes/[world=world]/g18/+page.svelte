@@ -3,15 +3,17 @@
 	import { onDestroy } from 'svelte';
 	import { shuf, lerpParam } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	/* 20 animals in increasing complexity: easy (top) → hard (bottom) */
 	const ANIMALS = [
-		{ e:'🐶', n:'Perro' },   { e:'🐱', n:'Gato' },    { e:'🐰', n:'Conejo' },
-		{ e:'🐻', n:'Oso' },     { e:'🐮', n:'Vaca' },     { e:'🐸', n:'Rana' },
-		{ e:'🐷', n:'Cerdo' },   { e:'🦁', n:'León' },     { e:'🐼', n:'Panda' },
-		{ e:'🦊', n:'Zorro' },   { e:'🐨', n:'Koala' },    { e:'🐘', n:'Elefante' },
-		{ e:'🦒', n:'Jirafa' },  { e:'🦓', n:'Cebra' },    { e:'🐢', n:'Tortuga' },
-		{ e:'🐺', n:'Lobo' },    { e:'🦋', n:'Mariposa' }, { e:'🐠', n:'Pez' },
-		{ e:'🦅', n:'Águila' },  { e:'🦄', n:'Unicornio' },
+		{ e:'🐶', n:'dog' },      { e:'🐱', n:'cat' },      { e:'🐰', n:'rabbit' },
+		{ e:'🐻', n:'bear' },     { e:'🐮', n:'cow' },      { e:'🐸', n:'frog' },
+		{ e:'🐷', n:'pig' },      { e:'🦁', n:'lion' },     { e:'🐼', n:'panda' },
+		{ e:'🦊', n:'fox' },      { e:'🐨', n:'koala' },    { e:'🐘', n:'elephant' },
+		{ e:'🦒', n:'giraffe' },  { e:'🦓', n:'zebra' },    { e:'🐢', n:'turtle' },
+		{ e:'🐺', n:'wolf' },     { e:'🦋', n:'butterfly' },{ e:'🐠', n:'fish' },
+		{ e:'🦅', n:'eagle' },    { e:'🦄', n:'unicorn' },
 	];
 
 	/** @type {HTMLDivElement} */
@@ -34,12 +36,12 @@
 
 		container.innerHTML = `
 			<div class="pbar"><div class="pfill" id="g18pb" style="width:0%;background:#FF9F43"></div></div>
-			<div class="ins">¿Qué animal es?</div>
+			<div class="ins">${T('games.g18.instruction')}</div>
 			<div class="g18-animal" id="g18em"></div>
 			<div class="g3-opts" id="g18opts"></div>`;
 
 		g18Show();
-		window.ppSay('¿Qué animal es?');
+		window.ppSay(T('games.g18.hello'));
 	}
 
 	function g18Show() {
@@ -47,7 +49,7 @@
 		const lv = window.ppGetLevel();
 		if (g18Round >= g18Data.length) {
 			const _lv = window.ppWin();
-			window.ppCelebrate('¡Conoces todos los animales! 🐾', 3, () => initG18(container, window.ppGetLevel()), _lv);
+			window.ppCelebrate(T('games.g18.win')+' 🐾', 3, () => initG18(container, window.ppGetLevel()), _lv);
 			return;
 		}
 		const pb = /** @type {HTMLElement|null} */ (container.querySelector('#g18pb'));
@@ -70,19 +72,19 @@
 			const b = document.createElement('div');
 			b.className = 'g3-opt';
 			/* Show emoji hint only up to level 9 */
-			b.innerHTML = (lv <= 9 ? opt.e : '') + '<p>' + opt.n + '</p>';
+			b.innerHTML = (lv <= 9 ? opt.e : '') + '<p>' + T('games.g18.animals.'+opt.n) + '</p>';
 			b.onclick = () => {
 				if (opt.n === animal.n) {
 					b.style.background = '#EFFFEF'; b.style.borderColor = '#6BCB77';
 					window.ppBeep(880, .2); window.ppOnCorrect();
-					window.ppSay('¡Correcto! Es un ' + animal.n);
+					window.ppSay(T('games.g18.correct',{name:T('games.g18.animals.'+animal.n)}));
 					g18Round++;
 					setTimeout(g18Show, 1100);
 				} else {
 					b.classList.add('err');
 					setTimeout(() => b.classList.remove('err'), 400);
 					window.ppOnWrong(); window.ppBoo();
-					window.ppSay('¡Inténtalo!');
+					window.ppSay(T('games.common.try_again'));
 				}
 			};
 			optsEl.appendChild(b);
@@ -97,7 +99,7 @@
 			}, 1800);
 		}
 
-		window.ppSay('¿Qué animal es?');
+		window.ppSay(T('games.g18.instruction'));
 	}
 
 	/** @param {HTMLDivElement} c @param {number} lv */

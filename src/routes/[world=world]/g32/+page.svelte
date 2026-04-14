@@ -2,15 +2,17 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	const G32_DATA = [
-		{cats:['Frutas 🍎','Animales 🐾'],items:[{t:'🍎',c:0},{t:'🍊',c:0},{t:'🍇',c:0},{t:'🐶',c:1},{t:'🐱',c:1},{t:'🐰',c:1}]},
-		{cats:['Ropa 👕','Comida 🍔'],items:[{t:'👕',c:0},{t:'👖',c:0},{t:'🧥',c:0},{t:'🍕',c:1},{t:'🌮',c:1},{t:'🍔',c:1}]},
-		{cats:['Tierra 🌍','Agua 🌊'],items:[{t:'🐕',c:0},{t:'🦁',c:0},{t:'🐘',c:0},{t:'🐟',c:1},{t:'🐙',c:1},{t:'🐋',c:1}]},
-		{cats:['Caliente 🔥','Frío ❄️'],items:[{t:'☀️',c:0},{t:'🔥',c:0},{t:'🌋',c:0},{t:'❄️',c:1},{t:'🧊',c:1},{t:'⛄',c:1}]},
-		{cats:['Voladores ✈️','Terrestres 🚗'],items:[{t:'✈️',c:0},{t:'🚁',c:0},{t:'🎈',c:0},{t:'🚗',c:1},{t:'🚌',c:1},{t:'🚂',c:1}]},
-		{cats:['Grande 🐘','Pequeño 🐁'],items:[{t:'🐘',c:0},{t:'🦒',c:0},{t:'🐋',c:0},{t:'🐁',c:1},{t:'🐜',c:1},{t:'🐞',c:1}]},
-		{cats:['Frutas 🍎','Verduras 🥦'],items:[{t:'🍎',c:0},{t:'🍌',c:0},{t:'🍓',c:0},{t:'🥦',c:1},{t:'🥕',c:1},{t:'🌽',c:1}]},
-		{cats:['Día ☀️','Noche 🌙'],items:[{t:'☀️',c:0},{t:'🌈',c:0},{t:'🦋',c:0},{t:'🌙',c:1},{t:'⭐',c:1},{t:'🦉',c:1}]},
+		{cats:['fruits','animals'],items:[{t:'🍎',c:0},{t:'🍊',c:0},{t:'🍇',c:0},{t:'🐶',c:1},{t:'🐱',c:1},{t:'🐰',c:1}]},
+		{cats:['clothing','food'],items:[{t:'👕',c:0},{t:'👖',c:0},{t:'🧥',c:0},{t:'🍕',c:1},{t:'🌮',c:1},{t:'🍔',c:1}]},
+		{cats:['land','water'],items:[{t:'🐕',c:0},{t:'🦁',c:0},{t:'🐘',c:0},{t:'🐟',c:1},{t:'🐙',c:1},{t:'🐋',c:1}]},
+		{cats:['hot','cold'],items:[{t:'☀️',c:0},{t:'🔥',c:0},{t:'🌋',c:0},{t:'❄️',c:1},{t:'🧊',c:1},{t:'⛄',c:1}]},
+		{cats:['flying','ground'],items:[{t:'✈️',c:0},{t:'🚁',c:0},{t:'🎈',c:0},{t:'🚗',c:1},{t:'🚌',c:1},{t:'🚂',c:1}]},
+		{cats:['big','small'],items:[{t:'🐘',c:0},{t:'🦒',c:0},{t:'🐋',c:0},{t:'🐁',c:1},{t:'🐜',c:1},{t:'🐞',c:1}]},
+		{cats:['fruits','vegetables'],items:[{t:'🍎',c:0},{t:'🍌',c:0},{t:'🍓',c:0},{t:'🥦',c:1},{t:'🥕',c:1},{t:'🌽',c:1}]},
+		{cats:['daytime','nighttime'],items:[{t:'☀️',c:0},{t:'🌈',c:0},{t:'🦋',c:0},{t:'🌙',c:1},{t:'⭐',c:1},{t:'🦉',c:1}]},
 	];
 
 	/** @param {HTMLDivElement} cont @param {number} lv */
@@ -18,13 +20,13 @@
 		let round = 0;
 		const data = shuf(G32_DATA).slice(0, lerpParam(lv, 3, 6));
 
-		cont.innerHTML = `<div class="ins">¡Clasifica en categorías!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g32.instruction')}</div>
 			<div class="pbar"><div class="pfill" id="g32pb" style="width:0%;background:var(--c4)"></div></div>
 			<div class="g32-cats" id="g32cats"></div>
 			<div class="g32-items" id="g32items"></div>`;
 
 		function next() {
-			if (round >= data.length) { const _lv = window.ppWin(); window.ppCelebrate('¡Clasificas genial! 📂', 3, () => initG32(cont, window.ppGetLevel()), _lv); return; }
+			if (round >= data.length) { const _lv = window.ppWin(); window.ppCelebrate(T('games.g32.win') + ' 📂', 3, () => initG32(cont, window.ppGetLevel()), _lv); return; }
 			/** @type {HTMLElement} */ (cont.querySelector('#g32pb')).style.width = (round/data.length*100)+'%';
 			const d = data[round];
 			const numPerCat = lerpParam(lv, 2, 3);
@@ -39,7 +41,7 @@
 			const zones = d.cats.map((name, idx) => {
 				const z = document.createElement('div');
 				z.className = 'g32-zone';
-				z.innerHTML = `<div class="g32-label">${name}</div><div class="g32-drop" data-cat="${idx}"></div>`;
+				z.innerHTML = `<div class="g32-label">${T('games.g32.cats.'+name)}</div><div class="g32-drop" data-cat="${idx}"></div>`;
 				catsEl.appendChild(z);
 				return z;
 			});
@@ -87,7 +89,7 @@
 					}
 				};
 			});
-			window.ppSay('Clasifica los elementos en: ' + d.cats.join(' y '));
+			window.ppSay(T('games.g32.prompt', {cats: d.cats.map(c => T('games.g32.cats.'+c)).join(T('games.g32.and'))}));
 		}
 		next();
 	}

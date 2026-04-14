@@ -2,6 +2,8 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG38(cont, lv) {
 		let round = 0;
@@ -10,28 +12,28 @@
 
 		// Tangram-style: arrange pieces to match a target shape
 		const PUZZLES = [
-			{name:'Cuadrado', pieces:[{x:0,y:0,w:1,h:1},{x:1,y:0,w:1,h:1},{x:0,y:1,w:1,h:1},{x:1,y:1,w:1,h:1}]},
-			{name:'Rectángulo',pieces:[{x:0,y:0,w:2,h:1},{x:0,y:1,w:1,h:1},{x:1,y:1,w:1,h:1}]},
-			{name:'Forma L',pieces:[{x:0,y:0,w:1,h:1},{x:0,y:1,w:1,h:1},{x:0,y:2,w:1,h:1},{x:1,y:2,w:1,h:1}]},
-			{name:'Forma T',pieces:[{x:0,y:0,w:1,h:1},{x:1,y:0,w:1,h:1},{x:2,y:0,w:1,h:1},{x:1,y:1,w:1,h:1}]},
-			{name:'Cruz',pieces:[{x:1,y:0,w:1,h:1},{x:0,y:1,w:1,h:1},{x:1,y:1,w:1,h:1},{x:2,y:1,w:1,h:1},{x:1,y:2,w:1,h:1}]},
-			{name:'Escalera',pieces:[{x:0,y:0,w:1,h:1},{x:0,y:1,w:1,h:1},{x:1,y:1,w:1,h:1},{x:1,y:2,w:1,h:1},{x:2,y:2,w:1,h:1}]},
+			{name:'square', pieces:[{x:0,y:0,w:1,h:1},{x:1,y:0,w:1,h:1},{x:0,y:1,w:1,h:1},{x:1,y:1,w:1,h:1}]},
+			{name:'rectangle',pieces:[{x:0,y:0,w:2,h:1},{x:0,y:1,w:1,h:1},{x:1,y:1,w:1,h:1}]},
+			{name:'l_shape',pieces:[{x:0,y:0,w:1,h:1},{x:0,y:1,w:1,h:1},{x:0,y:2,w:1,h:1},{x:1,y:2,w:1,h:1}]},
+			{name:'t_shape',pieces:[{x:0,y:0,w:1,h:1},{x:1,y:0,w:1,h:1},{x:2,y:0,w:1,h:1},{x:1,y:1,w:1,h:1}]},
+			{name:'cross',pieces:[{x:1,y:0,w:1,h:1},{x:0,y:1,w:1,h:1},{x:1,y:1,w:1,h:1},{x:2,y:1,w:1,h:1},{x:1,y:2,w:1,h:1}]},
+			{name:'stairs',pieces:[{x:0,y:0,w:1,h:1},{x:0,y:1,w:1,h:1},{x:1,y:1,w:1,h:1},{x:1,y:2,w:1,h:1},{x:2,y:2,w:1,h:1}]},
 		];
 
 		const puzzlePool = shuf(PUZZLES).slice(0, total);
 
-		cont.innerHTML = `<div class="ins">¡Coloca las piezas!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g38.instruction')}</div>
 			<div class="pbar"><div class="pfill" id="g38pb" style="width:0%;background:var(--c1)"></div></div>
 			<div class="g38-name" id="g38name"></div>
 			<div class="g38-board" id="g38board"></div>
 			<div class="g38-pieces" id="g38pieces"></div>`;
 
 		function next() {
-			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Constructor maestro! 🏗️', 3, () => initG38(cont, window.ppGetLevel()), _lv); return; }
+			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate(T('games.g38.win') + ' 🏗️', 3, () => initG38(cont, window.ppGetLevel()), _lv); return; }
 			/** @type {HTMLElement} */(cont.querySelector('#g38pb')).style.width = (round/total*100)+'%';
 
 			const puzzle = puzzlePool[round];
-			/** @type {HTMLElement} */(cont.querySelector('#g38name')).textContent = puzzle.name;
+			/** @type {HTMLElement} */(cont.querySelector('#g38name')).textContent = T('games.g38.puzzles.'+puzzle.name);
 
 			// Compute grid bounds
 			let maxX=0, maxY=0;
@@ -106,7 +108,7 @@
 					}
 				};
 			});
-			window.ppSay('¡Coloca las piezas para formar: ' + puzzle.name + '!');
+			window.ppSay(T('games.g38.hello', {name: T('games.g38.puzzles.'+puzzle.name)}));
 		}
 		next();
 	}

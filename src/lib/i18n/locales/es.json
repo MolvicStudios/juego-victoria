@@ -669,6 +669,8 @@
   "games.g20.wrong.sol": "Sol",
   "games.g20.wrong.nube": "Nube",
   "games.g20.wrong.mesa": "Mesa",
+  "games.g20.wrong.gato": "Gato",
+  "games.g20.wrong.luna": "Luna",
 
   "games.g21.hello": "¿Cómo se escribe {word}?",
   "games.g21.instruction": "¡Ordena las letras para formar la palabra!",

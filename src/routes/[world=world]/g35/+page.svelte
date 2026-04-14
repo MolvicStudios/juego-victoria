@@ -2,11 +2,13 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG35(cont, lv) {
 		const numDots = lerpParam(lv, 5, 15);
 
-		cont.innerHTML = `<div class="ins">¡Conecta los puntos en orden!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g35.instruction')}</div>
 			<canvas id="g35cvs" width="320" height="320" style="display:block;margin:0 auto;background:#FFFDE7;border-radius:12px;touch-action:none"></canvas>`;
 
 		const cvs = /** @type {HTMLCanvasElement} */ (cont.querySelector('#g35cvs'));
@@ -78,7 +80,7 @@
 				draw();
 				if (currentDot >= dots.length) {
 					const _lv = window.ppWin();
-					window.ppCelebrate('¡Puntos conectados! ✏️', 3, () => initG35(cont, window.ppGetLevel()), _lv);
+					window.ppCelebrate(T('games.g35.win') + ' ✏️', 3, () => initG35(cont, window.ppGetLevel()), _lv);
 				}
 			} else {
 				window.ppOnWrong(); window.ppBoo();
@@ -93,7 +95,7 @@
 		}, {passive:false});
 
 		draw();
-		window.ppSay('¡Conecta los puntos del 1 al ' + numDots + '!');
+		window.ppSay(T('games.g35.hello', {n: numDots}));
 	}
 </script>
 

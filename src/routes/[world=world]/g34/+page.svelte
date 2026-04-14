@@ -2,12 +2,14 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG34(cont, lv) {
 		let round = 0;
 		const total = lerpParam(lv, 4, 7);
 
-		cont.innerHTML = `<div class="ins">¡Repite el ritmo!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g34.instruction')}</div>
 			<div class="pbar"><div class="pfill" id="g34pb" style="width:0%;background:var(--c5)"></div></div>
 			<div class="g34-display" id="g34disp"></div>
 			<div class="g34-pad" id="g34pad"></div>
@@ -18,7 +20,7 @@
 		const seqLen = lerpParam(lv, 3, 7);
 
 		function next() {
-			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Gran sentido del ritmo! 🥁', 3, () => initG34(cont, window.ppGetLevel()), _lv); return; }
+			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate(T('games.g34.win') + ' 🥁', 3, () => initG34(cont, window.ppGetLevel()), _lv); return; }
 			/** @type {HTMLElement} */ (cont.querySelector('#g34pb')).style.width = (round/total*100)+'%';
 
 			// generate sequence
@@ -44,7 +46,7 @@
 						inputIdx++;
 						if (inputIdx>=seq.length) {
 							listening = false;
-							/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = '¡Perfecto! 🎉';
+							/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = T('games.g34.perfect');
 							window.ppBeep(880,.2);
 							window.ppOnCorrect();
 							round++;
@@ -52,7 +54,7 @@
 						}
 					} else {
 						listening = false;
-						/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = '¡Inténtalo de nuevo!';
+						/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = T('games.g34.try_again');
 						window.ppOnWrong(); window.ppBoo();
 						setTimeout(() => playSequence(), 1000);
 					}
@@ -75,7 +77,7 @@
 			function playSequence() {
 				listening = false;
 				inputIdx = 0;
-				/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = '👀 Observa...';
+				/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = T('games.g34.observe');
 				seq.forEach((s, i) => {
 					setTimeout(()=>{
 						flashPad(s);
@@ -84,13 +86,13 @@
 				});
 				setTimeout(()=>{
 					listening = true;
-					/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = '🎵 ¡Tu turno!';
+					/** @type {HTMLElement} */ (cont.querySelector('#g34st')).textContent = T('games.g34.your_turn');
 				}, seq.length*500+300);
 			}
 
 			playSequence();
 		}
-		window.ppSay('¡Escucha y repite el ritmo!');
+		window.ppSay(T('games.g34.hello'));
 		next();
 	}
 </script>

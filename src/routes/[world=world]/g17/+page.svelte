@@ -3,6 +3,8 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	const COLS = ['#FF6B6B','#FF9F43','#FFD93D','#6BCB77','#4D9FEC','#A78BFA','#F472B6','#2DD4BF'];
 	const EMOJIS = ['🎈','🎈','🎈','🎈','🌟','💖','🌸','⭐','🍭','🎊'];
 
@@ -21,12 +23,12 @@
 
 		container.innerHTML = `
 			<div class="pbar"><div class="pfill" id="g17pb" style="width:0%;background:#F472B6"></div></div>
-			<div class="ins">¡Toca los globos para reventarlos! 🎈</div>
+			<div class="ins">${T('games.g17.instruction')}</div>
 			<div class="g17-arena" id="g17a"></div>
-			<div class="g17-count" id="g17c">${g17Total} globos quedan</div>`;
+			<div class="g17-count" id="g17c">${T('games.g17.balloons_left',{n:g17Total})}</div>`;
 
 		showBalloon();
-		window.ppSay('¡Toca los globos!');
+		window.ppSay(T('games.g17.hello'));
 	}
 
 	function showBalloon() {
@@ -75,11 +77,11 @@
 			const pb = /** @type {HTMLElement|null} */ (container?.querySelector('#g17pb'));
 			const ct = container?.querySelector('#g17c');
 			if (pb) pb.style.width = (g17Popped / g17Total * 100) + '%';
-			if (ct) ct.textContent = (g17Total - g17Popped) + ' globos quedan';
+			if (ct) ct.textContent = T('games.g17.balloons_left',{n:g17Total-g17Popped});
 			if (g17Popped >= g17Total) {
 				setTimeout(() => {
 					const _lv = window.ppWin();
-					window.ppCelebrate('¡Reventaste todos los globos! 🎈', 3, () => initG17(container, window.ppGetLevel()), _lv);
+					window.ppCelebrate(T('games.g17.win')+' 🎈', 3, () => initG17(container, window.ppGetLevel()), _lv);
 				}, 500);
 			} else {
 				setTimeout(showBalloon, 350);

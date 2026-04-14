@@ -2,12 +2,14 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG33(cont, lv) {
 		const size = lv <= 5 ? 3 : 4;
 		const symbols = lv <= 5 ? ['🍎','🍊','🍇'] : ['🍎','🍊','🍇','🍋'];
 
-		cont.innerHTML = `<div class="ins">¡Completa el Sudoku!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g33.instruction')}</div>
 			<div class="g33-grid" id="g33grid" style="--sz:${size}"></div>
 			<div class="g33-palette" id="g33pal"></div>`;
 
@@ -99,7 +101,7 @@
 					filled++;
 					if (filled >= blanks.length) {
 						const _lv = window.ppWin();
-						window.ppCelebrate('¡Sudoku completado! 🧩', 3, () => initG33(cont, window.ppGetLevel()), _lv);
+						window.ppCelebrate(T('games.g33.win') + ' 🧩', 3, () => initG33(cont, window.ppGetLevel()), _lv);
 					}
 				} else {
 					sel.classList.add('err');
@@ -109,7 +111,7 @@
 			};
 			palEl.appendChild(b);
 		});
-		window.ppSay('¡Completa el Sudoku! Cada fila y columna debe tener todos los símbolos.');
+		window.ppSay(T('games.g33.hello'));
 	}
 </script>
 

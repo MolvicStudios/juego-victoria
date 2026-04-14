@@ -2,6 +2,8 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	const G16_SHAPES=['🔴','🔵','🟢','🟡','⭐','❤️','🌙','☀️','🐶','🐱','🌸','🌺','🔺','⭕','⬛','🟧'];
 
 	/** @param {number} lv */
@@ -25,7 +27,7 @@
 		let round=0;
 		const total=lerpParam(lv,5,7);
 
-		cont.innerHTML = `<div class="ins">¡Elige qué figura viene después!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g16.instruction')}</div>
 			<div class="pbar" id="g16pb"><div class="pfill" style="background:var(--c1)"></div></div>
 			<div class="g16-pattern" id="g16pattern"></div><div class="g16-opts" id="g16opts"></div>`;
 
@@ -33,7 +35,7 @@
 		function setPbar(r,t){const f=/** @type {HTMLElement} */ (cont.querySelector('#g16pb .pfill'));f.style.width=(r/t*100)+'%';}
 
 		function next(){
-			if(round>=total){const _lv=window.ppWin();window.ppCelebrate('¡Eres maestro de patrones! 🔷',3,()=>initG16(cont,window.ppGetLevel()),_lv);return;}
+			if(round>=total){const _lv=window.ppWin();window.ppCelebrate(T('games.g16.win')+' 🔷',3,()=>initG16(cont,window.ppGetLevel()),_lv);return;}
 			setPbar(round,total);
 			const p=g16GenPattern(lv);
 			const patEl=/** @type {HTMLElement} */ (cont.querySelector('#g16pattern'));patEl.innerHTML='';
@@ -47,14 +49,14 @@
 				b.onclick=()=>{
 					if(o===p.ans){b.style.borderColor='#6BCB77';b.style.background='#EFFFEF';
 						gap.className='g16-item';gap.style.cssText='background:#EFFFEF;border:2px solid #6BCB77';gap.textContent=p.ans;
-						window.ppBeep(880,.22);window.ppSay('¡Correcto!');window.ppOnCorrect();round++;setTimeout(next,1050);
-					}else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();window.ppSay('¡Mira el patrón!');}
+						window.ppBeep(880,.22);window.ppSay(T('games.g16.correct'));window.ppOnCorrect();round++;setTimeout(next,1050);
+					}else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();window.ppSay(T('games.g16.look_pattern'));}
 				};
 				opEl.appendChild(b);
 			});
-			window.ppSay('¿Qué sigue después?');
+			window.ppSay(T('games.g16.question'));
 		}
-		window.ppSay('¡Mira la secuencia y elige qué figura viene después!');
+		window.ppSay(T('games.g16.hello'));
 		next();
 	}
 </script>

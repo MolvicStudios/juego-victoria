@@ -2,17 +2,19 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
-	/** @typedef {{name: string, draw: (ctx: CanvasRenderingContext2D, cx: number, cy: number, s: number) => void}} G30Shape */
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
+	/** @typedef {{key: string, draw: (ctx: CanvasRenderingContext2D, cx: number, cy: number, s: number) => void}} G30Shape */
 	/** @type {G30Shape[]} */
 	const SHAPES = [
-		{name:'estrella', draw:(ctx,cx,cy,s)=>{ctx.beginPath();for(let i=0;i<5;i++){const a=(i*72-90)*Math.PI/180;const b=((i*72)+36-90)*Math.PI/180;ctx.lineTo(cx+Math.cos(a)*s,cy+Math.sin(a)*s);ctx.lineTo(cx+Math.cos(b)*s*0.4,cy+Math.sin(b)*s*0.4);}ctx.closePath();}},
-		{name:'corazón', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx,cy+s*0.6);ctx.bezierCurveTo(cx-s,cy-s*0.2,cx-s*0.5,cy-s,cx,cy-s*0.4);ctx.bezierCurveTo(cx+s*0.5,cy-s,cx+s,cy-s*0.2,cx,cy+s*0.6);ctx.closePath();}},
-		{name:'casa', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx-s*0.6,cy+s*0.6);ctx.lineTo(cx-s*0.6,cy-s*0.1);ctx.lineTo(cx,cy-s*0.7);ctx.lineTo(cx+s*0.6,cy-s*0.1);ctx.lineTo(cx+s*0.6,cy+s*0.6);ctx.closePath();}},
-		{name:'flecha', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx,cy-s*0.8);ctx.lineTo(cx+s*0.5,cy);ctx.lineTo(cx+s*0.2,cy);ctx.lineTo(cx+s*0.2,cy+s*0.6);ctx.lineTo(cx-s*0.2,cy+s*0.6);ctx.lineTo(cx-s*0.2,cy);ctx.lineTo(cx-s*0.5,cy);ctx.closePath();}},
-		{name:'luna', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.arc(cx,cy,s,0,Math.PI*2);ctx.moveTo(cx+s*0.4,cy);ctx.arc(cx+s*0.4,cy,s*0.75,0,Math.PI*2,true);ctx.closePath();}},
-		{name:'diamante', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx,cy-s);ctx.lineTo(cx+s*0.6,cy);ctx.lineTo(cx,cy+s);ctx.lineTo(cx-s*0.6,cy);ctx.closePath();}},
-		{name:'cruz', draw:(ctx,cx,cy,s)=>{const w=s*0.3;ctx.beginPath();ctx.rect(cx-w,cy-s*0.7,w*2,s*1.4);ctx.rect(cx-s*0.7,cy-w,s*1.4,w*2);ctx.closePath();}},
-		{name:'rayo', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx+s*0.1,cy-s*0.8);ctx.lineTo(cx-s*0.3,cy);ctx.lineTo(cx+s*0.05,cy);ctx.lineTo(cx-s*0.1,cy+s*0.8);ctx.lineTo(cx+s*0.3,cy);ctx.lineTo(cx-s*0.05,cy);ctx.closePath();}},
+		{key:'star', draw:(ctx,cx,cy,s)=>{ctx.beginPath();for(let i=0;i<5;i++){const a=(i*72-90)*Math.PI/180;const b=((i*72)+36-90)*Math.PI/180;ctx.lineTo(cx+Math.cos(a)*s,cy+Math.sin(a)*s);ctx.lineTo(cx+Math.cos(b)*s*0.4,cy+Math.sin(b)*s*0.4);}ctx.closePath();}},
+		{key:'heart', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx,cy+s*0.6);ctx.bezierCurveTo(cx-s,cy-s*0.2,cx-s*0.5,cy-s,cx,cy-s*0.4);ctx.bezierCurveTo(cx+s*0.5,cy-s,cx+s,cy-s*0.2,cx,cy+s*0.6);ctx.closePath();}},
+		{key:'house', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx-s*0.6,cy+s*0.6);ctx.lineTo(cx-s*0.6,cy-s*0.1);ctx.lineTo(cx,cy-s*0.7);ctx.lineTo(cx+s*0.6,cy-s*0.1);ctx.lineTo(cx+s*0.6,cy+s*0.6);ctx.closePath();}},
+		{key:'arrow', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx,cy-s*0.8);ctx.lineTo(cx+s*0.5,cy);ctx.lineTo(cx+s*0.2,cy);ctx.lineTo(cx+s*0.2,cy+s*0.6);ctx.lineTo(cx-s*0.2,cy+s*0.6);ctx.lineTo(cx-s*0.2,cy);ctx.lineTo(cx-s*0.5,cy);ctx.closePath();}},
+		{key:'moon', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.arc(cx,cy,s,0,Math.PI*2);ctx.moveTo(cx+s*0.4,cy);ctx.arc(cx+s*0.4,cy,s*0.75,0,Math.PI*2,true);ctx.closePath();}},
+		{key:'diamond', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx,cy-s);ctx.lineTo(cx+s*0.6,cy);ctx.lineTo(cx,cy+s);ctx.lineTo(cx-s*0.6,cy);ctx.closePath();}},
+		{key:'cross', draw:(ctx,cx,cy,s)=>{const w=s*0.3;ctx.beginPath();ctx.rect(cx-w,cy-s*0.7,w*2,s*1.4);ctx.rect(cx-s*0.7,cy-w,s*1.4,w*2);ctx.closePath();}},
+		{key:'lightning', draw:(ctx,cx,cy,s)=>{ctx.beginPath();ctx.moveTo(cx+s*0.1,cy-s*0.8);ctx.lineTo(cx-s*0.3,cy);ctx.lineTo(cx+s*0.05,cy);ctx.lineTo(cx-s*0.1,cy+s*0.8);ctx.lineTo(cx+s*0.3,cy);ctx.lineTo(cx-s*0.05,cy);ctx.closePath();}},
 	];
 
 	/** @param {HTMLDivElement} cont @param {number} lv */
@@ -21,7 +23,7 @@
 		const pool = shuf(SHAPES).slice(0, lerpParam(lv, 4, 7));
 		const total = pool.length;
 
-		cont.innerHTML = `<div class="ins">¡Encuentra la sombra correcta!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g30.instruction')}</div>
 			<div class="pbar"><div class="pfill" id="g30pb" style="width:0%;background:var(--c2)"></div></div>
 			<canvas id="g30shadow" width="120" height="120" style="display:block;margin:8px auto;background:#f0f0f0;border-radius:12px"></canvas>
 			<div class="g30-opts" id="g30opts"></div>`;
@@ -37,7 +39,7 @@
 		}
 
 		function next() {
-			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Maestro de sombras! 👤', 3, () => initG30(cont, window.ppGetLevel()), _lv); return; }
+			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate(T('games.g30.win'), 3, () => initG30(cont, window.ppGetLevel()), _lv); return; }
 			/** @type {HTMLElement} */ (cont.querySelector('#g30pb')).style.width = (round/total*100)+'%';
 
 			const target = pool[round];
@@ -45,7 +47,7 @@
 			drawShape(shadow, target, '#333');
 
 			const numOpts = lv<=3?2:lv<=7?3:4;
-			const others = SHAPES.filter(s=>s.name!==target.name);
+			const others = SHAPES.filter(s=>s.key!==target.key);
 			const wrongs = shuf(others).slice(0, numOpts-1);
 			const opts = shuf([target, ...wrongs]);
 
@@ -57,11 +59,11 @@
 				const colors = ['#E74C3C','#3498DB','#2ECC71','#F39C12','#9B59B6','#1ABC9C'];
 				drawShape(c, s, colors[Math.floor(Math.random()*colors.length)]);
 				c.onclick = () => {
-					if(s.name===target.name){c.style.border='3px solid #6BCB77';window.ppBeep(880,.2);window.ppSay('¡Correcto! Es la '+target.name);window.ppOnCorrect();round++;setTimeout(next,1000);}
+					if(s.key===target.key){c.style.border='3px solid #6BCB77';window.ppBeep(880,.2);window.ppSay(T('games.g30.correct', {name: T('games.g30.shapes.' + target.key)}));window.ppOnCorrect();round++;setTimeout(next,1000);}
 					else{c.classList.add('err');setTimeout(()=>c.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();}
 				};
 			});
-			window.ppSay('¿Cuál es esta sombra?');
+			window.ppSay(T('games.g30.hello'));
 		}
 		next();
 	}

@@ -3,6 +3,8 @@
 	import { onDestroy } from 'svelte';
 	import { lerpParam } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	let g37AnimId = 0;
 	onDestroy(() => { if (g37AnimId) { cancelAnimationFrame(g37AnimId); g37AnimId = 0; } });
 
@@ -10,12 +12,12 @@
 	function initG37(cont, lv) {
 		if (g37AnimId) { cancelAnimationFrame(g37AnimId); g37AnimId = 0; }
 		const COLORS = [
-			{name:'rojo',hex:'#E74C3C'},
-			{name:'azul',hex:'#3498DB'},
-			{name:'verde',hex:'#2ECC71'},
-			{name:'amarillo',hex:'#F1C40F'},
-			{name:'morado',hex:'#9B59B6'},
-			{name:'naranja',hex:'#E67E22'},
+			{name:'red',hex:'#E74C3C'},
+			{name:'blue',hex:'#3498DB'},
+			{name:'green',hex:'#2ECC71'},
+			{name:'yellow',hex:'#F1C40F'},
+			{name:'purple',hex:'#9B59B6'},
+			{name:'orange',hex:'#E67E22'},
 		];
 		const numColors = lerpParam(lv, 2, 5);
 		const targetCount = lerpParam(lv, 5, 12);
@@ -34,7 +36,7 @@
 		/** @type {{el:HTMLElement,y:number,speed:number}[]} */
 		const bubbles = [];
 
-		/** @type {HTMLElement} */ (cont.querySelector('#g37ins')).textContent = '¡Toca las burbujas ' + targetColor.name + 's!';
+		/** @type {HTMLElement} */ (cont.querySelector('#g37ins')).textContent = T('games.g37.instruction', {color: T('games.g37.colors.'+targetColor.name)});
 		/** @type {HTMLElement} */ (cont.querySelector('#g37ins')).style.color = targetColor.hex;
 
 		function spawnBubble() {
@@ -62,7 +64,7 @@
 					if (popped >= targetCount) {
 						alive = false;
 						const _lv = window.ppWin();
-						window.ppCelebrate('¡Cazador de burbujas! 🫧', 3, () => initG37(cont, window.ppGetLevel()), _lv);
+						window.ppCelebrate(T('games.g37.win') + ' 🫧', 3, () => initG37(cont, window.ppGetLevel()), _lv);
 					}
 				} else {
 					el.classList.add('err');
@@ -101,7 +103,7 @@
 			g37AnimId = requestAnimationFrame(animate);
 		}
 		g37AnimId = requestAnimationFrame(animate);
-		window.ppSay('¡Toca las burbujas de color ' + targetColor.name + '!');
+		window.ppSay(T('games.g37.hello', {color: T('games.g37.colors.'+targetColor.name)}));
 	}
 </script>
 

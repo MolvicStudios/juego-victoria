@@ -2,6 +2,8 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG28(cont, lv) {
 		let round = 0;
@@ -9,7 +11,7 @@
 		const showMinutes = lv >= 4;
 		const minuteStep = lv <= 6 ? 30 : lv <= 10 ? 15 : 5;
 
-		cont.innerHTML = `<div class="ins">¿Qué hora es?</div>
+		cont.innerHTML = `<div class="ins">${T('games.g28.instruction')}</div>
 			<div class="pbar"><div class="pfill" id="g28pb" style="width:0%;background:var(--c6)"></div></div>
 			<canvas id="g28cvs" style="display:block;margin:0 auto;width:200px;height:200px"></canvas>
 			<div class="g8-opts" id="g28opts"></div>`;
@@ -58,7 +60,7 @@
 		}
 
 		function next() {
-			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Sabes leer la hora! ⏰', 3, () => initG28(cont, window.ppGetLevel()), _lv); return; }
+			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate(T('games.g28.win'), 3, () => initG28(cont, window.ppGetLevel()), _lv); return; }
 			/** @type {HTMLElement} */ (cont.querySelector('#g28pb')).style.width = (round/total*100)+'%';
 
 			const h = Math.floor(Math.random()*12)+1;
@@ -84,12 +86,12 @@
 				const b = document.createElement('div');
 				b.className = 'g8-opt'; b.textContent = t;
 				b.onclick = () => {
-					if(t===ans){b.style.background='#EFFFEF';b.style.borderColor='#6BCB77';window.ppBeep(880,.2);window.ppSay('¡Correcto! Son las '+h+(m>0?' y '+m:''));window.ppOnCorrect();round++;setTimeout(next,1200);}
-					else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();window.ppSay('¡Inténtalo!');}
+					if(t===ans){b.style.background='#EFFFEF';b.style.borderColor='#6BCB77';window.ppBeep(880,.2);window.ppSay(m>0?T('games.g28.correct_min',{h,m}):T('games.g28.correct',{h}));window.ppOnCorrect();round++;setTimeout(next,1200);}
+					else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();window.ppSay(T('games.common.try_again'));}
 				};
 				optsEl.appendChild(b);
 			});
-			window.ppSay('¿Qué hora marca el reloj?');
+			window.ppSay(T('games.g28.hello'));
 		}
 		next();
 	}

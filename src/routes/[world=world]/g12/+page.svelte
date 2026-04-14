@@ -2,6 +2,8 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	const G12_PATHS={
 		'A':[[50,5],[15,95],[32,58],[68,58],[85,95]],
 		'E':[[70,5],[15,5],[15,95],[70,95],[15,50],[62,50]],
@@ -51,7 +53,7 @@
 		else pool=['O','S','M','I','L','A'];
 		const data=shuf(pool).slice(0,lerpParam(lv,4,6));
 
-		cont.innerHTML = `<div class="ins">¡Toca los puntos en orden!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g12.instruction')}</div>
 			<div class="pbar" id="g12pb"><div class="pfill" style="background:var(--c4)"></div></div>
 			<div class="g12-letter-display" id="g12letter"></div>
 			<div class="g12-wrap"><canvas id="g12cvs"></canvas></div>`;
@@ -91,7 +93,7 @@
 				if(ptIdx>=curPts.length){
 					window.ppOnCorrect();round++;
 					setTimeout(()=>{
-						if(round>=data.length){const _lv=window.ppWin();window.ppCelebrate('¡Escribes genial! ✏️',3,()=>initG12(cont,window.ppGetLevel()),_lv);}
+						if(round>=data.length){const _lv=window.ppWin();window.ppCelebrate(T('games.g12.win'),3,()=>initG12(cont,window.ppGetLevel()),_lv);}
 						else nextLetter();
 					},600);
 				}
@@ -99,10 +101,10 @@
 		}
 
 		function nextLetter(){
-			if(round>=data.length){const _lv=window.ppWin();window.ppCelebrate('¡Escribes genial! ✏️',3,()=>initG12(cont,window.ppGetLevel()),_lv);return;}
+			if(round>=data.length){const _lv=window.ppWin();window.ppCelebrate(T('games.g12.win'),3,()=>initG12(cont,window.ppGetLevel()),_lv);return;}
 			setPbar(round,data.length);
 			const letter=data[round];
-			const el=/** @type {HTMLElement} */ (cont.querySelector('#g12letter'));el.textContent='Traza: '+letter;
+			const el=/** @type {HTMLElement} */ (cont.querySelector('#g12letter'));el.textContent=T('games.g12.trace',{letter});
 			const cvs=/** @type {HTMLCanvasElement} */ (cont.querySelector('#g12cvs')), wrap=/** @type {HTMLElement} */ (cvs.parentElement);
 			const W=Math.min(wrap.clientWidth-16,350), H=Math.min(window.innerHeight-300,300);
 			cvs.width=W;cvs.height=H;ctx=cvs.getContext('2d');
@@ -122,9 +124,9 @@
 			cvs.ontouchmove=e=>{e.preventDefault();handleTouch(e.touches[0],cvs);};
 			cvs.onmousedown=e=>handleTouch(e,cvs);
 			cvs.onmousemove=e=>{if(e.buttons)handleTouch(e,cvs);};
-			window.ppSay('Traza la letra '+letter);
+			window.ppSay(T('games.g12.trace_say',{letter}));
 		}
-		window.ppSay('¡Toca los puntos en orden para escribir la letra!');
+		window.ppSay(T('games.g12.hello'));
 		nextLetter();
 	}
 </script>

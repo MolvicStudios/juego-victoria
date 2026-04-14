@@ -2,12 +2,14 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG31(cont, lv) {
 		let round = 0;
 		const total = lerpParam(lv, 5, 8);
 
-		cont.innerHTML = `<div class="ins">¿Qué número falta?</div>
+		cont.innerHTML = `<div class="ins">${T('games.g31.instruction')}</div>
 			<div class="pbar"><div class="pfill" id="g31pb" style="width:0%;background:var(--c3)"></div></div>
 			<div class="g31-seq" id="g31seq"></div>
 			<div class="g8-opts" id="g31opts"></div>`;
@@ -33,7 +35,7 @@
 		}
 
 		function next() {
-			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Secuencias resueltas! 🔢', 3, () => initG31(cont, window.ppGetLevel()), _lv); return; }
+			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate(T('games.g31.win') + ' 🔢', 3, () => initG31(cont, window.ppGetLevel()), _lv); return; }
 			/** @type {HTMLElement} */ (cont.querySelector('#g31pb')).style.width = (round/total*100)+'%';
 
 			const {seq, hideIdx, ans} = genSeq();
@@ -65,12 +67,12 @@
 						b.style.background='#EFFFEF'; b.style.borderColor='#6BCB77';
 						seqEl.children[hideIdx].textContent = String(ans);
 						seqEl.children[hideIdx].classList.remove('g31-blank');
-						window.ppBeep(880,.2); window.ppSay('¡Correcto! El número es '+ans); window.ppOnCorrect(); round++; setTimeout(next,1200);
+						window.ppBeep(880,.2); window.ppSay(T('games.g31.correct', {n: ans})); window.ppOnCorrect(); round++; setTimeout(next,1200);
 					} else { b.classList.add('err'); setTimeout(()=>b.classList.remove('err'),400); window.ppOnWrong(); window.ppBoo(); }
 				};
 				optsEl.appendChild(b);
 			});
-			window.ppSay('¿Qué número falta en la secuencia?');
+			window.ppSay(T('games.g31.hello'));
 		}
 		next();
 	}

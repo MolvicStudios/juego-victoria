@@ -1,6 +1,4 @@
 {
-  "_todo_eu.note": "Algunas traducciones al euskera son aproximadas. Pendiente revisión nativa.",
-
   "app.name": "PinguPlay",
 
   "ui.lang.select_title": "Aukeratu zure hizkuntza",
@@ -671,6 +669,8 @@
   "games.g20.wrong.sol": "Eguzkia",
   "games.g20.wrong.nube": "Hodeia",
   "games.g20.wrong.mesa": "Mahaia",
+  "games.g20.wrong.gato": "Katua",
+  "games.g20.wrong.luna": "Ilargia",
 
   "games.g21.hello": "Nola idazten da {word}?",
   "games.g21.instruction": "Ordenatu letrak hitza osatzeko!",

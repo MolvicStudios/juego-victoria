@@ -3,6 +3,8 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { shuf } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	/** @type {((e:KeyboardEvent)=>void)|undefined} */
 	let keyHandler;
 
@@ -62,7 +64,7 @@
 			pr=r;pc=c;window.ppBeep(500,.08);render();
 			if(r===rows-1&&c===cols-1){
 				window.ppOnCorrect();const _lv=window.ppWin();
-				setTimeout(()=>window.ppCelebrate('¡Pingu encontró su comida! 🧭',3,()=>initG14(cont,window.ppGetLevel()),_lv),300);
+				setTimeout(()=>window.ppCelebrate(T('games.g14.win'),3,()=>initG14(cont,window.ppGetLevel()),_lv),300);
 			}
 		}
 
@@ -72,7 +74,7 @@
 			if(m2)move(pr+m2[0],pc+m2[1]);
 		}
 
-		cont.innerHTML = `<div class="ins">¡Ayuda a Pingu a llegar al 🐟!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g14.instruction')}</div>
 			<div class="g14-maze" id="g14maze"></div>
 			<div class="dpad"><button class="dpad-btn" id="dp-u">▲</button>
 			<div class="dp-mid"><button class="dpad-btn" id="dp-l">◀</button><button class="dpad-btn" id="dp-r">▶</button></div>
@@ -93,7 +95,7 @@
 		document.addEventListener('keydown', keyHandler);
 
 		render();
-		window.ppSay('¡Ayuda a Pingu a encontrar su pescado favorito!');
+		window.ppSay(T('games.g14.hello'));
 	}
 
 	onDestroy(() => { if(keyHandler) document.removeEventListener('keydown', keyHandler); });

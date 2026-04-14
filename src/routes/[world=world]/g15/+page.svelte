@@ -2,17 +2,19 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	const G15_SETS=[
-		{items:[{e:'🐘',n:'Elefante'},{e:'�',n:'Perro'},{e:'🐭',n:'Ratón'},{e:'🐜',n:'Hormiga'}]},
-		{items:[{e:'🌳',n:'Árbol'},{e:'🌻',n:'Girasol'},{e:'🌸',n:'Flor'},{e:'🌱',n:'Semilla'}]},
-		{items:[{e:'🚌',n:'Autobús'},{e:'🚗',n:'Coche'},{e:'🛵',n:'Moto'},{e:'🛴',n:'Patinete'}]},
-		{items:[{e:'🏔️',n:'Montaña'},{e:'🏠',n:'Casa'},{e:'⛺',n:'Tienda'},{e:'📦',n:'Caja'}]},
-		{items:[{e:'🐋',n:'Ballena'},{e:'🐬',n:'Delfín'},{e:'🐟',n:'Pez'},{e:'🦐',n:'Gamba'}]},
-		{items:[{e:'🚀',n:'Cohete'},{e:'✈️',n:'Avión'},{e:'🦋',n:'Mariposa'},{e:'🐝',n:'Abeja'}]},
-		{items:[{e:'🌞',n:'Sol'},{e:'🌙',n:'Luna'},{e:'⭐',n:'Estrellita'},{e:'✨',n:'Chispa'}]},
-		{items:[{e:'🏰',n:'Castillo'},{e:'🏠',n:'Casita'},{e:'🎩',n:'Sombrero'},{e:'🧢',n:'Gorra'}]},
-		{items:[{e:'🦕',n:'Dinosaurio'},{e:'🐊',n:'Cocodrilo'},{e:'🦎',n:'Lagarto'},{e:'🐛',n:'Gusano'}]},
-		{items:[{e:'🎪',n:'Circo'},{e:'🎡',n:'Noria'},{e:'🎠',n:'Tiovivo'},{e:'🪁',n:'Cometa'}]},
+		{items:[{e:'🐘',n:'elephant'},{e:'🐶',n:'dog'},{e:'🐭',n:'mouse'},{e:'🐜',n:'ant'}]},
+		{items:[{e:'🌳',n:'tree'},{e:'🌻',n:'sunflower'},{e:'🌸',n:'flower'},{e:'🌱',n:'seed'}]},
+		{items:[{e:'🚌',n:'bus'},{e:'🚗',n:'car'},{e:'🛵',n:'motorcycle'},{e:'🛴',n:'scooter'}]},
+		{items:[{e:'🏔️',n:'mountain'},{e:'🏠',n:'house'},{e:'⛺',n:'tent'},{e:'📦',n:'box'}]},
+		{items:[{e:'🐋',n:'whale'},{e:'🐬',n:'dolphin'},{e:'🐟',n:'fish'},{e:'🦐',n:'shrimp'}]},
+		{items:[{e:'🚀',n:'rocket'},{e:'✈️',n:'plane'},{e:'🦋',n:'butterfly'},{e:'🐝',n:'bee'}]},
+		{items:[{e:'🌞',n:'sun'},{e:'🌙',n:'moon'},{e:'⭐',n:'little_star'},{e:'✨',n:'spark'}]},
+		{items:[{e:'🏰',n:'castle'},{e:'🏠',n:'little_house'},{e:'🎩',n:'hat'},{e:'🧢',n:'cap'}]},
+		{items:[{e:'🦕',n:'dinosaur'},{e:'🐊',n:'crocodile'},{e:'🦎',n:'lizard'},{e:'🐛',n:'worm'}]},
+		{items:[{e:'🎪',n:'circus'},{e:'🎡',n:'ferris_wheel'},{e:'🎠',n:'carousel'},{e:'🪁',n:'kite'}]},
 	];
 	const G15_SIZES=['5.4rem','3rem','1.7rem','1rem'];
 
@@ -29,7 +31,7 @@
 		function setPbar(r,t){const f=/** @type {HTMLElement} */ (cont.querySelector('#g15pb .pfill'));f.style.width=(r/t*100)+'%';}
 
 		function next(){
-			if(round>=total){const _lv=window.ppWin();window.ppCelebrate('¡Sabes los tamaños! 📏',3,()=>initG15(cont,window.ppGetLevel()),_lv);return;}
+			if(round>=total){const _lv=window.ppWin();window.ppCelebrate(T('games.g15.win'),3,()=>initG15(cont,window.ppGetLevel()),_lv);return;}
 			setPbar(round,total);
 			const numItems=lv<=6?2:lv<=12?3:4;
 			const set=G15_SETS[Math.floor(Math.random()*G15_SETS.length)];
@@ -41,11 +43,11 @@
 			/** @type {string} */
 			let qTxt;
 
-			if(lv<=3){askType='big';correctName=items[0].n;qTxt='¿Cuál es más GRANDE? 👆';}
-			else if(lv<=6){askType=Math.random()>.5?'big':'small';correctName=askType==='big'?items[0].n:items[items.length-1].n;qTxt=askType==='big'?'¿Cuál es más GRANDE? 👆':'¿Cuál es más PEQUEÑO? 👇';}
-			else if(lv<=9){askType=Math.random()>.5?'big':'small';correctName=askType==='big'?items[0].n:items[items.length-1].n;qTxt=askType==='big'?'¿Cuál es más GRANDE? 👆':'¿Cuál es más PEQUEÑO? 👇';}
-			else if(lv<=12){askType='medium';correctName=items[1].n;qTxt='¿Cuál es el MEDIANO? 🤔';}
-			else{askType='order';qTxt='¡Toca del más grande al más pequeño!';}
+			if(lv<=3){askType='big';correctName=items[0].n;qTxt=T('games.g15.q_biggest');}
+			else if(lv<=6){askType=Math.random()>.5?'big':'small';correctName=askType==='big'?items[0].n:items[items.length-1].n;qTxt=askType==='big'?T('games.g15.q_biggest'):T('games.g15.q_smallest');}
+			else if(lv<=9){askType=Math.random()>.5?'big':'small';correctName=askType==='big'?items[0].n:items[items.length-1].n;qTxt=askType==='big'?T('games.g15.q_biggest'):T('games.g15.q_smallest');}
+			else if(lv<=12){askType='medium';correctName=items[1].n;qTxt=T('games.g15.q_medium');}
+			else{askType='order';qTxt=T('games.g15.q_order');}
 
 			const qEl=/** @type {HTMLElement} */ (cont.querySelector('#g15ins'));qEl.textContent=qTxt;
 			qEl.style.color=askType==='big'?'var(--c1)':askType==='small'?'var(--c5)':'var(--c6)';
@@ -59,12 +61,12 @@
 				displayed.forEach(it=>{
 					const d=document.createElement('div');d.className='g15-obj';
 					const emo=document.createElement('span');emo.className='g15-emo';emo.style.fontSize=G15_SIZES[it.sizeIdx];emo.textContent=it.e;
-					const lbl=document.createElement('span');lbl.className='g15-lbl';lbl.textContent=it.n;
+					const lbl=document.createElement('span');lbl.className='g15-lbl';lbl.textContent=T('games.g15.items.'+it.n);
 					d.appendChild(emo);d.appendChild(lbl);
 					d.onclick=()=>{
 						if(it.sizeIdx===orderIdx){d.classList.add('hit-ok');d.style.pointerEvents='none';window.ppBeep(880,.15);orderIdx++;
 							if(orderIdx>=items.length){window.ppOnCorrect();round++;setTimeout(next,700);}
-						}else{d.classList.add('hit-err');setTimeout(()=>d.classList.remove('hit-err'),400);window.ppOnWrong();window.ppBoo();window.ppSay('¡Busca el más grande primero!');}
+						}else{d.classList.add('hit-err');setTimeout(()=>d.classList.remove('hit-err'),400);window.ppOnWrong();window.ppBoo();window.ppSay(T('games.g15.find_biggest'));}
 					};
 					vEl.appendChild(d);
 				});
@@ -73,17 +75,17 @@
 				displayed.forEach(it=>{
 					const d=document.createElement('div');d.className='g15-obj';
 					const emo=document.createElement('span');emo.className='g15-emo';emo.style.fontSize=G15_SIZES[it.sizeIdx];emo.textContent=it.e;
-					const lbl=document.createElement('span');lbl.className='g15-lbl';if(lv>=3)lbl.textContent=it.n;
+					const lbl=document.createElement('span');lbl.className='g15-lbl';if(lv>=3)lbl.textContent=T('games.g15.items.'+it.n);
 					d.appendChild(emo);d.appendChild(lbl);
 					d.onclick=()=>{
-						if(it.n===correctName){d.classList.add('hit-ok');window.ppBeep(880,.22);window.ppSay('¡Correcto! ¡'+it.n+'!');window.ppOnCorrect();round++;setTimeout(next,950);}
-						else{d.classList.add('hit-err');setTimeout(()=>d.classList.remove('hit-err'),400);window.ppOnWrong();window.ppBoo();window.ppSay('¡Mira bien el tamaño!');}
+						if(it.n===correctName){d.classList.add('hit-ok');window.ppBeep(880,.22);window.ppSay(T('games.g15.correct',{name:T('games.g15.items.'+it.n)}));window.ppOnCorrect();round++;setTimeout(next,950);}
+						else{d.classList.add('hit-err');setTimeout(()=>d.classList.remove('hit-err'),400);window.ppOnWrong();window.ppBoo();window.ppSay(T('games.g15.look_size'));}
 					};
 					vEl.appendChild(d);
 				});
 			}
 		}
-		window.ppSay('¡Mira bien y toca el que sea más grande o más pequeño!');
+		window.ppSay(T('games.g15.hello'));
 		next();
 	}
 </script>

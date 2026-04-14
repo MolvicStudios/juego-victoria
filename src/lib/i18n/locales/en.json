@@ -669,6 +669,8 @@
   "games.g20.wrong.sol": "Sun",
   "games.g20.wrong.nube": "Cloud",
   "games.g20.wrong.mesa": "Table",
+  "games.g20.wrong.gato": "Cat",
+  "games.g20.wrong.luna": "Moon",
 
   "games.g21.hello": "How do you spell {word}?",
   "games.g21.instruction": "Put the letters in order to spell the word!",

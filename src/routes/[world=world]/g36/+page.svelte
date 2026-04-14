@@ -2,6 +2,8 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG36(cont, lv) {
 		let round = 0;
@@ -10,7 +12,7 @@
 		const numFilled = lerpParam(lv, 2, Math.floor(gridSize*gridSize*0.6));
 		const COLORS = ['#E74C3C','#3498DB','#2ECC71','#F39C12','#9B59B6','#1ABC9C'];
 
-		cont.innerHTML = `<div class="ins">¡Copia el patrón!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g36.instruction')}</div>
 			<div class="pbar"><div class="pfill" id="g36pb" style="width:0%;background:var(--c6)"></div></div>
 			<div class="g36-grids">
 				<div class="g36-grid" id="g36model" style="--sz:${gridSize}"></div>
@@ -18,7 +20,7 @@
 			</div>`;
 
 		function next() {
-			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate('¡Espejo perfecto! 🪞', 3, () => initG36(cont, window.ppGetLevel()), _lv); return; }
+			if (round >= total) { const _lv = window.ppWin(); window.ppCelebrate(T('games.g36.win') + ' 🪞', 3, () => initG36(cont, window.ppGetLevel()), _lv); return; }
 			/** @type {HTMLElement} */ (cont.querySelector('#g36pb')).style.width = (round/total*100)+'%';
 
 			const pattern = Array(gridSize*gridSize).fill(null);
@@ -63,7 +65,7 @@
 				};
 				player.appendChild(cell);
 			});
-			window.ppSay('¡Copia el patrón en la cuadrícula vacía!');
+			window.ppSay(T('games.g36.hello'));
 		}
 		next();
 	}

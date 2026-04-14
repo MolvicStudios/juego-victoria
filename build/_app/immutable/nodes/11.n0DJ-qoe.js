@@ -1,0 +1,11 @@
+import{$ as e,Q as t,r as n}from"../chunks/Dgde7_OJ.js";import"../chunks/Br5cJI0m.js";import{o as r}from"../chunks/Brn1I-Fj.js";import{t as i}from"../chunks/D1j15SkD.js";function a(a,o){e(o,!0);let s=(e,t)=>window.ppT?.(e,t)??e,c=[`#FF6B6B`,`#FF9F43`,`#FFD93D`,`#6BCB77`,`#4D9FEC`,`#A78BFA`,`#F472B6`,`#2DD4BF`],l=[`🎈`,`🎈`,`🎈`,`🎈`,`🌟`,`💖`,`🌸`,`⭐`,`🍭`,`🎊`],u,d=0,f=0,p=1,m=null;function h(e,t){u=e,p=t,d=0,f=r(t,8,25),u.innerHTML=`
+			<div class="pbar"><div class="pfill" id="g17pb" style="width:0%;background:#F472B6"></div></div>
+			<div class="ins">${s(`games.g17.instruction`)}</div>
+			<div class="g17-arena" id="g17a"></div>
+			<div class="g17-count" id="g17c">${s(`games.g17.balloons_left`,{n:f})}</div>`,g(),window.ppSay(s(`games.g17.hello`))}function g(){let e=u?.querySelector(`#g17a`);if(!e)return;e.innerHTML=``;let t=r(p,110,50),n=c[Math.floor(Math.random()*c.length)],i=l[Math.floor(Math.random()*(p>=8?l.length:4))],a=5+Math.random()*(80-t/5),o=5+Math.random()*55,_=document.createElement(`div`);_.style.cssText=`
+			position:absolute;width:${t}px;height:${t}px;border-radius:50%;background:${n};
+			left:${a}%;top:${o}%;font-size:${Math.round(t*.55)}px;
+			display:flex;align-items:center;justify-content:center;cursor:pointer;
+			box-shadow:0 6px 20px rgba(0,0,0,.18);animation:popIn .25s;
+			user-select:none;-webkit-tap-highlight-color:transparent;
+			transition:transform .18s,opacity .18s`,_.textContent=i;let v=r(p,5e3,1600);p>=8&&(m=setTimeout(()=>{_.parentNode&&(_.style.opacity=`0`,setTimeout(()=>{_.parentNode&&(_.remove(),g())},200))},v));function y(e){if(e.preventDefault(),!_.parentNode)return;m&&(clearTimeout(m),m=null),_.style.transform=`scale(2)`,_.style.opacity=`0`,_.style.pointerEvents=`none`,window.ppBeep(500+Math.random()*400,.18),window.ppOnCorrect(),d++;let t=u?.querySelector(`#g17pb`),n=u?.querySelector(`#g17c`);t&&(t.style.width=d/f*100+`%`),n&&(n.textContent=s(`games.g17.balloons_left`,{n:f-d})),d>=f?setTimeout(()=>{let e=window.ppWin();window.ppCelebrate(s(`games.g17.win`)+` 🎈`,3,()=>h(u,window.ppGetLevel()),e)},500):setTimeout(g,350)}let b=!1;function x(e){e.preventDefault(),!b&&(b=!0,y(e))}_.addEventListener(`touchstart`,x,{passive:!1}),_.addEventListener(`click`,x),e.appendChild(_)}n(()=>{m&&clearTimeout(m)});function _(e,t){h(e,t)}i(a,{gameNum:17,title:`Globos`,icon:`🎈`,initGame:_}),t()}export{a as component};
