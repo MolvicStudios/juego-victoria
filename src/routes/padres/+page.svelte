@@ -345,7 +345,7 @@
 
 			<h4>{$t('ui.parents.contact_title')}</h4>
 			<p>{$t('ui.parents.contact_prompt')}</p>
-			<p style="font-weight:700;text-align:center">molvicstudios@outlook.com</p>
+			<p style="font-weight:700;text-align:center">info@molvicstudios.pro</p>
 
 			<div style="margin-top:16px;text-align:center;font-size:.7rem;color:var(--ink2)">
 				<p>© 2026 MolvicStudios · Hecho con ❤️ para los más pequeños</p>

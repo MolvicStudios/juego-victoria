@@ -144,6 +144,8 @@
 		window.ppBeep = /** @type {any} */ (beep);
 		window.ppSay = say;
 		window.ppBoo = boo;
+		// Exponer función de traducción global para que los juegos puedan usarla
+		window.ppT = (/** @type {string} */ key, /** @type {Record<string, string|number>=} */ vars) => get(t)(key, vars);
 		window.ppWin = () => {
 			const msg = onGameComplete(gameNum);
 			streak = 0;
@@ -210,6 +212,7 @@
 			delete w.ppCelebrate;
 			delete w.ppBeep;
 			delete w.ppSay;
+			delete w.ppT;
 			delete w.ppBoo;
 			delete w.ppWin;
 			delete w.ppGetLevel;
