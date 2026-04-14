@@ -5,6 +5,7 @@
 	let isQuiet = $state(false);
 	quietMode.subscribe(v => { isQuiet = v; });
 
+	/** @type {Array<{id:number, items:Array<any>}>} */
 	let groups = $state([]);
 	particleGroups.subscribe(v => { groups = v; });
 

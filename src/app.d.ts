@@ -15,8 +15,8 @@ declare global {
 		ppBoo: () => void;
 		ppWin: () => string;
 		ppGetLevel: () => number;
-		ppOnCorrect: () => void;
-		ppOnWrong: () => string | null;
+		ppOnCorrect: (sourceEvent?: Event) => void;
+		ppOnWrong: (sourceEvent?: Event) => string | null;
 		webkitAudioContext?: typeof AudioContext;
 	}
 }

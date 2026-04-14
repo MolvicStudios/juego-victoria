@@ -11,7 +11,7 @@
 	 */
 	import { onMount } from 'svelte';
 
-	/** @type {string} */
+	/** @type {{ world?: string, children?: any }} */
 	let { world = 'nubecitas', children } = $props();
 
 	let ready = $state(false);

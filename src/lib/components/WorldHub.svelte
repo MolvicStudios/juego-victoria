@@ -187,7 +187,7 @@
 			</div>
 			<div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:8px">
 				<span>{$t('ui.settings.language')}</span>
-				<LanguageSelector variant="settings" />
+				<LanguageSelector variant="settings" onConfirm={undefined} />
 			</div>
 			<button class="modal-close" onclick={() => { showSettings = false; }}>{$t('ui.settings.close')}</button>
 		</div>

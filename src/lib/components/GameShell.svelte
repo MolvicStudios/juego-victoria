@@ -152,7 +152,7 @@
 			return msg;
 		};
 		window.ppGetLevel = () => getLevel(gameNum);
-		window.ppOnCorrect = (/** @type {Event|undefined} */ sourceEvent) => {
+		window.ppOnCorrect = (/** @type {Event=} */ sourceEvent) => {
 			onCorrect(gameNum);
 			streak = getStreak(gameNum);
 			_queueMedals(checkNewMedals(gameNum));
@@ -176,7 +176,7 @@
 				setPinguState('correct', 650);
 			}
 		};
-		window.ppOnWrong = (/** @type {Event|undefined} */ sourceEvent) => {
+		window.ppOnWrong = (/** @type {Event=} */ sourceEvent) => {
 			const msg = onWrong(gameNum);
 			streak = 0;
 			// Dispara animación wiggle en el contenedor del juego

@@ -12,7 +12,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { quietMode } from '$lib/stores/accessibility.js';
 
-	/** @type {string} */
+	/** @type {{ world?: string, interactive?: boolean }} */
 	let { world = 'nubecitas', interactive = true } = $props();
 
 	let paused = $state(false);

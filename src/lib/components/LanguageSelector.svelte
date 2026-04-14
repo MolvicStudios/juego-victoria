@@ -1,11 +1,8 @@
 <script>
 	import { locale, LOCALES, t } from '$lib/i18n/index.js';
 
-	/**
-	 * @prop {'onboarding'|'settings'} variant
-	 * @prop {(()=>void)=} onConfirm  — called after confirm in onboarding variant
-	 */
-	let { variant = 'onboarding', onConfirm } = $props();
+	/** @type {{ variant?: 'onboarding'|'settings', onConfirm?: ()=>void }} */
+	let { variant = 'onboarding', onConfirm = undefined } = $props();
 
 	const LOCALE_KEYS = /** @type {(keyof typeof LOCALES)[]} */ (Object.keys(LOCALES));
 
@@ -13,7 +10,7 @@
 	// Sync if external locale changes
 	locale.subscribe(v => { selected = v; });
 
-	function choose(code) {
+	function choose(/** @type {string} */ code) {
 		selected = code;
 		if (variant === 'settings') {
 			locale.set(code);
@@ -27,7 +24,7 @@
 
 	// Reactive confirm button text: updates as user selects different language
 	function confirmLabel() {
-		return LOCALES[selected]?.confirmBtn ?? '¡Vamos!';
+		return /** @type {Record<string,any>} */ (LOCALES)[selected]?.confirmBtn ?? '¡Vamos!';
 	}
 </script>
 

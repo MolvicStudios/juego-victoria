@@ -47,6 +47,7 @@ export function fanfare() {
 }
 
 // Mapa locale PinguPlay → código BCP-47 para Web Speech API
+/** @type {Record<string,string>} */
 const SPEECH_LANG = {
 	es: 'es-ES',
 	en: 'en-US',

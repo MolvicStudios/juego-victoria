@@ -168,7 +168,7 @@ export function physicsDrag(node, options) {
 
 	return {
 		/** Actualiza las opciones (targets, callbacks) en caliente */
-		update(newOpts) {
+		update(/** @type {any} */ newOpts) {
 			targets     = newOpts.targets;
 			onCorrect   = newOpts.onCorrect;
 			onWrong     = newOpts.onWrong;

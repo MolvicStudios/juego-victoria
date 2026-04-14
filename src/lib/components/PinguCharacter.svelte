@@ -8,10 +8,11 @@
 	 * creando un personaje expresivo que los niños reconocen como "vivo".
 	 */
 
-	/** @type {'idle'|'waiting'|'correct'|'wrong'|'excited'|'idle-long'} */
+	/** @type {{ state?: 'idle'|'waiting'|'correct'|'wrong'|'excited'|'idle-long', size?: number, worldTheme?: string }} */
 	let { state = 'idle', size = 120, worldTheme = 'nubecitas' } = $props();
 
 	/** Colores del contorno/acento según el mundo */
+	/** @type {Record<string,string>} */
 	const WORLD_ACCENT = {
 		nubecitas:    '#A78BFA',
 		exploradores: '#4D9FEC',

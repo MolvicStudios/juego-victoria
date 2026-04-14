@@ -25,8 +25,8 @@
 	hiContrast.subscribe(v => { isHiContrast = v; });
 	bigText.subscribe(v => { isBigText = v; });
 
-	onMount(async () => {
-		await initI18n();
+	onMount(() => {
+		initI18n();
 		locale.subscribe(loc => { document.documentElement.lang = loc; });
 		mounted = true;
 		createScenery();
@@ -35,7 +35,7 @@
 		if (saved === 'accepted' || saved === 'declined') cookieConsent = /** @type {any} */ (saved);
 		const onSound = () => { soundPlaying = true; setTimeout(() => { soundPlaying = false; }, 1200); };
 		document.addEventListener('pp-sound', onSound);
-		return () => document.removeEventListener('pp-sound', onSound);
+		return () => { document.removeEventListener('pp-sound', onSound); };
 	});
 
 	$effect(() => {

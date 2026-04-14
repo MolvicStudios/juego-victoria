@@ -13,6 +13,7 @@ export const particleGroups = writable([]);
 let uid = 0;
 
 /** Color primario de partículas por mundo */
+/** @type {Record<string,string>} */
 const WORLD_PRIMARY = {
 	nubecitas:    '#A78BFA',
 	exploradores: '#4D9FEC',

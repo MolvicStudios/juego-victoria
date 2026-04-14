@@ -285,7 +285,7 @@
 			<hr style="margin:16px 0;opacity:.15" />
 
 			<h4>{$t('ui.parents.lang_section')}</h4>
-			<LanguageSelector variant="settings" />
+			<LanguageSelector variant="settings" onConfirm={undefined} />
 
 			<hr style="margin:16px 0;opacity:.15" />
 
