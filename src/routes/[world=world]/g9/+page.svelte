@@ -2,12 +2,14 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { shuf } from '$lib/data.js';
 
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
 	const G9_SETS=[
-		{p:['🌞','⭐','🌸','🦋','🐝','🌈','🌻','🍀','🌺'],t:'Jardín'},
-		{p:['🐱','🐶','🐭','🐰','🐸','🦊','🐻','🐼','🐨'],t:'Animales'},
-		{p:['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🍌','🥝'],t:'Frutas'},
-		{p:['🚗','✈️','⛵','🚀','🚂','🚌','🏍️','🚁','🛸'],t:'Vehículos'},
-		{p:['🔺','⭕','⬛','🟧','💎','⭐','❤️','🌙','🔷'],t:'Formas'},
+		{p:['🌞','⭐','🌸','🦋','🐝','🌈','🌻','🍀','🌺'],key:'garden'},
+		{p:['🐱','🐶','🐭','🐰','🐸','🦊','🐻','🐼','🐨'],key:'animals'},
+		{p:['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🍌','🥝'],key:'fruits'},
+		{p:['🚗','✈️','⛵','🚀','🚂','🚌','🏍️','🚁','🛸'],key:'vehicles'},
+		{p:['🔺','⭕','⬛','🟧','💎','⭐','❤️','🌙','🔷'],key:'shapes'},
 	];
 
 	/** @param {HTMLDivElement} cont @param {number} lv */
@@ -20,7 +22,7 @@
 		const set=G9_SETS[Math.floor(Math.random()*G9_SETS.length)];
 		const pieces=set.p.slice(0,total);
 
-		cont.innerHTML = `<div class="ins">¡Toca una pieza y luego su lugar!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g9.instruction')}</div>
 			<div class="g9-grid" id="g9grid" style="grid-template-columns:repeat(${colsN},1fr)"></div>
 			<div class="g9-tray" id="g9tray"></div>`;
 
@@ -55,20 +57,20 @@
 
 		/** @param {number} i */
 		function place(i){
-			if(!sel){window.ppSay('Primero toca una pieza');return;}
+			if(!sel){window.ppSay(T('games.g9.first_piece'));return;}
 			const sl=/** @type {HTMLElement} */ (gridEl.children[i]);if(sl.classList.contains('filled'))return;
 			if(sl.dataset.v===sel.dataset.v){
 				sl.textContent=sel.dataset.v||'';sl.classList.add('filled');sl.style.opacity='';
 				sl.style.fontSize=parseFloat(sl.style.height)*0.55+'px';
 				sel.classList.add('used');sel.classList.remove('sel');sel=null;
 				window.ppBeep(700,.15);window.ppOnCorrect();placed++;
-				if(placed===total){const _lv=window.ppWin();setTimeout(()=>window.ppCelebrate('¡Puzle completo! 🧩',3,()=>initG9(cont,window.ppGetLevel()),_lv),300);}
+				if(placed===total){const _lv=window.ppWin();setTimeout(()=>window.ppCelebrate(T('games.g9.win')+' 🧩',3,()=>initG9(cont,window.ppGetLevel()),_lv),300);}
 			}else{
 				sl.classList.add('err');setTimeout(()=>sl.classList.remove('err'),400);
-				window.ppOnWrong();window.ppBoo();window.ppSay('¡Ese no va ahí!');
+				window.ppOnWrong();window.ppBoo();window.ppSay(T('games.g9.not_there'));
 			}
 		}
-		window.ppSay('¡Toca una pieza y luego su lugar en el cuadro!');
+		window.ppSay(T('games.g9.hello'));
 	}
 </script>
 

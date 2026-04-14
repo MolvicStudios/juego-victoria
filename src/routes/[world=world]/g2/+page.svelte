@@ -2,6 +2,7 @@
 	import { onDestroy } from 'svelte';
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { shuf, lerpParam } from '$lib/data.js';
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G2_FRUITS = ['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🫐','🍌','🥝'];
 	/** @type {HTMLDivElement} */
@@ -10,7 +11,7 @@
 	/** @param {HTMLDivElement} cont @param {number} lv */
 	function initG2(cont, lv) {
 		container = cont; g2Round = 0; g2Total = lerpParam(lv, 5, 8);
-		window.ppSay('¡Hola! ¡Toca cada fruta para contarla y elige el número correcto!');
+		window.ppSay(T('games.g2.hello'));
 		g2Next(lv);
 	}
 
@@ -20,7 +21,7 @@
 	/** @param {number} [lv] */
 	function g2Next(lv) {
 		if (!lv) lv = window.ppGetLevel();
-		if (g2Round >= g2Total) { const _lv = window.ppWin(); window.ppCelebrate('¡Eres un genio contando! 🍎', 3, () => initG2(container, window.ppGetLevel()), _lv); return; }
+		if (g2Round >= g2Total) { const _lv = window.ppWin(); window.ppCelebrate(T('games.g2.win'), 3, () => initG2(container, window.ppGetLevel()), _lv); return; }
 		setPbar('g2pb', g2Round, g2Total);
 		const maxCount = lv<=3?3:lv<=6?5:lv<=9?7:lv<=12?9:12;
 		const numOpts = lv<=3?2:lv<=9?3:4;
@@ -30,7 +31,7 @@
 
 		container.innerHTML = `
 			<div class="pbar"><div class="pfill" id="g2pb" style="width:0%;background:var(--c2)"></div></div>
-			<div class="ins" id="g2ins">¡Toca cada fruta para contarla!</div>
+			<div class="ins" id="g2ins">${T('games.g2.instruction')}</div>
 			<div class="g2-fruits" id="g2fruits"></div>
 			<div class="g2-nums" id="g2nums" style="display:none"></div>`;
 		setPbar('g2pb', g2Round, g2Total);
@@ -45,7 +46,7 @@
 
 		if (isResta) {
 			const sumA = n+Math.floor(Math.random()*3)+1, sumB = sumA-n;
-			insEl.textContent = sumA+' '+fr+' menos '+sumB+'. ¿Cuántas quedan?';
+			insEl.textContent = T('games.g2.how_many_left', {a: sumA, fruit: fr, b: sumB});
 			const gd = document.createElement('div'); gd.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center';
 			for(let i=0;i<sumA;i++){const d=document.createElement('div');d.className='g2-fr';d.textContent=fr;gd.appendChild(d);}
 			const m = document.createElement('span'); m.style.cssText = 'font-size:2rem;font-weight:900;color:var(--ink)'; m.textContent = '−'; gd.appendChild(m);
@@ -54,7 +55,7 @@
 			numsEl.style.display = 'flex'; g2ShowNums(n, numOpts, numsEl);
 		} else if (isSum) {
 			const sumA = Math.floor(Math.random()*(n-1))+1, sumB = n-sumA;
-			insEl.textContent = sumA+' '+fr+' y '+sumB+' más. ¿Cuántas hay?';
+			insEl.textContent = T('games.g2.how_many_total', {a: sumA, fruit: fr, b: sumB});
 			const gd = document.createElement('div'); gd.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center';
 			const gA = document.createElement('div'); gA.style.cssText = 'display:flex;gap:4px;flex-wrap:wrap;padding:8px;background:rgba(0,0,0,.03);border-radius:12px';
 			for(let i=0;i<sumA;i++){const d=document.createElement('div');d.className='g2-fr';d.textContent=fr;gA.appendChild(d);}
@@ -71,11 +72,11 @@
 				d.onclick = () => {
 					if(d.classList.contains('tap')) return;
 					d.classList.add('tap'); tapped++; window.ppBeep(300+tapped*60,.1); window.ppSay(tapped+'');
-					if(tapped===n){ insEl.textContent = '¿Cuántas eran? ¡Elige!'; setTimeout(() => { numsEl.style.display = 'flex'; g2ShowNums(n, numOpts, numsEl); }, 400); }
+					if(tapped===n){ insEl.textContent = T('games.g2.how_many'); setTimeout(() => { numsEl.style.display = 'flex'; g2ShowNums(n, numOpts, numsEl); }, 400); }
 				};
 				fruitsEl.appendChild(d);
 			}
-			window.ppSay('¡Toca cada fruta!');
+			window.ppSay(T('games.g2.touch_fruit'));
 		}
 	}
 
@@ -87,8 +88,8 @@
 		shuf(vals).forEach((v,i) => {
 			const b = document.createElement('button'); b.className = 'g2-num'; b.style.background = cols[i%4]; b.textContent = String(v);
 			b.onclick = () => {
-				if(v===n){b.style.background='#6BCB77';window.ppBeep(880,.2);window.ppSay('¡Correcto! ¡'+n+'!');window.ppOnCorrect();g2Round++;setTimeout(()=>g2Next(),900);}
-				else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();window.ppSay('¡Inténtalo!');}
+				if(v===n){b.style.background='#6BCB77';window.ppBeep(880,.2);window.ppSay(T('games.g2.correct_n', {n: n}));window.ppOnCorrect();g2Round++;setTimeout(()=>g2Next(),900);}
+				else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();window.ppSay(T('games.common.try_again'));}
 			};
 			numsEl.appendChild(b);
 		});

@@ -1,5 +1,6 @@
 <script>
 	import GameShell from '$lib/components/GameShell.svelte';
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G4_COLS=['#FF6B6B','#FF9F43','#FFD93D','#6BCB77','#38B2AC','#4D9FEC','#A78BFA','#F472B6','#2D3748','#ffffff','#8B5CF6','#EC4899','#14B8A6','#F59E0B','#3B82F6','#EF4444'];
 	const G4_STMP=['🌸','⭐','❤️','🦋','🐱','🐶','🌈','🎈','🍎','🌟'];
@@ -26,10 +27,10 @@
 		});
 
 		const toolsEl = /** @type {HTMLElement} */ (cont.querySelector('#g4tools')); toolsEl.innerHTML = '';
-		const tools = [{id:'brush',label:'🖌️ Pincel',minLv:1},{id:'stamp',label:'📌 Sellos',minLv:4},{id:'thin',label:'Fino',minLv:1},{id:'thick',label:'Grueso',minLv:1},{id:'eraser',label:'🗑️ Borrar',minLv:1}];
+		const tools = [{id:'brush',label:'games.g4.tools.brush',minLv:1},{id:'stamp',label:'games.g4.tools.stamps',minLv:4},{id:'thin',label:'games.g4.tools.thin',minLv:1},{id:'thick',label:'games.g4.tools.thick',minLv:1},{id:'eraser',label:'games.g4.tools.erase',minLv:1}];
 		tools.forEach(t => {
 			if(lv<t.minLv) return;
-			const b = document.createElement('button'); b.className = 'g4-tool'; b.textContent = t.label;
+			const b = document.createElement('button'); b.className = 'g4-tool'; b.textContent = T(t.label);
 			b.onclick = () => {
 				if(t.id==='eraser'){ctx.fillStyle='#fff';ctx.fillRect(0,0,cvs.width,cvs.height);window.ppBeep(400,.15);return;}
 				if(t.id==='thin'){g4Size=4;return;} if(t.id==='thick'){g4Size=22;return;}
@@ -63,7 +64,7 @@
 		cvs.addEventListener('touchstart',/** @type {EventListener} */(start),{passive:false});
 		cvs.addEventListener('touchmove',/** @type {EventListener} */(draw),{passive:false});
 		cvs.addEventListener('touchend',stop);
-		window.ppSay('¡Elige un color y dibuja lo que quieras!');
+		window.ppSay(T('games.g4.hello'));
 	}
 </script>
 

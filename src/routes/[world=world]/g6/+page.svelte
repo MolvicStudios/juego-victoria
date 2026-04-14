@@ -1,8 +1,10 @@
 <script>
 	import GameShell from '$lib/components/GameShell.svelte';
 
-	const G6_KEYS=[{n:'Do',f:261.63,c:'#FF6B6B'},{n:'Re',f:293.66,c:'#FF9F43'},{n:'Mi',f:329.63,c:'#FFD93D'},{n:'Fa',f:349.23,c:'#6BCB77'},{n:'Sol',f:392,c:'#4D9FEC'},{n:'La',f:440,c:'#A78BFA'},{n:'Si',f:493.88,c:'#F472B6'},{n:'Do²',f:523.25,c:'#2DD4BF'}];
-	const G6_SONGS={1:{name:'Mini (5 notas)',notes:[0,0,4,4,0]},2:{name:'Campanitas',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0]},3:{name:'Estrellita',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0,4,4,3,3,2,2,1]},4:{name:'Cumpleaños',notes:[0,0,1,0,3,2,0,0,1,0,4,3,0,0,7,5,3,2,1]},5:{name:'La Vaca Lechera',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0]},6:{name:'Desafío 1',notes:[0,2,4,5,4,2,0,1,3,5,6,5,3,1,0,4,7,4,0]},7:{name:'Al Corro',notes:[0,1,2,3,4,5,6,7,7,6,5,4,3,2,1,0,0,2,4,7]},8:{name:'Desafío 2',notes:[7,5,3,0,2,4,6,7,5,3,1,0,2,4,7,5,3,1,0,7]},9:{name:'Reto Final',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0,7,7,5,5,3,3,1,0,2,4,7]}};
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+
+	const G6_KEYS=[{key:'do',f:261.63,c:'#FF6B6B'},{key:'re',f:293.66,c:'#FF9F43'},{key:'mi',f:329.63,c:'#FFD93D'},{key:'fa',f:349.23,c:'#6BCB77'},{key:'sol',f:392,c:'#4D9FEC'},{key:'la',f:440,c:'#A78BFA'},{key:'si',f:493.88,c:'#F472B6'},{key:'do2',f:523.25,c:'#2DD4BF'}];
+	const G6_SONGS={1:{key:'mini',notes:[0,0,4,4,0]},2:{key:'bells',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0]},3:{key:'twinkle',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0,4,4,3,3,2,2,1]},4:{key:'birthday',notes:[0,0,1,0,3,2,0,0,1,0,4,3,0,0,7,5,3,2,1]},5:{key:'cow',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0]},6:{key:'challenge1',notes:[0,2,4,5,4,2,0,1,3,5,6,5,3,1,0,4,7,4,0]},7:{key:'ring',notes:[0,1,2,3,4,5,6,7,7,6,5,4,3,2,1,0,0,2,4,7]},8:{key:'challenge2',notes:[7,5,3,0,2,4,6,7,5,3,1,0,2,4,7,5,3,1,0,7]},9:{key:'final',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0,7,7,5,5,3,3,1,0,2,4,7]}};
 	/** @type {HTMLDivElement} */
 	let container;
 	let g6Mode='libre';
@@ -19,11 +21,11 @@
 		const keyW = Math.floor((W-4*(numKeys-1))/numKeys);
 		const keyH = Math.max(70, Math.floor(keyW*2.2));
 
-		cont.innerHTML = `<div class="g6-modes"><button class="g6-mbtn on" id="g6mfree">🎹 Libre</button><button class="g6-mbtn" id="g6msong">🎼 Canción</button></div>
-			<div class="ins" id="g6ins">¡Toca las teclas de colores!</div>
+		cont.innerHTML = `<div class="g6-modes"><button class="g6-mbtn on" id="g6mfree">${T('games.g6.free')}</button><button class="g6-mbtn" id="g6msong">${T('games.g6.song')}</button></div>
+			<div class="ins" id="g6ins">${T('games.g6.instruction')}</div>
 			<div class="g6-keys" id="g6keys"></div>
 			<div class="g6-seq" id="g6seq" style="display:none"></div>
-			<div class="g6-log" id="g6log">Toca una tecla...</div>`;
+			<div class="g6-log" id="g6log">${T('games.g6.log_default')}</div>`;
 
 		/** @type {HTMLElement} */ (cont.querySelector('#g6mfree')).onclick = () => g6SetMode('libre');
 		/** @type {HTMLElement} */ (cont.querySelector('#g6msong')).onclick = () => g6SetMode('cancion');
@@ -33,17 +35,17 @@
 			const k = G6_KEYS[i];
 			const b = document.createElement('button'); b.className = 'g6-key'; b.id = 'g6k'+i;
 			b.style.cssText = `background:${k.c};width:${keyW}px;height:${keyH}px;box-shadow:0 6px 0 ${k.c}88`;
-			b.textContent = k.n;
+			b.textContent = T('games.g6.notes.'+k.key);
 			const play = () => {
 				window.ppBeep(k.f,.5,'sine',.3); b.classList.add('press'); setTimeout(()=>b.classList.remove('press'),180);
-				if(g6Mode==='libre'){window.ppSay(k.n);const log=cont.querySelector('#g6log');if(log)log.textContent='🎵 '+k.n;}
+				if(g6Mode==='libre'){window.ppSay(T('games.g6.notes.'+k.key));const log=cont.querySelector('#g6log');if(log)log.textContent='🎵 '+T('games.g6.notes.'+k.key);}
 				else g6CheckNote(i);
 			};
 			b.addEventListener('touchstart',e=>{e.preventDefault();play();},{passive:false});
 			b.onmousedown = play;
 			keysEl.appendChild(b);
 		}
-		window.ppSay('¡Toca las teclas de colores y haz música!');
+		window.ppSay(T('games.g6.hello'));
 	}
 
 	/** @param {string} mode */
@@ -54,14 +56,14 @@
 		if(mode==='cancion'){
 			const lv = window.ppGetLevel();
 			const songIdx = Math.min(Math.ceil(lv/2), Object.keys(G6_SONGS).length);
-			const song = /** @type {Record<number,{name:string,notes:number[]}>} */ (G6_SONGS)[songIdx]||G6_SONGS[1];
+			const song = /** @type {Record<number,{key:string,notes:number[]}>} */ (G6_SONGS)[songIdx]||G6_SONGS[1];
 			g6SongNotes = song.notes.filter((/** @type {number} */ n) => n < g6NumKeys); g6NoteIdx = 0;
-			const ins=container.querySelector('#g6ins');if(ins)ins.textContent = (lv<13?'¡Toca la tecla que brilla!':'¡Toca de memoria!')+' 🎼 '+song.name;
+			const ins=container.querySelector('#g6ins');if(ins)ins.textContent = (lv<13?T('games.g6.touch_glow'):T('games.g6.touch_memory'))+' 🎼 '+T('games.g6.songs.'+song.key);
 			const seqEl = /** @type {HTMLElement} */ (container.querySelector('#g6seq')); seqEl.style.display = 'flex'; seqEl.innerHTML = '';
-			g6SongNotes.forEach((noteIdx,i) => { const d=document.createElement('div');d.className='g6-note';d.textContent=G6_KEYS[noteIdx]?.n||'?';d.id='g6seq'+i;seqEl.appendChild(d); });
+			g6SongNotes.forEach((noteIdx,i) => { const d=document.createElement('div');d.className='g6-note';d.textContent=G6_KEYS[noteIdx]?T('games.g6.notes.'+G6_KEYS[noteIdx].key):'?';d.id='g6seq'+i;seqEl.appendChild(d); });
 			g6HighlightNext();
 		} else {
-			const ins2=container.querySelector('#g6ins');if(ins2)ins2.textContent = '¡Toca las teclas!';
+			const ins2=container.querySelector('#g6ins');if(ins2)ins2.textContent = T('games.g6.touch_keys');
 			const seq2=/** @type {HTMLElement} */ (container.querySelector('#g6seq'));seq2.style.display = 'none';
 			container.querySelectorAll('.g6-key').forEach(k=>k.classList.remove('glow'));
 		}
@@ -84,9 +86,9 @@
 			g6NoteIdx++;
 			if(g6NoteIdx>=g6SongNotes.length){
 				container.querySelectorAll('.g6-key').forEach(k=>k.classList.remove('glow'));
-				window.ppOnCorrect();const _lv=window.ppWin();setTimeout(()=>window.ppCelebrate('¡Tocaste la canción! 🎵🎶',3,()=>initG6(container,window.ppGetLevel()),_lv),300);
+				window.ppOnCorrect();const _lv=window.ppWin();setTimeout(()=>window.ppCelebrate(T('games.g6.win')+' 🎵🎶',3,()=>initG6(container,window.ppGetLevel()),_lv),300);
 			} else { setTimeout(g6HighlightNext, window.ppGetLevel()>=10?100:250); }
-		} else { window.ppOnWrong(); window.ppBoo(); window.ppSay('¡Toca la tecla correcta!'); }
+		} else { window.ppOnWrong(); window.ppBoo(); window.ppSay(T('games.g6.touch_key')); }
 	}
 </script>
 

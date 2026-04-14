@@ -1,27 +1,28 @@
 <script>
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { shuf, lerpParam } from '$lib/data.js';
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G3_DATA=[
-		{l:'A',w:[{e:'🌳',n:'Árbol'},{e:'🌸',n:'Flor'},{e:'🐶',n:'Perro'},{e:'🌙',n:'Luna'}],ok:'Árbol'},
-		{l:'B',w:[{e:'⛵',n:'Barco'},{e:'☀️',n:'Sol'},{e:'🐘',n:'Elefante'},{e:'🌈',n:'Arco iris'}],ok:'Barco'},
-		{l:'C',w:[{e:'🏠',n:'Casa'},{e:'🌙',n:'Luna'},{e:'🐶',n:'Perro'},{e:'🌸',n:'Flor'}],ok:'Casa'},
-		{l:'D',w:[{e:'🐬',n:'Delfín'},{e:'⭐',n:'Estrella'},{e:'🌸',n:'Flor'},{e:'🐱',n:'Gato'}],ok:'Delfín'},
-		{l:'E',w:[{e:'🐘',n:'Elefante'},{e:'🌸',n:'Flor'},{e:'🐶',n:'Perro'},{e:'🌙',n:'Luna'}],ok:'Elefante'},
-		{l:'F',w:[{e:'🌸',n:'Flor'},{e:'🐱',n:'Gato'},{e:'☀️',n:'Sol'},{e:'🐴',n:'Caballo'}],ok:'Flor'},
-		{l:'G',w:[{e:'🐱',n:'Gato'},{e:'🌙',n:'Luna'},{e:'⭐',n:'Estrella'},{e:'🐶',n:'Perro'}],ok:'Gato'},
-		{l:'P',w:[{e:'🐶',n:'Perro'},{e:'🏠',n:'Casa'},{e:'☀️',n:'Sol'},{e:'🌸',n:'Flor'}],ok:'Perro'},
-		{l:'M',w:[{e:'🦋',n:'Mariposa'},{e:'🌙',n:'Luna'},{e:'⭐',n:'Estrella'},{e:'🐶',n:'Perro'}],ok:'Mariposa'},
-		{l:'S',w:[{e:'☀️',n:'Sol'},{e:'🐱',n:'Gato'},{e:'🌸',n:'Flor'},{e:'🐘',n:'Elefante'}],ok:'Sol'},
-		{l:'T',w:[{e:'🐢',n:'Tortuga'},{e:'🌙',n:'Luna'},{e:'🐶',n:'Perro'},{e:'🌸',n:'Flor'}],ok:'Tortuga'},
-		{l:'L',w:[{e:'🦁',n:'León'},{e:'⭐',n:'Estrella'},{e:'🐶',n:'Perro'},{e:'🏠',n:'Casa'}],ok:'León'},
-		{l:'R',w:[{e:'🐭',n:'Ratón'},{e:'🐱',n:'Gato'},{e:'🌸',n:'Flor'},{e:'☀️',n:'Sol'}],ok:'Ratón'},
-		{l:'N',w:[{e:'☁️',n:'Nube'},{e:'🏠',n:'Casa'},{e:'⭐',n:'Estrella'},{e:'🐶',n:'Perro'}],ok:'Nube'},
-		{l:'H',w:[{e:'🐹',n:'Hámster'},{e:'🐶',n:'Perro'},{e:'🌸',n:'Flor'},{e:'⭐',n:'Estrella'}],ok:'Hámster'},
-		{l:'J',w:[{e:'🦒',n:'Jirafa'},{e:'🌸',n:'Flor'},{e:'🐶',n:'Perro'},{e:'☀️',n:'Sol'}],ok:'Jirafa'},
-		{l:'V',w:[{e:'🐮',n:'Vaca'},{e:'🐶',n:'Perro'},{e:'🌙',n:'Luna'},{e:'☀️',n:'Sol'}],ok:'Vaca'},
-		{l:'Z',w:[{e:'🥕',n:'Zanahoria'},{e:'🌸',n:'Flor'},{e:'🐶',n:'Perro'},{e:'☀️',n:'Sol'}],ok:'Zanahoria'},
-		{l:'Ñ',w:[{e:'🦤',n:'Ñandú'},{e:'🐶',n:'Perro'},{e:'🌸',n:'Flor'},{e:'☀️',n:'Sol'}],ok:'Ñandú'},
+		{l:'A',w:[{e:'🌳',n:'tree'},{e:'🌸',n:'flower'},{e:'🐶',n:'dog'},{e:'🌙',n:'moon'}],ok:'tree'},
+		{l:'B',w:[{e:'⛵',n:'boat'},{e:'☀️',n:'sun'},{e:'🐘',n:'elephant'},{e:'🌈',n:'rainbow'}],ok:'boat'},
+		{l:'C',w:[{e:'🏠',n:'house'},{e:'🌙',n:'moon'},{e:'🐶',n:'dog'},{e:'🌸',n:'flower'}],ok:'house'},
+		{l:'D',w:[{e:'🐬',n:'dolphin'},{e:'⭐',n:'star'},{e:'🌸',n:'flower'},{e:'🐱',n:'cat'}],ok:'dolphin'},
+		{l:'E',w:[{e:'🐘',n:'elephant'},{e:'🌸',n:'flower'},{e:'🐶',n:'dog'},{e:'🌙',n:'moon'}],ok:'elephant'},
+		{l:'F',w:[{e:'🌸',n:'flower'},{e:'🐱',n:'cat'},{e:'☀️',n:'sun'},{e:'🐴',n:'horse'}],ok:'flower'},
+		{l:'G',w:[{e:'🐱',n:'cat'},{e:'🌙',n:'moon'},{e:'⭐',n:'star'},{e:'🐶',n:'dog'}],ok:'cat'},
+		{l:'P',w:[{e:'🐶',n:'dog'},{e:'🏠',n:'house'},{e:'☀️',n:'sun'},{e:'🌸',n:'flower'}],ok:'dog'},
+		{l:'M',w:[{e:'🦋',n:'butterfly'},{e:'🌙',n:'moon'},{e:'⭐',n:'star'},{e:'🐶',n:'dog'}],ok:'butterfly'},
+		{l:'S',w:[{e:'☀️',n:'sun'},{e:'🐱',n:'cat'},{e:'🌸',n:'flower'},{e:'🐘',n:'elephant'}],ok:'sun'},
+		{l:'T',w:[{e:'🐢',n:'turtle'},{e:'🌙',n:'moon'},{e:'🐶',n:'dog'},{e:'🌸',n:'flower'}],ok:'turtle'},
+		{l:'L',w:[{e:'🦁',n:'lion'},{e:'⭐',n:'star'},{e:'🐶',n:'dog'},{e:'🏠',n:'house'}],ok:'lion'},
+		{l:'R',w:[{e:'🐭',n:'mouse'},{e:'🐱',n:'cat'},{e:'🌸',n:'flower'},{e:'☀️',n:'sun'}],ok:'mouse'},
+		{l:'N',w:[{e:'☁️',n:'cloud'},{e:'🏠',n:'house'},{e:'⭐',n:'star'},{e:'🐶',n:'dog'}],ok:'cloud'},
+		{l:'H',w:[{e:'🐹',n:'hamster'},{e:'🐶',n:'dog'},{e:'🌸',n:'flower'},{e:'⭐',n:'star'}],ok:'hamster'},
+		{l:'J',w:[{e:'🦒',n:'giraffe'},{e:'🌸',n:'flower'},{e:'🐶',n:'dog'},{e:'☀️',n:'sun'}],ok:'giraffe'},
+		{l:'V',w:[{e:'🐮',n:'cow'},{e:'🐶',n:'dog'},{e:'🌙',n:'moon'},{e:'☀️',n:'sun'}],ok:'cow'},
+		{l:'Z',w:[{e:'🥕',n:'carrot'},{e:'🌸',n:'flower'},{e:'🐶',n:'dog'},{e:'☀️',n:'sun'}],ok:'carrot'},
+		{l:'Ñ',w:[{e:'🦤',n:'rhea'},{e:'🐶',n:'dog'},{e:'🌸',n:'flower'},{e:'☀️',n:'sun'}],ok:'rhea'},
 	];
 
 	/** @type {HTMLDivElement} */
@@ -38,13 +39,13 @@
 		else if(lv<=10) pool = G3_DATA.filter(d=>[...easy,...med].includes(d.l));
 		else pool = G3_DATA;
 		g3Data = shuf(pool).slice(0, lerpParam(lv,5,8));
-		window.ppSay('¡Mira la letra y elige la imagen que empieza igual!');
+		window.ppSay(T('games.g3.hello'));
 		g3Next();
 	}
 
 	function g3Next() {
 		const lv = window.ppGetLevel();
-		if(g3Round>=g3Data.length){const _lv=window.ppWin();window.ppCelebrate('¡Conoces todas las letras! 🅰️',3,()=>initG3(container,window.ppGetLevel()),_lv);return;}
+		if(g3Round>=g3Data.length){const _lv=window.ppWin();window.ppCelebrate(T('games.g3.win'),3,()=>initG3(container,window.ppGetLevel()),_lv);return;}
 		/** @type {HTMLElement} */ (container.querySelector('#g3pb')).style.width = (g3Round/g3Data.length*100)+'%';
 		const d = g3Data[g3Round];
 		const ltrEl = /** @type {HTMLElement} */ (container.querySelector('#g3ltr'));
@@ -55,14 +56,14 @@
 		if(!shown.find(/** @param {{n:string}} w */ w=>w.n===d.ok)) shown[0] = d.w.find(/** @param {{n:string}} w */ w=>w.n===d.ok);
 		shuf(shown).forEach(w => {
 			const b = document.createElement('div'); b.className = 'g3-opt';
-			b.innerHTML = w.e+'<p>'+w.n+'</p>';
+			b.innerHTML = w.e+'<p>'+T('games.g3.words.'+w.n)+'</p>';
 			b.onclick = () => {
-				if(w.n===d.ok){b.style.background='#EFFFEF';b.style.borderColor='#6BCB77';window.ppBeep(880,.2);window.ppSay('¡Correcto! '+d.ok+' empieza por '+d.l);window.ppOnCorrect();g3Round++;setTimeout(g3Next,1100);}
-				else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();window.ppSay('¡Inténtalo!');}
+				if(w.n===d.ok){b.style.background='#EFFFEF';b.style.borderColor='#6BCB77';window.ppBeep(880,.2);window.ppSay(T('games.g3.correct', {word: T('games.g3.words.'+d.ok), letter: d.l}));window.ppOnCorrect();g3Round++;setTimeout(g3Next,1100);}
+				else{b.classList.add('err');setTimeout(()=>b.classList.remove('err'),400);window.ppOnWrong();window.ppBoo();window.ppSay(T('games.common.try_again'));}
 			};
 			optsEl.appendChild(b);
 		});
-		window.ppSay('¿Qué empieza por '+d.l+'?');
+		window.ppSay(T('games.g3.question', {letter: d.l}));
 	}
 
 	/** @param {HTMLDivElement} cont @param {number} lv */
@@ -70,7 +71,7 @@
 		container = cont;
 		cont.innerHTML = `
 			<div class="pbar"><div class="pfill" id="g3pb" style="width:0%;background:var(--c3)"></div></div>
-			<div class="ins">¿Qué imagen empieza por esta letra?</div>
+			<div class="ins">${T('games.g3.instruction')}</div>
 			<div class="g3-letter" id="g3ltr">A</div>
 			<div class="g3-opts" id="g3opts"></div>`;
 		initG3(cont, lv);

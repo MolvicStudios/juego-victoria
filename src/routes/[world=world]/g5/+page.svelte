@@ -2,6 +2,7 @@
 	import { onDestroy } from 'svelte';
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { shuf, lerpParam } from '$lib/data.js';
+	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G5_ANIM=['🐶','🐱','🐻','🐼','🦊','🐸','🦁','🐨','🐯','🐰','🐮','🐷'];
 	/** @type {HTMLDivElement} */
@@ -22,7 +23,7 @@
 		const cards = shuf([...animals,...animals]);
 		const cols = lv<=3?2:lv<=6?3:lv<=9?(pairCount<=4?2:4):4;
 
-		cont.innerHTML = `<div class="ins">¡Encuentra las parejas!</div>
+		cont.innerHTML = `<div class="ins">${T('games.g5.instruction')}</div>
 			<div style="display:flex;gap:12px;align-items:center"><div style="--color:var(--c5)" class="badge">⭐ <span id="g5sc">0</span></div><div class="g5-timer" id="g5timer"></div></div>
 			<div class="g5-grid" id="g5grid"></div>`;
 
@@ -39,7 +40,7 @@
 		});
 
 		if(lv>=10) g5Timer = setInterval(() => { g5Sec++; const el = cont.querySelector('#g5timer'); if(el) el.textContent = '⏱️ '+g5Sec+'s'; }, 1000);
-		window.ppSay('¡Toca las cartas y encuentra las parejas iguales!');
+		window.ppSay(T('games.g5.hello'));
 	}
 
 	/** @param {HTMLDivElement} card */
@@ -52,12 +53,12 @@
 			if(a.dataset.v===b.dataset.v){
 				a.classList.add('mat');b.classList.add('mat');
 				g5Matched++; const sc = container.querySelector('#g5sc'); if(sc) sc.textContent=String(g5Matched);
-				window.ppBeep(880,.2); window.ppSay('¡Pareja!'); g5Flipped=[]; g5CanFlip=true;
+				window.ppBeep(880,.2); window.ppSay(T('games.g5.pair')); g5Flipped=[]; g5CanFlip=true;
 				window.ppOnCorrect();
 				if(g5Matched===container.querySelectorAll('.g5-card').length/2){
 					if(g5Timer) clearInterval(g5Timer);
 					const _lv=window.ppWin();
-					setTimeout(()=>window.ppCelebrate('¡Todas las parejas! 🃏',3,()=>initG5(container,window.ppGetLevel()),_lv),400);
+					setTimeout(()=>window.ppCelebrate(T('games.g5.win'),3,()=>initG5(container,window.ppGetLevel()),_lv),400);
 				}
 			} else {
 				setTimeout(()=>{a.classList.remove('flip');b.classList.remove('flip');g5Flipped=[];g5CanFlip=true;window.ppOnWrong();window.ppBoo();},900);
