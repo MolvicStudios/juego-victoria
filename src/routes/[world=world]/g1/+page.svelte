@@ -3,7 +3,7 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { shuf, lerpParam } from '$lib/data.js';
 
-	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+	/** @type {(key: string, vars?: Record<string, string|number>) => string} */ const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G1_SHAPES = [
 		{id:'ci',l:'games.g1.shapes.circle',e:'⭕',bg:'#FF6B6B'},

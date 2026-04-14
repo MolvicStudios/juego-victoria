@@ -1,7 +1,7 @@
 <script>
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { shuf, lerpParam } from '$lib/data.js';
-	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+	/** @type {(key: string, vars?: Record<string, string|number>) => string} */ const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G3_DATA=[
 		{l:'A',w:[{e:'🌳',n:'tree'},{e:'🌸',n:'flower'},{e:'🐶',n:'dog'},{e:'🌙',n:'moon'}],ok:'tree'},
@@ -53,7 +53,7 @@
 		const optsEl = /** @type {HTMLElement} */ (container.querySelector('#g3opts')); optsEl.innerHTML = '';
 		const numOpts = lv<=5?Math.min(2+Math.floor((lv-1)/2),3):lv<=10?3:4;
 		const shown = shuf(d.w).slice(0,numOpts);
-		if(!shown.find(/** @param {{n:string}} w */ w=>w.n===d.ok)) shown[0] = d.w.find(/** @param {{n:string}} w */ w=>w.n===d.ok);
+		if(!shown.find(/** @param {{n:string}} w */ w=>w.n===d.ok)) shown[0] = /** @type {typeof shown[0]} */ (d.w.find(/** @param {{n:string}} w */ w=>w.n===d.ok));
 		shuf(shown).forEach(w => {
 			const b = document.createElement('div'); b.className = 'g3-opt';
 			b.innerHTML = w.e+'<p>'+T('games.g3.words.'+w.n)+'</p>';

@@ -17,6 +17,7 @@ declare global {
 		ppGetLevel: () => number;
 		ppOnCorrect: (sourceEvent?: Event) => void;
 		ppOnWrong: (sourceEvent?: Event) => string | null;
+		ppT?: (key: string, vars?: Record<string, string | number>) => string;
 		webkitAudioContext?: typeof AudioContext;
 	}
 }

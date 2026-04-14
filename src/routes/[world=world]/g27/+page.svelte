@@ -2,7 +2,7 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
-	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+	/** @type {(key: string, vars?: Record<string, string|number>) => string} */ const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const COINS=[{v:1,lbl:'1c',col:'#cd7f32'},{v:2,lbl:'2c',col:'#cd7f32'},{v:5,lbl:'5c',col:'#cd7f32'},{v:10,lbl:'10c',col:'#C0C0C0'},{v:20,lbl:'20c',col:'#C0C0C0'},{v:50,lbl:'50c',col:'#FFD700'}];
 

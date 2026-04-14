@@ -2,7 +2,7 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { shuf } from '$lib/data.js';
 
-	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+	/** @type {(key: string, vars?: Record<string, string|number>) => string} */ const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G10_COLS=[
 		{key:'red',h:'#E53E3E'},{key:'blue',h:'#4299E1'},{key:'green',h:'#48BB78'},{key:'yellow',h:'#ECC94B'},

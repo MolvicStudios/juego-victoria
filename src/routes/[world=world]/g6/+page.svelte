@@ -1,7 +1,7 @@
 <script>
 	import GameShell from '$lib/components/GameShell.svelte';
 
-	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+	/** @type {(key: string, vars?: Record<string, string|number>) => string} */ const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G6_KEYS=[{key:'do',f:261.63,c:'#FF6B6B'},{key:'re',f:293.66,c:'#FF9F43'},{key:'mi',f:329.63,c:'#FFD93D'},{key:'fa',f:349.23,c:'#6BCB77'},{key:'sol',f:392,c:'#4D9FEC'},{key:'la',f:440,c:'#A78BFA'},{key:'si',f:493.88,c:'#F472B6'},{key:'do2',f:523.25,c:'#2DD4BF'}];
 	const G6_SONGS={1:{key:'mini',notes:[0,0,4,4,0]},2:{key:'bells',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0]},3:{key:'twinkle',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0,4,4,3,3,2,2,1]},4:{key:'birthday',notes:[0,0,1,0,3,2,0,0,1,0,4,3,0,0,7,5,3,2,1]},5:{key:'cow',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0]},6:{key:'challenge1',notes:[0,2,4,5,4,2,0,1,3,5,6,5,3,1,0,4,7,4,0]},7:{key:'ring',notes:[0,1,2,3,4,5,6,7,7,6,5,4,3,2,1,0,0,2,4,7]},8:{key:'challenge2',notes:[7,5,3,0,2,4,6,7,5,3,1,0,2,4,7,5,3,1,0,7]},9:{key:'final',notes:[0,0,4,4,5,5,4,3,3,2,2,1,1,0,7,7,5,5,3,3,1,0,2,4,7]}};

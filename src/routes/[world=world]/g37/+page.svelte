@@ -3,7 +3,7 @@
 	import { onDestroy } from 'svelte';
 	import { lerpParam } from '$lib/data.js';
 
-	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+	/** @type {(key: string, vars?: Record<string, string|number>) => string} */ const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	let g37AnimId = 0;
 	onDestroy(() => { if (g37AnimId) { cancelAnimationFrame(g37AnimId); g37AnimId = 0; } });

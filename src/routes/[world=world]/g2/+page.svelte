@@ -2,7 +2,7 @@
 	import { onDestroy } from 'svelte';
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { shuf, lerpParam } from '$lib/data.js';
-	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+	/** @type {(key: string, vars?: Record<string, string|number>) => string} */ const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G2_FRUITS = ['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🫐','🍌','🥝'];
 	/** @type {HTMLDivElement} */

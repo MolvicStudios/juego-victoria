@@ -2,7 +2,7 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
-	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+	/** @type {(key: string, vars?: Record<string, string|number>) => string} */ const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G21_WORDS=[
 		{k:'sol',e:'☀️'},{k:'pan',e:'🍞'},{k:'luz',e:'💡'},{k:'mar',e:'🌊'},

@@ -1,6 +1,6 @@
 <script>
 	import GameShell from '$lib/components/GameShell.svelte';
-	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+	/** @type {(key: string, vars?: Record<string, string|number>) => string} */ const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G4_COLS=['#FF6B6B','#FF9F43','#FFD93D','#6BCB77','#38B2AC','#4D9FEC','#A78BFA','#F472B6','#2D3748','#ffffff','#8B5CF6','#EC4899','#14B8A6','#F59E0B','#3B82F6','#EF4444'];
 	const G4_STMP=['🌸','⭐','❤️','🦋','🐱','🐶','🌈','🎈','🍎','🌟'];

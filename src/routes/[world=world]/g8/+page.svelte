@@ -2,7 +2,7 @@
 	import GameShell from '$lib/components/GameShell.svelte';
 	import { lerpParam, shuf } from '$lib/data.js';
 
-	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+	/** @type {(key: string, vars?: Record<string, string|number>) => string} */ const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	const G8_DATA=[
 		{e:'🦁',key:'lion',x:['tiger','bear','wolf']},{e:'🐘',key:'elephant',x:['giraffe','hippo','rhino']},

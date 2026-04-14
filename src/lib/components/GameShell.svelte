@@ -145,7 +145,7 @@
 		window.ppSay = say;
 		window.ppBoo = boo;
 		// Exponer función de traducción global para que los juegos puedan usarla
-		window.ppT = (/** @type {string} */ key, /** @type {Record<string, string|number>=} */ vars) => get(t)(key, vars);
+		window.ppT = (key, vars) => get(t)(key, vars);
 		window.ppWin = () => {
 			const msg = onGameComplete(gameNum);
 			streak = 0;

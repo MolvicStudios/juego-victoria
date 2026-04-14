@@ -3,7 +3,7 @@
 	import { onDestroy } from 'svelte';
 	import { shuf, lerpParam } from '$lib/data.js';
 
-	const T = (key, vars) => window.ppT?.(key, vars) ?? key;
+	/** @type {(key: string, vars?: Record<string, string|number>) => string} */ const T = (key, vars) => window.ppT?.(key, vars) ?? key;
 
 	/* 20 animals in increasing complexity: easy (top) → hard (bottom) */
 	const ANIMALS = [
