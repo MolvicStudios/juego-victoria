@@ -2,6 +2,7 @@ import { writable, derived, get } from 'svelte/store';
 import { browser } from '$app/environment';
 import { activeProfileIndex } from './profiles.js';
 import { MEDALS } from '../data.js';
+import { t } from '$lib/i18n/index.js';
 
 const STORAGE_KEY = 'pp_progress';
 
@@ -84,7 +85,7 @@ export function onGameComplete(gameNum) {
 	d.correctStreak = d.correctStreak || {};
 	d.correctStreak[gameNum] = 0;
 	setProfileProgress(d);
-	return lv < 15 ? '¡Nivel ' + nextLv + ' desbloqueado! 🚀' : '¡Eres un experto nivel 15! 🏆';
+	return lv < 15 ? get(t)('feedback.level_up', { n: nextLv }) : get(t)('feedback.max_level');
 }
 
 /** @param {number} gameNum */
@@ -112,7 +113,7 @@ export function onWrong(gameNum) {
 		d.levels[gameNum] = lv - 1;
 		d.wrongStreak[gameNum] = 0;
 		setProfileProgress(d);
-		return '¡Bajamos un poco! Nivel ' + (lv - 1);
+		return get(t)('feedback.level_down', { n: lv - 1 });
 	}
 	setProfileProgress(d);
 	return null;

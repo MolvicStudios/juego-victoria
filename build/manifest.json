@@ -2,7 +2,7 @@
   "name": "PinguPlay — Juegos Educativos",
   "short_name": "PinguPlay",
   "description": "38 juegos educativos para niños de 0-12 años con 15 niveles adaptativos",
-  "version": "3.0.0",
+  "version": "3.5.0",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFF9F0",

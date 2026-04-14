@@ -7,6 +7,8 @@
 	import { GAMES } from '$lib/data.js';
 	import { get } from 'svelte/store';
 	import { quietMode } from '$lib/stores/accessibility.js';
+	import { t } from '$lib/i18n/index.js';
+	import LanguageSelector from '$lib/components/LanguageSelector.svelte';
 
 	let authenticated = $state(false);
 	let pinInput = $state('');
@@ -44,7 +46,7 @@
 		} else if (hash === storedPin) {
 			authenticated = true; pinError = '';
 		} else {
-			pinError = 'PIN incorrecto'; pinInput = '';
+			pinError = 'err'; pinInput = '';
 		}
 	}
 
@@ -149,22 +151,22 @@
 <div class="scr on" style="display:flex">
 	<div class="pad-wrap">
 		<div class="pad-header">
-			<h1>🔒 Zona de Padres</h1>
-			<p>Introduce tu PIN para acceder</p>
+			<h1>{$t('ui.parents.title_locked')}</h1>
+			<p>{$t('ui.parents.pin_subtitle')}</p>
 		</div>
 
 		<div class="pad-section" style="text-align:center">
-			<p style="margin-bottom:12px">PIN de 4 dígitos:</p>
+			<p style="margin-bottom:12px">{$t('ui.parents.pin_digits')}</p>
 			<div class="pin-row" style="justify-content:center">
 				<input type="password" maxlength="4" inputmode="numeric" pattern="[0-9]*"
 					bind:value={pinInput} class="pin-inp"
 					onkeydown={(e) => e.key === 'Enter' && checkPin()} />
-				<button class="pad-btn pad-btn-pri" onclick={checkPin}>Entrar</button>
+				<button class="pad-btn pad-btn-pri" onclick={checkPin}>{$t('ui.parents.enter_btn')}</button>
 			</div>
-			{#if pinError}<p style="color:#E53E3E;font-weight:700;margin-top:8px">{pinError}</p>{/if}
+			{#if pinError}<p style="color:#E53E3E;font-weight:700;margin-top:8px">{$t('ui.parents.pin_wrong')}</p>{/if}
 		</div>
 
-		<button class="pad-btn pad-btn-back" onclick={() => goto('/')}>← Volver al inicio</button>
+		<button class="pad-btn pad-btn-back" onclick={() => goto('/')}>{$t('ui.parents.back_home')}</button>
 	</div>
 </div>
 
@@ -172,15 +174,15 @@
 <div class="scr on" style="display:flex">
 	<div class="pad-wrap">
 		<div class="pad-header">
-			<h1>👨‍👩‍👧 Zona de Padres</h1>
-			<p>Controla el progreso y configura la app</p>
+			<h1>{$t('ui.parents.title')}</h1>
+			<p>{$t('ui.parents.subtitle')}</p>
 		</div>
 
 		<div class="pad-tabs">
-			<button class="pad-tab {activeTab === 'stats' ? 'on' : ''}" onclick={() => activeTab='stats'}>📊 Progreso</button>
-			<button class="pad-tab {activeTab === 'info' ? 'on' : ''}" onclick={() => activeTab='info'}>📚 Contenido</button>
-			<button class="pad-tab {activeTab === 'settings' ? 'on' : ''}" onclick={() => activeTab='settings'}>⚙️ Ajustes</button>
-			<button class="pad-tab {activeTab === 'about' ? 'on' : ''}" onclick={() => activeTab='about'}>ℹ️ Acerca de</button>
+			<button class="pad-tab {activeTab === 'stats' ? 'on' : ''}" onclick={() => activeTab='stats'}>{$t('ui.parents.tab_stats')}</button>
+			<button class="pad-tab {activeTab === 'info' ? 'on' : ''}" onclick={() => activeTab='info'}>{$t('ui.parents.tab_info')}</button>
+			<button class="pad-tab {activeTab === 'settings' ? 'on' : ''}" onclick={() => activeTab='settings'}>{$t('ui.parents.tab_settings')}</button>
+			<button class="pad-tab {activeTab === 'about' ? 'on' : ''}" onclick={() => activeTab='about'}>{$t('ui.parents.tab_about')}</button>
 		</div>
 
 		<a href="https://ko-fi.com/pinguplay" target="_blank" rel="noopener noreferrer"
@@ -193,7 +195,7 @@
 		<!-- ═══════ ESTADÍSTICAS ═══════ -->
 		{#if activeTab === 'stats'}
 		<div class="pad-section">
-			<h3>📊 Progreso de los perfiles</h3>
+			<h3>{$t('ui.parents.stats_title')}</h3>
 			{#each profileList as prof, i}
 				{@const stats = getProfileStats(i)}
 				{@const world = worldForAge(prof.birthYear)}
@@ -217,15 +219,15 @@
 				</div>
 			{/each}
 			{#if profileList.length === 0}
-				<p style="text-align:center;opacity:.6;padding:20px 0">No hay perfiles creados aún. Vuelve al inicio para crear uno.</p>
+				<p style="text-align:center;opacity:.6;padding:20px 0">{$t('ui.parents.no_profiles')}</p>
 			{/if}
 		</div>
 
 		<!-- ═══════ CONTENIDO EDUCATIVO ═══════ -->
 		{:else if activeTab === 'info'}
 		<div class="pad-section">
-			<h3>📚 ¿Qué aprenden?</h3>
-			<p>PinguPlay tiene <strong>38 juegos educativos</strong> con <strong>15 niveles</strong> de dificultad cada uno. La dificultad sube automáticamente cuando tu hijo avanza:</p>
+			<h3>{$t('ui.parents.content_title')}</h3>
+			<p>{$t('ui.parents.content_desc')}</p>
 
 			<h4>🧠 Áreas de aprendizaje</h4>
 			<div class="info-grid">
@@ -247,31 +249,31 @@
 				</tbody>
 			</table>
 
-			<h4>⬆️ Sistema de dificultad adaptativa</h4>
-			<p>Cada juego tiene 15 niveles. Al completar un nivel, se desbloquea el siguiente. Si tu hijo falla 3 veces seguidas, el juego baja un nivel automáticamente para evitar frustración.</p>
-			<p>Las ⭐ estrellas ganadas desbloquean stickers coleccionables (hay 20 logros de 5⭐ a 2000⭐).</p>
+			<h4>{$t('ui.parents.adaptive_title')}</h4>
+			<p>{$t('ui.parents.adaptive_desc')}</p>
+			<p>{$t('ui.parents.stars_desc')}</p>
 		</div>
 
 		<!-- ═══════ AJUSTES ═══════ -->
 		{:else if activeTab === 'settings'}
 		<div class="pad-section">
-			<h3>⚙️ Ajustes</h3>
+			<h3>{$t('ui.parents.settings_title')}</h3>
 
 			<div class="toggle-row">
 				<span>🌙</span>
-				<label for="night-toggle">Modo noche</label>
+				<label for="night-toggle">{$t('ui.settings.night_mode')}</label>
 				<input id="night-toggle" type="checkbox" class="toggle-sw" bind:checked={$night} />
 			</div>
 
 			<div class="toggle-row">
 				<span>🔇</span>
-				<label for="muted-toggle">Silenciar sonidos y voz</label>
+				<label for="muted-toggle">{$t('ui.settings.sound')}</label>
 				<input id="muted-toggle" type="checkbox" class="toggle-sw" bind:checked={$muted} />
 			</div>
 
 			<div class="toggle-row">
 				<span>🌿</span>
-				<label for="quiet-toggle">Modo Flujo Silencioso</label>
+				<label for="quiet-toggle">{$t('ui.settings.quiet_mode')}</label>
 				<input id="quiet-toggle" type="checkbox" class="toggle-sw" bind:checked={$quietMode} />
 			</div>
 			<div class="pad-section" style="background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.25);padding:14px 16px;margin:-6px 0 6px">
@@ -282,63 +284,67 @@
 
 			<hr style="margin:16px 0;opacity:.15" />
 
-			<h4>🔒 PIN parental</h4>
-			<p>El PIN protege esta zona para que solo los adultos puedan acceder a los ajustes y estadísticas.</p>
+			<h4>{$t('ui.parents.lang_section')}</h4>
+			<LanguageSelector variant="settings" />
+
+			<hr style="margin:16px 0;opacity:.15" />
+
+			<h4>{$t('ui.parents.pin_section')}</h4>
+			<p>{$t('ui.parents.pin_desc')}</p>
 
 			{#if storedPin}
-				<p style="font-weight:700">PIN activo: ••••</p>
+				<p style="font-weight:700">{$t('ui.parents.pin_active')}</p>
 				<div class="pin-row">
-					<button class="pad-btn pad-btn-pri" onclick={() => showSetPin = true}>Cambiar PIN</button>
-					<button class="pad-btn pad-btn-red" onclick={removePin}>Quitar PIN</button>
+					<button class="pad-btn pad-btn-pri" onclick={() => showSetPin = true}>{$t('ui.parents.pin_change')}</button>
+					<button class="pad-btn pad-btn-red" onclick={removePin}>{$t('ui.parents.pin_remove')}</button>
 				</div>
 			{:else}
-				<p>Sin PIN configurado. Cualquiera puede acceder a esta zona.</p>
-				<button class="pad-btn pad-btn-pri" onclick={() => showSetPin = true}>Configurar PIN</button>
+				<p>{$t('ui.parents.pin_no_pin')}</p>
+				<button class="pad-btn pad-btn-pri" onclick={() => showSetPin = true}>{$t('ui.parents.pin_set')}</button>
 			{/if}
 
 			{#if showSetPin}
 				<div class="pin-row" style="margin-top:12px">
 					<input type="password" maxlength="4" inputmode="numeric" pattern="[0-9]*"
-						bind:value={newPin} class="pin-inp" placeholder="4 dígitos" />
-					<button class="pad-btn pad-btn-pri" onclick={savePin}>Guardar</button>
-					<button class="pad-btn pad-btn-gray" onclick={() => { showSetPin = false; newPin = ''; }}>Cancelar</button>
+						bind:value={newPin} class="pin-inp" placeholder={$t('ui.parents.pin_placeholder')} />
+					<button class="pad-btn pad-btn-pri" onclick={savePin}>{$t('ui.parents.pin_save')}</button>
+					<button class="pad-btn pad-btn-gray" onclick={() => { showSetPin = false; newPin = ''; }}>{$t('ui.parents.pin_cancel')}</button>
 				</div>
 			{/if}
 
 			<hr style="margin:16px 0;opacity:.15" />
 
-			<h4>🗑️ Gestión de datos</h4>
-			<p>El progreso del juego se guarda localmente en este dispositivo. Si el padre/tutor aceptó las cookies, se envían métricas de uso anónimas para mejorar la app. Puedes ver más en <a href="/privacy.html" style="color:var(--c5)">nuestra política de privacidad</a>.</p>
+			<h4>{$t('ui.parents.data_section')}</h4>
+			<p>{$t('ui.parents.data_desc')} <a href="/privacy.html" style="color:var(--c5)">{$t('ui.footer.privacy')}</a>.</p>
 		</div>
 
 		<!-- ═══════ ACERCA DE ═══════ -->
 		{:else if activeTab === 'about'}
 		<div class="pad-section">
-			<h3>ℹ️ Acerca de PinguPlay</h3>
+			<h3>{$t('ui.parents.about_title')}</h3>
 			<p style="text-align:center;font-size:3rem;margin:8px 0">🐧</p>
-			<p style="text-align:center;font-weight:900;font-size:1.1rem">PinguPlay v2.1</p>
-			<p style="text-align:center;font-size:.78rem;color:var(--ink2)">38 juegos · 15 niveles · 4 mundos</p>
+			<p style="text-align:center;font-weight:900;font-size:1.1rem">{$t('ui.parents.about_version')}</p>
+			<p style="text-align:center;font-size:.78rem;color:var(--ink2)">{$t('ui.parents.about_subtitle')}</p>
 
-			<h4>🔒 Privacidad y seguridad</h4>
-			<p>PinguPlay fue diseñado pensando en la seguridad de los niños:</p>
-			<p>✅ <strong>Sin publicidad</strong> — Ningún anuncio dentro de la app</p>
-			<p>✅ <strong>Analítica con consentimiento</strong> — Solo si el padre/tutor acepta las cookies</p>
-			<p>✅ <strong>100% offline</strong> — Funciona sin conexión a internet</p>
-			<p>✅ <strong>Progreso local</strong> — Toda la actividad del juego se guarda solo en el dispositivo</p>
-			<p>✅ <strong>Sin compras</strong> — Todo el contenido es gratuito</p>
-			<p>✅ <strong>Sin enlaces externos</strong> — Los niños no pueden salir de la app</p>
+			<h4>{$t('ui.parents.privacy_title')}</h4>
+			<p>{$t('ui.parents.privacy_no_ads')}</p>
+			<p>{$t('ui.parents.privacy_analytics')}</p>
+			<p>{$t('ui.parents.privacy_offline')}</p>
+			<p>{$t('ui.parents.privacy_local')}</p>
+			<p>{$t('ui.parents.privacy_free')}</p>
+			<p>{$t('ui.parents.privacy_no_links')}</p>
 
-			<h4>☕ Apoya el proyecto</h4>
-			<p>PinguPlay es gratis y sin anuncios. Si te gusta, puedes ayudar a mantenerlo:</p>
+			<h4>{$t('ui.parents.support_title')}</h4>
+			<p>{$t('ui.parents.support_desc')}</p>
 			<a href="https://ko-fi.com/pinguplay" target="_blank" rel="noopener noreferrer"
 				style="display:block;text-align:center;background:#FF5E5B;color:white;padding:14px 28px;
 				border-radius:14px;font-size:1rem;font-weight:bold;text-decoration:none;margin:12px 0;
 				box-shadow:0 4px 0 rgba(200,60,60,.3)">
-				☕ Invítame un café en Ko-Fi
+				{$t('ui.parents.kofi_btn')}
 			</a>
 
-			<h4>📧 Contacto</h4>
-			<p>¿Sugerencias o problemas? Escríbenos:</p>
+			<h4>{$t('ui.parents.contact_title')}</h4>
+			<p>{$t('ui.parents.contact_prompt')}</p>
 			<p style="font-weight:700;text-align:center">molvicstudios@outlook.com</p>
 
 			<div style="margin-top:16px;text-align:center;font-size:.7rem;color:var(--ink2)">
@@ -348,7 +354,7 @@
 		</div>
 		{/if}
 
-		<button class="pad-btn pad-btn-back" onclick={goBack}>← Volver</button>
+		<button class="pad-btn pad-btn-back" onclick={goBack}>{$t('ui.parents.back')}</button>
 	</div>
 </div>
 {/if}

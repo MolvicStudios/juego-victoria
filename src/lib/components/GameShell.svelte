@@ -11,6 +11,7 @@
 	import ParticleEngine from '$lib/effects/ParticleEngine.svelte';
 	import { trigger as triggerParticle } from '$lib/effects/particleEvents.js';
 	import PinguCharacter from '$lib/components/PinguCharacter.svelte';
+	import { t } from '$lib/i18n/index.js';
 
 	function getBackRoute() {
 		const idx = get(activeProfileIndex);
@@ -272,7 +273,7 @@
 
 {#if showLevelSelect}
 	<div class="lvl-select-overlay">
-		<div class="lvl-select-title">{icon} {title} — Elige tu nivel</div>
+		<div class="lvl-select-title">{icon} {$t('ui.game.level_select_title', { title })}</div>
 		<div class="lvl-select-grid">
 			{#each Array(15) as _, i}
 				{@const lv = i + 1}
@@ -296,12 +297,12 @@
 				</button>
 			{/each}
 		</div>
-		<button class="lvl-back" onclick={goBack}>← Volver al menú</button>
+		<button class="lvl-back" onclick={goBack}>{$t('ui.game.back_menu')}</button>
 	</div>
 {:else}
 	<div class="scr on" style="display:flex">
 		<div class="hdr">
-			<button class="bk" onclick={goBack}>←</button>
+			<button class="bk" onclick={goBack}>{$t('ui.game.back')}</button>
 			<!-- Pingu compañero activo v3 — muestra el estado según eventos del juego -->
 			<PinguCharacter
 				state={pinguState}
@@ -312,7 +313,7 @@
 			{#if streak >= 3}
 				<span class="streak-badge">🔥×{streak}</span>
 			{/if}
-			<span class="lvbdg">Nivel {currentLevel}</span>
+			<span class="lvbdg">{$t('ui.game.level', { n: currentLevel })}</span>
 			<!-- Toggle Modo Silencioso v3 -->
 			<button
 				class="quiet-toggle"
@@ -343,7 +344,7 @@
 			<div class="cel-lv">{celLvMsg}</div>
 		{/if}
 		<button class="cel-btn" onclick={celNext}>
-			{celCallback ? '¡Seguir! →' : 'Menú 🏠'}
+			{celCallback ? $t('ui.game.continue_btn') : $t('ui.game.menu_home')}
 		</button>
 	</div>
 {/if}
@@ -354,10 +355,10 @@
 		onclick={() => { stickerUnlock = null; }}
 		onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') stickerUnlock = null; }}>
 		<div class="stk-popup" onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()}>
-			<div class="stk-popup-title">¡Nuevo sticker desbloqueado! 🎉</div>
+			<div class="stk-popup-title">{$t('ui.game.new_sticker')}</div>
 			<img class="stk-popup-img" src="/assets/stickers/{stickerUnlock.img}" alt={stickerUnlock.e} />
-			<div class="stk-popup-stars">{stickerUnlock.s} ⭐ alcanzadas</div>
-			<button class="stk-popup-btn" onclick={() => { stickerUnlock = null; }}>¡Genial! 🌟</button>
+			<div class="stk-popup-stars">{$t('ui.game.stars_reached', { n: stickerUnlock.s })}</div>
+			<button class="stk-popup-btn" onclick={() => { stickerUnlock = null; }}>{$t('ui.game.great_sticker')}</button>
 		</div>
 	</div>
 {/if}
@@ -373,9 +374,9 @@
 		onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') dismissMedal(); }}>
 		<div class="medal-box" onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()}>
 			<div class="medal-icon">{medalUnlock.icon}</div>
-			<div class="medal-title">{medalUnlock.label}</div>
-			<div class="medal-desc">{medalUnlock.desc}</div>
-			<button class="medal-btn" onclick={dismissMedal}>¡Genial! 🏅</button>
+			<div class="medal-title">{$t('medals.' + medalUnlock.id + '.label')}</div>
+			<div class="medal-desc">{$t('medals.' + medalUnlock.id + '.desc')}</div>
+			<button class="medal-btn" onclick={dismissMedal}>{$t('ui.game.great_medal')}</button>
 		</div>
 	</div>
 {/if}

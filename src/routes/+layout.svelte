@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { night, muted, hiContrast, bigText } from '$lib/stores/settings.js';
 	import { toggleMute } from '$lib/audio.js';
+	import { initI18n, t } from '$lib/i18n/index.js';
 
 	let { children } = $props();
 	let mounted = $state(false);
@@ -24,7 +25,8 @@
 	hiContrast.subscribe(v => { isHiContrast = v; });
 	bigText.subscribe(v => { isBigText = v; });
 
-	onMount(() => {
+	onMount(async () => {
+		await initI18n();
 		mounted = true;
 		createScenery();
 		applyNight(isNight);
@@ -95,14 +97,14 @@
 <div class="snd-ind {soundPlaying ? 'on' : ''}">🔊</div>
 
 {#if cookieConsent === 'pending'}
-<div class="cookie-banner" role="dialog" aria-label="Aviso de cookies">
+<div class="cookie-banner" role="dialog" aria-label={$t('ui.cookie.text')}>
 	<div class="cookie-text">
 		<span>🍪</span>
-		<p>Usamos Google Analytics para mejorar la app. ¿Aceptas las cookies de análisis? <a href="/privacy.html" target="_blank">Más info</a></p>
+		<p>{$t('ui.cookie.text')} <a href="/privacy.html" target="_blank">{$t('ui.cookie.more_info')}</a></p>
 	</div>
 	<div class="cookie-btns">
-		<button class="cookie-accept" onclick={acceptCookies}>Aceptar</button>
-		<button class="cookie-decline" onclick={declineCookies}>Rechazar</button>
+		<button class="cookie-accept" onclick={acceptCookies}>{$t('ui.cookie.accept')}</button>
+		<button class="cookie-decline" onclick={declineCookies}>{$t('ui.cookie.decline')}</button>
 	</div>
 </div>
 {/if}
