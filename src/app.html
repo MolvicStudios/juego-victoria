@@ -43,20 +43,6 @@
 		<link rel="canonical" href="https://pinguplay.mom/">
 		<meta name="keywords" content="juegos educativos niños, juegos infantiles online, aprender jugando, PinguPlay, juegos 0-12 años">
 		<!-- JSON-LD -->
-		<script type="application/ld+json">
-		{
-		  "@context": "https://schema.org",
-		  "@type": "WebApplication",
-		  "name": "PinguPlay",
-		  "url": "https://pinguplay.mom/",
-		  "description": "38 juegos educativos para niños de 0-12 años con 15 niveles adaptativos",
-		  "applicationCategory": "EducationalApplication",
-		  "operatingSystem": "Web, iOS, Android",
-		  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-		  "audience": { "@type": "EducationalAudience", "educationalRole": "student", "audienceType": "Children 0-12" },
-		  "inLanguage": "es"
-		}
-		</script>
 		<link rel="manifest" href="/manifest.json" />
 		<link rel="icon" href="/icon.svg" type="image/svg+xml" />
 		<link rel="apple-touch-icon" href="/icon-192.png" />
@@ -76,5 +62,39 @@
 				});
 			}
 		</script>
-	</body>
+	<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "PinguPlay",
+  "url": "https://pinguplay.mom",
+  "description": "App educativa PWA para niños en español. 10 minijuegos con dificultad adaptativa, mascota pingüino, soporte offline y modo sin publicidad.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": [
+    "Web Browser",
+    "Android",
+    "iOS"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "suggestedMinAge": 3,
+    "suggestedMaxAge": 8
+  },
+  "inLanguage": "es",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR"
+  },
+  "featureList": [
+    "10 minijuegos educativos",
+    "Dificultad adaptativa",
+    "Soporte offline (PWA)",
+    "Sin publicidad",
+    "Mascota pingüino",
+    "Para niños de 3 a 8 años"
+  ]
+}
+</script>
+</body>
 </html>
