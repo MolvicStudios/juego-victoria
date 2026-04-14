@@ -1,4 +1,4 @@
-/* PinguPlay v2.1 — Service Worker */
+/* PinguPlay v3.5 — Service Worker */
 const CACHE = 'pinguplay-v3.5';
 
 /* Shell precached on install */
@@ -8,6 +8,16 @@ const SHELL = [
   '/icon.svg',
   '/privacy.html',
   '/terms.html',
+  '/assets/backgrounds/bg-nubecitas.png',
+  '/assets/backgrounds/bg-exploradores.png',
+  '/assets/backgrounds/bg-aventureros.png',
+  '/assets/backgrounds/bg-maestros.png',
+  '/assets/characters/pingu-main.png',
+  '/assets/characters/pingu-happy.png',
+  '/assets/characters/pingu-sad.png',
+  '/assets/ui/star-filled.png',
+  '/assets/ui/star-empty.png',
+  '/assets/ui/lock.png',
 ];
 
 self.addEventListener('install', e => {

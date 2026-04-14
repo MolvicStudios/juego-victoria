@@ -5,7 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { night, muted, hiContrast, bigText } from '$lib/stores/settings.js';
 	import { toggleMute } from '$lib/audio.js';
-	import { initI18n, t } from '$lib/i18n/index.js';
+	import { initI18n, t, locale } from '$lib/i18n/index.js';
 
 	let { children } = $props();
 	let mounted = $state(false);
@@ -27,6 +27,7 @@
 
 	onMount(async () => {
 		await initI18n();
+		locale.subscribe(loc => { document.documentElement.lang = loc; });
 		mounted = true;
 		createScenery();
 		applyNight(isNight);
